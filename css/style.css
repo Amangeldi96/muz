@@ -1,0 +1,129 @@
+:root {
+    --gold: #b6944c;
+    --bg-body: #0d0e12;
+    --bg-container: #14171f;
+    --text-main: #f5f5f5;
+    --border: rgba(182, 148, 76, 0.2);
+}
+
+/* Темалар */
+body.light { --bg-body: #f5f7fa; --bg-container: #ffffff; --text-main: #232323; --border: #e5e7eb; }
+body.dark { --bg-body: #0d0e12; --bg-container: #14171f; --text-main: #f5f5f5; }
+body.gold { --bg-body: #1f1809; --bg-container: #fffdf4; --text-main: #4b3a00; }
+body.green { --bg-body: #061b12; --bg-container: #f1fff5; --text-main: #065038; }
+body.red { --bg-body: #2b0a0a; --bg-container: #fff2f2; --text-main: #990000; }
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Century Gothic', sans-serif; }
+
+body { background: var(--bg-body); color: var(--text-main); transition: 0.3s; overflow-x: hidden; }
+
+/* --- SIDE MENU --- */
+.side-menu {
+    position: fixed;
+    top: 0; left: 0;
+    width: 280px; height: 100vh;
+    background: var(--bg-body);
+    z-index: 1;
+    padding: 100px 40px;
+    border-right: 1px solid var(--border);
+}
+
+.menu-items { list-style: none; }
+.menu-items li {
+    padding: 15px 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    border-bottom: 1px solid var(--border);
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+body.menu-open .menu-items li {
+    opacity: 1;
+    transform: translateX(0);
+    transition-delay: calc(0.1s * var(--i));
+}
+
+.menu-items li:hover { color: var(--gold); padding-left: 10px; }
+
+/* --- MAIN CONTAINER --- */
+#main-container {
+    position: relative;
+    background: var(--bg-container);
+    min-height: 100vh;
+    z-index: 10;
+    transition: 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
+    box-shadow: 0 0 50px rgba(0,0,0,0.3);
+}
+
+body.menu-open #main-container {
+    transform: translateX(280px);
+}
+
+/* --- HEADER & MENU BUTTON --- */
+header {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+}
+
+.menu-btn {
+    width: 30px;
+    height: 22px;
+    position: relative;
+    cursor: pointer;
+}
+
+.menu-btn span {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #00f2ff;
+    border-radius: 3px;
+    transition: all 0.4s ease;
+}
+
+/* Үч сызык */
+.menu-btn span:nth-child(1) { top: 0; }
+.menu-btn span:nth-child(2) { top: 9px; }
+.menu-btn span:nth-child(3) { bottom: 0; }
+
+/* ===== MENU OPEN → ЖЕБЕ ===== */
+
+body.menu-open .menu-btn span:nth-child(1) {
+    top: 9px;
+    transform: rotate(-45deg);
+    width: 70%;
+}
+
+body.menu-open .menu-btn span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(10px);
+}
+
+body.menu-open .menu-btn span:nth-child(3) {
+    bottom: 10px;
+    transform: rotate(45deg);
+    width: 70%;
+}
+
+.logo-text { font-size: 22px; font-weight: 900; color: var(--gold); }
+
+/* --- THEME TOGGLE (Сиздин стилге туураланган) --- */
+.theme-toggle { position: relative; cursor: pointer; }
+.theme-options {
+    position: absolute; top: 45px; right: 0;
+    background: var(--bg-container);
+    border: 1px solid var(--gold);
+    border-radius: 12px; padding: 10px;
+    display: grid; grid-template-columns: repeat(3, 30px); gap: 10px;
+    visibility: hidden; opacity: 0; transform: translateY(-10px);
+    transition: 0.3s;
+}
+.theme-toggle.open .theme-options { visibility: visible; opacity: 1; transform: translateY(0); }
+.theme-option { width: 30px; height: 30px; border-radius: 50%; border: 2px solid rgba(0,0,0,0.1); }

@@ -1,0 +1,145 @@
+/* ===================== БИРИКТИРИЛГЕН ЖАНА ОҢДОЛГОН СТИЛДЕР ===================== */
+:root { 
+    --ui-bg: var(--bg-card); 
+    --text-color: var(--text-main); 
+}
+
+/* Негизги корпус */
+.app-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Экрандын толук бийиктиги */
+    max-width: 850px;
+    margin: 0 auto;
+    background: var(--bg-main);
+    overflow: hidden; /* Сыртка чыккан нерселерди жашырат */
+}
+
+/* ПЛЕЙЕР КАРТАСЫ (Өйдө жакта катып турат) */
+.player-card {
+    flex-shrink: 0; /* Плеер кичирейип кетпеши керек */
+    width: 100%; 
+    background: #000; 
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* ВИДЕО КОНТЕЙНЕРИ */
+.v-container {
+    width: 100%; 
+    background: #000; 
+    position: relative;
+    aspect-ratio: 16 / 9;
+    cursor: pointer;
+}
+
+#ytPlayer {
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Интерфейс иштеши үчүн */
+}
+
+/* БАШКАРУУ ПАНЕЛИ */
+.v-controls {
+    padding: 12px 15px; 
+    background: var(--bg-card); 
+    transition: all 0.4s ease;
+}
+
+.controls-row { display: flex; align-items: center; gap: 15px; }
+
+/* Прогресс бар */
+.prog-area { flex-grow: 1; height: 25px; display: flex; align-items: center; cursor: pointer; }
+.prog-track { width: 100%; height: 6px; background: var(--progress-bg); border-radius: 10px; position: relative; }
+.prog-bar { height: 100%; width: 0%; background: var(--accent); border-radius: 10px; }
+
+/* Кнопкалар */
+.action-btn { background: none; border: none; cursor: pointer; display: flex; color: var(--text-main); }
+.action-btn svg { width: 30px; height: 30px; fill: currentColor; }
+
+/* СКРОЛЛ БОЛУУЧУ БӨЛҮК (Плейлист) */
+.scroll-box {
+    flex-grow: 1; /* Калган бош орундун баарын ээлейт */
+    overflow-y: auto; /* Түгөлөнбөс скролду иштетет */
+    padding: 15px;
+    -webkit-overflow-scrolling: touch; /* Мобилдикте жумшак скрол */
+}
+
+.video-playlist { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 12px; 
+    padding-bottom: 80px; /* Навигацияга тийбеш үчүн */
+}
+
+/* Плейлист элементтери */
+.playlist-item {
+    display: flex; 
+    align-items: center; 
+    background: var(--bg-card);
+    border: 1px solid var(--border); 
+    border-radius: 14px; 
+    padding: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.playlist-item.active { border-color: var(--accent); background: var(--accent-dim); }
+
+.pl-thumb {
+    width: 110px; height: 62px; border-radius: 10px; flex-shrink: 0; 
+    background-size: cover; background-position: center; position: relative;
+    overflow: hidden;
+}
+
+.pl-info { margin-left: 12px; overflow: hidden; }
+.pl-info b { font-size: 14px; color: var(--text-main); display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pl-info p { font-size: 12px; color: var(--text-sub); margin-top: 4px; }
+
+/* Фуллскрин режими */
+.player-card:fullscreen {
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center; /* Видеону тигинен ортого коёт */
+    align-items: center;     /* Видеону туурасынан ортого коёт */
+}
+
+.player-card:fullscreen .v-controls {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,0.7);
+}
+
+.ui-hidden .v-controls { opacity: 0; transform: translateY(10px); pointer-events: none; }
+.section-title {
+    display: flex;
+    align-items: center;
+    padding: 20px 15px 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--text-main);
+    text-transform: uppercase;
+}
+
+.section-title::before {
+    content: "";
+    display: inline-block;
+    width: 4px;
+    height: 20px;
+    background-color: var(--accent);
+    margin-right: 10px;
+    border-radius: 2px;
+}
+   .action-btn svg {
+        width: 26px;
+       height: 26px;
+   }
+
+        .full-btn svg {
+        width: 22px;
+            height: 22px;
+        }
