@@ -375,37 +375,46 @@ body.menu-open .menu-btn span:nth-child(3) {
 }
 
 .p-wrapper { 
-    height: 4px; 
-    /* Сызыктын фону теманын чек ара түсүнө жараша өзгөрөт */
-    background: var(--border) !important; 
-    border-radius: 10px; 
-    margin-bottom: 15px; 
-    position: relative; 
-    cursor: pointer; 
+    position: relative;
+    background: rgba(128, 128, 128, 0.15);
+    height: 6px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 12px;
+    touch-action: none;
 }
 
-/* Прогресс толтуруу - Темадагы негизги түскө (акцентке) боёлот */
 .p-fill { 
     height: 100%; 
-    /* Түс автоматтык түрдө жашыл темада жашыл, алтында алтын болот */
     background: var(--accent, var(--gold)) !important; 
     border-radius: 10px; 
     width: 0%; 
+    /* Кадимки убакта жумшак жылат */
+    transition: width 0.1s linear;
+    position: relative;
 }
 
-/* Прогресс кармагычы (шарик) */
+/* Сүйрөп жаткан учурда анимацияны өчүрөбүз, ошондо шарик артта калбайт */
+.p-wrapper.active-drag .p-fill,
+.p-wrapper.active-drag .p-handle {
+    transition: none !important;
+}
+
 .p-handle { 
-    position: absolute; 
-    top: 50%; 
+    position: absolute;
+    top: 50%;
+    /* Шариктин сол тарабын 0 кылып, JS аркылуу башкарабыз */
     left: 0%; 
     width: 14px; 
     height: 14px; 
-    /* Шарик темадагы тексттин түсүндө (кара же ак) болот */
-    background: var(--text-main) !important; 
-    border: 2px solid var(--accent, var(--gold)) !important;
+    background: #fff;
     border-radius: 50%; 
     transform: translate(-50%, -50%); 
-    box-shadow: 0 0 10px rgba(0,0,0,0.5); 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3); 
+    z-index: 3;
+    /* Бул дагы жумшак жылышы керек */
+    transition: left 0.1s linear;
 }
 
 .p-content { 
@@ -440,4 +449,4 @@ body.menu-open .menu-btn span:nth-child(3) {
     opacity: 0.7; 
 }
 
-        
+
