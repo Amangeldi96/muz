@@ -22,17 +22,25 @@ let storyYtPlayer = null;
 let currentBtn = null; 
 let progressInterval;
 let storyProgressInterval;
-let isStoryDragging = false; 
 let wakeLock = null;
 
 const iconHTML = `<svg width="20" height="20" viewBox="0 0 25 25" fill="none"><g transform="translate(1, 0)"><path d="M7.98047 3.51001C5.43047 4.39001 4.98047 9.09992 4.98047 12.4099C4.98047 15.7199 5.41047 20.4099 7.98047 21.3199C10.6905 22.2499 18.9805 16.1599 18.9805 12.4099C18.9805 8.65991 10.6905 2.58001 7.98047 3.51001Z" fill="#ffffff"></path></g></svg>`;
 const pauseIconHTML = `<svg width="20" height="20" viewBox="0 0 25 25" fill="none"><g transform="translate(1.5, 1) scale(0.9)"><path d="M10 6.42004C10 4.76319 8.65685 3.42004 7 3.42004C5.34315 3.42004 4 4.76319 4 6.42004V18.42C4 20.0769 5.34315 21.42 7 21.42C8.65685 21.42 10 20.0769 10 18.42V6.42004Z" fill="#ffffff"></path><path d="M20 6.42004C20 4.76319 18.6569 3.42004 17 3.42004C15.3431 3.42004 14 4.76319 14 6.42004V18.42C14 20.0769 15.3431 21.42 17 21.42C18.6569 21.42 20 20.0769 20 18.42V6.42004Z" fill="#ffffff"></path></g></svg>`;
-// Спинерди HTML'де даяр кармайбыз
 const loadingHTML = `<div class="is-loading-circle"></div>`; 
 
 const storyModal = document.getElementById('storyFullscreen');
 const storyStatusBar = document.getElementById('statusBar');
-const storyProgressContainer = document.getElementById('progressBarContainer');
+
+// ================= 2.1 ПЛЕЙБАР ЭЛЕМЕНТТЕРИ =================
+const mainPlayBtn = document.getElementById('mainPlayBtn');
+const pFill = document.getElementById('pFill');
+const pHandle = document.getElementById('pHandle');
+const pCont = document.getElementById('pCont');
+const pTitle = document.getElementById('pTitle');
+const pArtist = document.getElementById('pArtist');
+
+// Иконка баракча ачылары менен дароо чыгышы үчүн:
+if (mainPlayBtn) mainPlayBtn.innerHTML = iconHTML + loadingHTML;
 
 // ================= 3. YOUTUBE API ЖАНА ЛОГИКА =================
 if (!window.YT) {
@@ -42,26 +50,20 @@ if (!window.YT) {
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 }
 
-async function requestWakeLock() {
-    if ('wakeLock' in navigator) {
-        try { wakeLock = await navigator.wakeLock.request('screen'); } catch (err) {}
-    }
-}
-
 window.onYouTubeIframeAPIReady = function() {
     ytPlayer = new YT.Player('ytPlayer', {
         height: '0', width: '0',
         playerVars: { 
-            'playsinline': 1, 
-            'controls': 0, 
-            'enablejsapi': 1,
-            'autoplay': 0,
+            'playsinline': 1, 'controls': 0, 'enablejsapi': 1, 'autoplay': 0,
             'origin': window.location.origin
         },
         events: { 
             'onStateChange': onPlayerStateChange,
             'onError': onPlayerError,
-            'onReady': (e) => { e.target.unMute(); } 
+            'onReady': (e) => { 
+                e.target.unMute();
+                if (mainPlayBtn && !currentBtn) mainPlayBtn.innerHTML = iconHTML + loadingHTML;
+            } 
         }
     });
 
@@ -71,43 +73,6 @@ window.onYouTubeIframeAPIReady = function() {
         events: { 'onStateChange': onStoryPlayerStateChange }
     });
 };
-
-// Visibility API
-document.addEventListener("visibilitychange", function() {
-    if (document.visibilityState === 'hidden' && ytPlayer) {
-        if (ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) {
-            setTimeout(() => { ytPlayer.playVideo(); }, 150);
-        }
-    }
-});
-
-function updateMediaSession(btn) {
-    if ('mediaSession' in navigator) {
-        const parent = btn.closest('.upcoming-card, .block, .song-item');
-        const title = parent.querySelector('b').innerText;
-        const artist = parent.querySelector('p, span').innerText;
-        const coverImg = parent.querySelector('.song-image, .cover, img');
-        let coverSrc = "";
-        
-        if (coverImg) {
-            const style = coverImg.getAttribute('style');
-            if (style && style.includes('url')) {
-                coverSrc = style.match(/url\(["']?(.*?)["']?\)/)[1];
-            } else {
-                coverSrc = coverImg.src;
-            }
-        }
-
-        navigator.mediaSession.metadata = new MediaMetadata({
-            title: title,
-            artist: artist,
-            artwork: [{ src: coverSrc || "", sizes: '512x512', type: 'image/png' }]
-        });
-
-        navigator.mediaSession.setActionHandler('play', () => ytPlayer.playVideo());
-        navigator.mediaSession.setActionHandler('pause', () => ytPlayer.pauseVideo());
-    }
-}
 
 // ================= 4. ГЛОБАЛДЫК ФУНКЦИЯЛАР =================
 window.extractVideoId = function(url) {
@@ -125,76 +90,73 @@ window.getValidCover = function(cover, videoUrl) {
 
 window.togglePlay = function(btn, src) {
     if (!ytPlayer || typeof ytPlayer.loadVideoById !== 'function') return;
-    
     const vid = window.extractVideoId(src);
 
     if (currentBtn === btn) {
         const state = ytPlayer.getPlayerState();
-        if (state === YT.PlayerState.PLAYING) {
-            ytPlayer.pauseVideo();
-        } else {
-            btn.classList.add('is-loading'); // Спинерди күйгүзүү
-            ytPlayer.playVideo();
-        }
+        state === YT.PlayerState.PLAYING ? ytPlayer.pauseVideo() : ytPlayer.playVideo();
         return;
     }
 
     if (currentBtn) { 
         currentBtn.classList.remove('is-loading');
-        currentBtn.innerHTML = iconHTML + loadingHTML; // Кайра баштапкы абалга
+        currentBtn.innerHTML = iconHTML + loadingHTML;
         resetProgressBar(currentBtn); 
     }
     
     currentBtn = btn;
-    btn.classList.add('is-loading'); // Жаңы спинерди күйгүзүү
+    currentBtn.classList.add('is-loading');
     
-    updateMediaSession(btn);
+    const parent = btn.closest('.upcoming-card, .block, .song-item');
+    if (parent && pTitle && pArtist) {
+        pTitle.innerText = parent.querySelector('b').innerText;
+        pArtist.innerText = parent.querySelector('p, span').innerText;
+    }
+
     ytPlayer.loadVideoById(vid);
     ytPlayer.playVideo();
-    requestWakeLock();
 };
 
 function onPlayerStateChange(event) {
-    if (!currentBtn) return;
+    const isPlaying = event.data === YT.PlayerState.PLAYING;
+    const isBuffering = event.data === YT.PlayerState.BUFFERING;
+    const targetHTML = isPlaying ? (pauseIconHTML + loadingHTML) : (iconHTML + loadingHTML);
 
-    if (event.data === YT.PlayerState.PLAYING) {
-        currentBtn.classList.remove('is-loading'); // Жүктөлдү, спинерди өчүрөбүз
-        currentBtn.innerHTML = pauseIconHTML + loadingHTML; 
-        startProgressTracking();
-    } 
-    else if (event.data === YT.PlayerState.BUFFERING) {
-        currentBtn.classList.add('is-loading'); // Интернет начар болсо кайра күйөт
-    } 
-    else if (event.data === YT.PlayerState.PAUSED) {
-        currentBtn.classList.remove('is-loading');
-        currentBtn.innerHTML = iconHTML + loadingHTML;
-    } 
-    else if (event.data === YT.PlayerState.ENDED) {
-        currentBtn.classList.remove('is-loading');
-        currentBtn.innerHTML = iconHTML + loadingHTML;
-        resetProgressBar(currentBtn);
+    if (mainPlayBtn) {
+        mainPlayBtn.classList.toggle('is-loading', isBuffering);
+        mainPlayBtn.innerHTML = targetHTML;
     }
+
+    if (currentBtn) {
+        currentBtn.classList.toggle('is-loading', isBuffering);
+        currentBtn.innerHTML = targetHTML;
+    }
+
+    if (isPlaying) startProgressTracking();
+    if (event.data === YT.PlayerState.ENDED && currentBtn) resetProgressBar(currentBtn);
 }
 
 function onPlayerError() {
-    if (currentBtn) {
-        currentBtn.classList.remove('is-loading');
-        currentBtn.innerHTML = iconHTML + loadingHTML;
-        alert("Видеону жүктөөдө ката кетти.");
-    }
+    [currentBtn, mainPlayBtn].forEach(b => {
+        if(b) { b.classList.remove('is-loading'); b.innerHTML = iconHTML + loadingHTML; }
+    });
 }
 
 function startProgressTracking() {
     clearInterval(progressInterval);
     progressInterval = setInterval(() => {
-        if (ytPlayer && ytPlayer.getCurrentTime && currentBtn) {
+        if (ytPlayer && ytPlayer.getCurrentTime) {
             const curr = ytPlayer.getCurrentTime();
             const dur = ytPlayer.getDuration();
             if (dur > 0) {
                 const percent = (curr / dur) * 100;
-                const parent = currentBtn.closest('.upcoming-card, .block, .song-item');
-                const bar = parent ? parent.querySelector('.progress-bg') : null;
-                if (bar) bar.style.width = percent + '%';
+                if (currentBtn) {
+                    const parent = currentBtn.closest('.upcoming-card, .block, .song-item');
+                    const bar = parent ? parent.querySelector('.progress-bg') : null;
+                    if (bar) bar.style.width = percent + '%';
+                }
+                if (pFill) pFill.style.width = percent + '%';
+                if (pHandle) pHandle.style.left = percent + '%';
             }
         }
     }, 500);
@@ -204,86 +166,93 @@ function resetProgressBar(btn) {
     const parent = btn.closest('.upcoming-card, .block, .song-item');
     const bar = parent ? parent.querySelector('.progress-bg') : null;
     if (bar) bar.style.width = '0%';
+    if (pFill) pFill.style.width = '0%';
+    if (pHandle) pHandle.style.left = '0%';
 }
 
-// ================= 5. СТОРИЗ ПЕРЕМОТКА (Өзгөртүүсүз калат) =================
+// ================= 5. НАСТРОЙКАЛАР (МОДАЛКА) =================
+window.toggleSettingsModal = function(show) {
+    const modal = document.getElementById('sModal');
+    if (modal) {
+        if (show) modal.classList.add('active');
+        else modal.classList.remove('active');
+    }
+};
+
+window.changeTheme = function(theme) {
+    document.body.className = theme;
+    localStorage.setItem('selected-app-theme', theme);
+};
+
+window.toggleBarUI = function() {
+    const bar = document.getElementById('playerBar');
+    const sw = document.getElementById('barSwitch');
+    if (bar && sw) {
+        const isHidden = bar.style.display === 'none' || bar.style.display === '';
+        bar.style.display = isHidden ? 'block' : 'none';
+        sw.classList.toggle('on', isHidden);
+        localStorage.setItem('player-bar-visible', isHidden);
+    }
+};
+
+if (mainPlayBtn) {
+    mainPlayBtn.onclick = () => {
+        if (!ytPlayer || typeof ytPlayer.getPlayerState !== 'function') return;
+        const state = ytPlayer.getPlayerState();
+        state === YT.PlayerState.PLAYING ? ytPlayer.pauseVideo() : ytPlayer.playVideo();
+    };
+}
+
+if (pCont) {
+    pCont.onclick = (e) => {
+        if (!ytPlayer) return;
+        const rect = pCont.getBoundingClientRect();
+        const percent = (e.clientX - rect.left) / rect.width;
+        const dur = ytPlayer.getDuration();
+        if (dur > 0) ytPlayer.seekTo(percent * dur, true);
+    };
+}
+
+// ================= 6. СТОРИЗ =================
 window.viewStory = function(videoId) {
     if (!storyModal || !storyYtPlayer) return;
     if (ytPlayer) ytPlayer.pauseVideo();
     storyModal.style.display = 'block';
-    if (storyStatusBar) storyStatusBar.style.width = '0%';
-    const vid = window.extractVideoId(videoId);
-    storyYtPlayer.loadVideoById(vid);
-    storyYtPlayer.playVideo();
+    storyYtPlayer.loadVideoById(window.extractVideoId(videoId));
 };
 
 window.closeStory = function() {
     if (storyModal) storyModal.style.display = 'none';
     if (storyYtPlayer) storyYtPlayer.stopVideo();
     clearInterval(storyProgressInterval);
-    isStoryDragging = false;
 };
 
 function onStoryPlayerStateChange(e) {
     if (e.data === YT.PlayerState.PLAYING) {
-        startStoryProgress();
-    } else if (e.data === YT.PlayerState.ENDED) {
-        window.closeStory();
-    } else {
         clearInterval(storyProgressInterval);
-    }
-}
-
-function startStoryProgress() {
-    clearInterval(storyProgressInterval);
-    storyProgressInterval = setInterval(() => {
-        if (storyYtPlayer && storyYtPlayer.getCurrentTime && !isStoryDragging) {
+        storyProgressInterval = setInterval(() => {
             const curr = storyYtPlayer.getCurrentTime();
             const dur = storyYtPlayer.getDuration();
-            if (dur > 0 && storyStatusBar) {
-                storyStatusBar.style.width = (curr / dur * 100) + '%';
-            }
-        }
-    }, 50);
+            if (dur > 0 && storyStatusBar) storyStatusBar.style.width = (curr / dur * 100) + '%';
+        }, 50);
+    } else if (e.data === YT.PlayerState.ENDED) window.closeStory();
 }
 
-function handleStoryScrub(e) {
-    if (!storyProgressContainer || !storyYtPlayer) return;
-    const rect = storyProgressContainer.getBoundingClientRect();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
-    const percent = x / rect.width;
-    if (storyStatusBar) storyStatusBar.style.width = (percent * 100) + '%';
-    if (isStoryDragging) {
-        const dur = storyYtPlayer.getDuration();
-        if (dur > 0) storyYtPlayer.seekTo(percent * dur, true);
-    }
-}
-
-if (storyProgressContainer) {
-    const start = (e) => { isStoryDragging = true; storyProgressContainer.classList.add('active'); handleStoryScrub(e); };
-    const move = (e) => { if (isStoryDragging) { if (e.cancelable) e.preventDefault(); handleStoryScrub(e); } };
-    const end = () => { isStoryDragging = false; if (storyProgressContainer) storyProgressContainer.classList.remove('active'); };
-    storyProgressContainer.addEventListener('mousedown', start);
-    window.addEventListener('mousemove', move);
-    window.addEventListener('mouseup', end);
-    storyProgressContainer.addEventListener('touchstart', start, { passive: false });
-    window.addEventListener('touchmove', move, { passive: false });
-    window.addEventListener('touchend', end);
-}
-
-window.toggleStoryPlay = function() {
-    if (!storyYtPlayer) return;
-    const state = storyYtPlayer.getPlayerState();
-    state === YT.PlayerState.PLAYING ? storyYtPlayer.pauseVideo() : storyYtPlayer.playVideo();
-};
-
-// ================= 6. FIREBASE ЖҮКТӨӨ (Рендерди оптималдаштыруу) =================
+// ================= 7. FIREBASE ЖҮКТӨӨ =================
 async function loadAllContent() {
+    const savedTheme = localStorage.getItem('selected-app-theme');
+    if (savedTheme) document.body.className = savedTheme;
+
     loadCollection("top_hits", renderTopHits);
     loadCollection("hits", renderHits);
     loadCollection("shorts", renderShorts);
     loadCollection("upcoming", renderUpcoming);
+
+    const isVisible = localStorage.getItem('player-bar-visible') === 'true';
+    const bar = document.getElementById('playerBar');
+    const sw = document.getElementById('barSwitch');
+    if (bar) bar.style.display = isVisible ? 'block' : 'none';
+    if (sw) sw.classList.toggle('on', isVisible);
 }
 
 async function loadCollection(name, callback) {
@@ -297,7 +266,6 @@ async function loadCollection(name, callback) {
     }
 }
 
-// Ар бир рендерде иконка + спинерди алдын ала кошуп коёбуз
 function renderTopHits(data) {
     const container = document.getElementById('albumList');
     if (!container) return;
