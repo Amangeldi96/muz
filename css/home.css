@@ -256,23 +256,37 @@ svg{
 
 
 
-/* Спинердин айлануу анимациясы */
-@keyframes rotate {
+/* Спинердин негизги стили */
+.is-loading-circle {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-top: 2px solid #ffffff;
+    border-radius: 50%;
+    display: none; /* Башында жашыруун */
+    margin: auto;
+    animation: rotate-spinner 1s linear infinite;
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+/* Жүктөлүп жаткан учурда (класс кошулганда) */
+.is-loading .is-loading-circle {
+    display: block;
+}
+
+/* Жүктөлүп жатканда иконкаларды жашыруу */
+.is-loading svg {
+    display: none;
+}
+
+@keyframes rotate-spinner {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
 
-/* Сиздин кодуңуздагы спинер стили (текшерип алыңыз) */
-.is-loading-circle { 
-    animation: rotate 1s linear infinite; /* Эми бул иштеп баштайт */
-    border: 2px solid rgba(255,255,255,0.3); 
-    border-top-color: #fff; 
-    border-radius: 50%; 
-    width: 16px; 
-    height: 16px;
-    display: block;
-    margin: auto;
-}
+
+
 
 
 /*======artist card========*/
@@ -370,3 +384,4 @@ svg{
 
 
 
+            
