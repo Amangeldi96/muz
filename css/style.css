@@ -168,138 +168,127 @@ body.menu-open .menu-btn span:nth-child(3) {
 }
 
 /* ============================================================
-   ЖАҢЫЛАНГАН ЖАНА ТАЗАЛАНГАН КОМПАКТТУУ МОДАЛ (ПК + МОБИЛ)
+   КОМПАКТТУУ НАСТРОЙКА (MINIMAL & CLEAN)
    ============================================================ */
 
 .settings-modal {
     position: fixed; 
-    top: 85px; 
-    right: 20px; 
-    width: 230px; 
+    top: 70px; 
+    right: 15px; 
+    width: 190px; /* Телефон үчүн өтө компакттуу */
     background: var(--bg-container);
-    border-radius: 20px; /* Дагы жумшак бурчтар */
+    border-radius: 12px; 
     border: 1px solid var(--border);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.4); 
-    padding: 18px; 
+    padding: 12px; 
     z-index: 5000;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     
-    /* ПК үчүн заманбап "Айнек" эффекти */
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    
-    /* Пайда болуу анимациясы */
-    transform: translateY(-15px) scale(0.95); 
+    /* Анимация */
+    transform: translateY(-10px); 
     opacity: 0; 
     pointer-events: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: 0.2s ease-out;
 }
 
 .settings-modal.active { 
-    transform: translateY(0) scale(1); 
+    transform: translateY(0); 
     opacity: 1; 
     pointer-events: all; 
 }
 
-/* --- ПК ВЕРСИЯ ҮЧҮН (Чоң экрандарга) --- */
+/* ПК версия үчүн (Чоң экрандарга) */
 @media (min-width: 1024px) {
     .settings-modal {
-        right: 50px; /* Четтен көбүрөөк боштук */
-        width: 260px;
-        padding: 22px;
-        border-color: rgba(182, 148, 76, 0.2); /* Назик алтын жээк */
+        top: 80px;
+        right: 30px;
+        width: 220px; /* ПКда бир аз кенен болушу окууга ыңгайлуу */
+        padding: 15px;
     }
-
-    /* Модалдын ичиндеги элементтерди ПКда чоңойтуу */
-    .modal-header b { font-size: 15px; }
-    .switch-row span { font-size: 14px; }
 }
 
-/* --- МОДАЛДЫН БАШКЫ БӨЛҮГҮ --- */
+/* --- Header --- */
 .modal-header { 
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
-    margin-bottom: 15px; 
+    margin-bottom: 10px; 
 }
 
 .modal-header b { 
-    font-size: 13px;
+    font-size: 12px;
     color: var(--gold); 
     text-transform: uppercase; 
-    letter-spacing: 1.2px;
-    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
 .close-x { 
     cursor: pointer; 
     color: var(--text-main); 
-    background: rgba(255, 255, 255, 0.05); 
-    border-radius: 10px; /* Квадрат сымал тегерек бурчтар */
-    width: 28px; 
-    height: 28px; 
+    background: rgba(182,148,76,0.1); 
+    border-radius: 50%; 
+    width: 24px; 
+    height: 24px; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
+    font-size: 10px;
     transition: 0.2s;
 }
 
 .close-x:hover {
-    background: rgba(182, 148, 76, 0.2);
-    transform: rotate(90deg);
+    background: rgba(182,148,76,0.2);
 }
 
-/* --- ТЕМА ТАНДОО (HORIZONTAL SCROLL) --- */
+/* --- Темалар (Тоголок бойдон калды) --- */
 .theme-scroll { 
     display: flex; 
     overflow-x: auto; 
-    gap: 12px; 
-    padding: 8px 2px; 
-    scrollbar-width: none; /* Firefox */
+    gap: 8px; 
+    padding: 5px 0; 
+    scrollbar-width: none; 
 }
 
-.theme-scroll::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+.theme-scroll::-webkit-scrollbar { display: none; }
 
 .t-circle { 
-    min-width: 38px; 
-    height: 38px; 
-    border-radius: 12px; /* Тегерек эмес, "Squircle" стили */
-    border: 2px solid transparent; 
-    background: var(--gold); /* Бул жерге теманын түсү келет */
+    min-width: 32px; 
+    height: 32px; 
+    border-radius: 50%; 
+    border: 1.5px solid var(--border); 
     cursor: pointer; 
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    transition: 0.2s; 
 }
 
 .t-circle:hover { 
-    transform: scale(1.1) translateY(-3px);
     border-color: var(--gold);
-    box-shadow: 0 5px 15px rgba(182, 148, 76, 0.3);
+    transform: scale(1.05); /* Көлөкөсүз жөнөкөй чоңоюу */
 }
 
-/* --- SWITCH (КҮЙГҮЗГҮЧ) ДИЗАЙНЫ --- */
+/* --- Switch Саптары --- */
 .switch-row { 
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
-    margin-top: 15px; 
-    padding-top: 12px; 
-    border-top: 1px solid rgba(255, 255, 255, 0.05); 
+    margin-top: 10px; 
+    padding-top: 8px; 
+    border-top: 1px solid var(--border); 
 }
 
 .switch-row span {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text-main);
-    font-weight: 500;
 }
 
+/* --- Switch Дизайны --- */
 .switch { 
-    width: 42px; 
-    height: 22px; 
-    background: #2a2a2a; 
-    border-radius: 20px; 
+    width: 36px; 
+    height: 18px; 
+    background: #333; 
+    border-radius: 18px; 
     position: relative; 
     cursor: pointer; 
-    transition: 0.3s all ease;
-    border: 1px solid rgba(255,255,255,0.1);
+    transition: 0.25s;
 }
 
 .switch::after { 
@@ -307,23 +296,15 @@ body.menu-open .menu-btn span:nth-child(3) {
     position: absolute; 
     top: 2px; 
     left: 2px; 
-    width: 16px; 
-    height: 16px; 
-    background: #eeeeee; 
+    width: 14px; 
+    height: 14px; 
+    background: #fff; 
     border-radius: 50%; 
-    transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Пружина эффекти */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    transition: 0.2s ease; 
 }
 
-.switch.on { 
-    background: linear-gradient(45deg, var(--gold), #f3cf8a); 
-    border-color: transparent;
-}
-
-.switch.on::after { 
-    left: 22px; 
-    background: #fff;
-}
+.switch.on { background: var(--gold); }
+.switch.on::after { left: 20px; }
 
 
 /* ============================================================
