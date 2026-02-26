@@ -166,29 +166,27 @@ body.menu-open .menu-btn span:nth-child(3) {
     .menu-items li:hover::after { width: 100%; }
     body.menu-open #main-container { transform: none !important; }
 }
-
 /* ============================================================
-   КОМПАКТТУУ НАСТРОЙКА (MINIMAL & CLEAN)
+   ОПТИМАЛДАШТЫРЫЛГАН НАСТРОЙКА (ПК ЖАНА ТЕЛЕФОН)
    ============================================================ */
 
 .settings-modal {
     position: fixed; 
-    top: 70px; 
+    top: 75px; 
     right: 15px; 
-    width: 190px; /* Телефон үчүн өтө компакттуу */
+    width: 210px; /* Телефондо бир аз кенендик кошулду */
     background: var(--bg-container);
-    border-radius: 12px; 
+    border-radius: 16px; 
     border: 1px solid var(--border);
-    padding: 12px; 
+    padding: 15px; 
     z-index: 5000;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     
-    /* Анимация */
     transform: translateY(-10px); 
     opacity: 0; 
     pointer-events: none;
-    transition: 0.2s ease-out;
+    transition: 0.25s ease-out;
 }
 
 .settings-modal.active { 
@@ -197,29 +195,28 @@ body.menu-open .menu-btn span:nth-child(3) {
     pointer-events: all; 
 }
 
-/* ПК версия үчүн (Чоң экрандарга) */
+/* ПК үчүн атайын жөндөө */
 @media (min-width: 1024px) {
     .settings-modal {
-        top: 80px;
+        width: 250px; /* ПК версияда кенендик чоңойду, баары батат */
         right: 30px;
-        width: 220px; /* ПКда бир аз кенен болушу окууга ыңгайлуу */
-        padding: 15px;
+        padding: 18px;
     }
 }
 
-/* --- Header --- */
+/* --- Башкы бөлүк --- */
 .modal-header { 
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
-    margin-bottom: 10px; 
+    margin-bottom: 12px; 
 }
 
 .modal-header b { 
-    font-size: 12px;
+    font-size: 14px;
     color: var(--gold); 
     text-transform: uppercase; 
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
 }
 
 .close-x { 
@@ -227,42 +224,37 @@ body.menu-open .menu-btn span:nth-child(3) {
     color: var(--text-main); 
     background: rgba(182,148,76,0.1); 
     border-radius: 50%; 
-    width: 24px; 
-    height: 24px; 
+    width: 26px; 
+    height: 26px; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
-    font-size: 10px;
-    transition: 0.2s;
+    font-size: 12px;
 }
 
-.close-x:hover {
-    background: rgba(182,148,76,0.2);
-}
-
-/* --- Темалар (Тоголок бойдон калды) --- */
+/* --- ТЕМАЛАРДЫ ТУУРА ЖАЙГАШТЫРУУ --- */
 .theme-scroll { 
     display: flex; 
-    overflow-x: auto; 
-    gap: 8px; 
+    flex-wrap: wrap; /* Эгер батпай калса, кийинки сапка түшөт */
+    gap: 10px; /* Тегерекчелердин ортосундагы аралык */
     padding: 5px 0; 
-    scrollbar-width: none; 
+    justify-content: flex-start; /* Сол жактан тизилет */
 }
 
-.theme-scroll::-webkit-scrollbar { display: none; }
-
 .t-circle { 
-    min-width: 32px; 
-    height: 32px; 
+    width: 34px; 
+    height: 34px; 
+    min-width: 34px; /* Өлчөмү өзгөрбөшү үчүн */
     border-radius: 50%; 
-    border: 1.5px solid var(--border); 
+    border: 2px solid var(--border); 
     cursor: pointer; 
     transition: 0.2s; 
+    flex-shrink: 0; /* Кысылып кетүүдөн сактайт */
 }
 
 .t-circle:hover { 
     border-color: var(--gold);
-    transform: scale(1.05); /* Көлөкөсүз жөнөкөй чоңоюу */
+    transform: translateY(-2px); /* Жеңил көтөрүлүү */
 }
 
 /* --- Switch Саптары --- */
@@ -270,25 +262,26 @@ body.menu-open .menu-btn span:nth-child(3) {
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
-    margin-top: 10px; 
-    padding-top: 8px; 
+    margin-top: 15px; 
+    padding-top: 10px; 
     border-top: 1px solid var(--border); 
 }
 
 .switch-row span {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--text-main);
+    font-weight: 500;
 }
 
-/* --- Switch Дизайны --- */
+/* --- Switch --- */
 .switch { 
-    width: 36px; 
-    height: 18px; 
+    width: 40px; 
+    height: 20px; 
     background: #333; 
-    border-radius: 18px; 
+    border-radius: 20px; 
     position: relative; 
     cursor: pointer; 
-    transition: 0.25s;
+    transition: 0.3s;
 }
 
 .switch::after { 
@@ -296,15 +289,15 @@ body.menu-open .menu-btn span:nth-child(3) {
     position: absolute; 
     top: 2px; 
     left: 2px; 
-    width: 14px; 
-    height: 14px; 
+    width: 16px; 
+    height: 16px; 
     background: #fff; 
     border-radius: 50%; 
-    transition: 0.2s ease; 
+    transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
 }
 
 .switch.on { background: var(--gold); }
-.switch.on::after { left: 20px; }
+.switch.on::after { left: 22px; }
 
 
 /* ============================================================
