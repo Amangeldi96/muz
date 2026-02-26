@@ -122,8 +122,8 @@
     background: var(--accent);
 }
 #nextBtn svg {
-    width: 28px !important;
-    height: 28px !important;
+    width: 20px !important;
+    height: 20px !important;
     fill: #fff !important;
 }
 
