@@ -39,38 +39,3 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('selected-app-theme') || 'dark';
     window.changeTheme(savedTheme);
 });
-// ==========================================
-// 5. PALETTE DRAWING EFFECT
-// ==========================================
-
-document.addEventListener("DOMContentLoaded", () => {
-    const toggle = document.querySelector(".theme-toggle");
-    if (!toggle) return;
-
-    const svg = toggle.querySelector(".palette-icon");
-    if (!svg) return;
-
-    // Hover flag
-    let isAnimating = false;
-
-    toggle.addEventListener("mouseenter", () => {
-        if (isAnimating) return;
-        isAnimating = true;
-
-        // SVG өлчөмүнө тийбестен класс кошуу
-        toggle.classList.add("drawing");
-        toggle.classList.remove("animate");
-        void toggle.offsetWidth; // reflow гана, layout бузбайт
-        toggle.classList.add("animate");
-
-        // Анимация бүткөндө flag өчүрүү
-        setTimeout(() => {
-            isAnimating = false;
-        }, 1300);
-    });
-
-    toggle.addEventListener("mouseleave", () => {
-        toggle.classList.remove("drawing", "animate");
-        isAnimating = false;
-    });
-});
