@@ -343,24 +343,6 @@ body.menu-open .menu-btn span:nth-child(3) {
     transition: opacity 0.3s ease;
 }
 
-/* Drawing режим башталганда */
-.palette-icon {
-    width: 30px;
-    height: 30px;
-    display: block;       /* inline эмес, block кылып layout стабилдештирүү */
-    fill: var(--text-main);
-    stroke: var(--text-main);
-    stroke-width: 0.6;
-    transition: opacity 0.25s ease;
-}
-
-.theme-toggle {
-    display: inline-flex; /* header layout бузулбайт */
-    align-items: center;
-    justify-content: center;
-    position: relative;   /* dropdown үчүн */
-}
-
 /* Негизги форма */
 .theme-toggle.animate .main-path {
     animation: drawMain 1.2s ease forwards;
