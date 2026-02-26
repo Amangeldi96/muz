@@ -119,7 +119,38 @@
 
 #nextBtn {
     cursor: pointer;
-    background: var(--accent);
+    background-color: var(--accent) !important;
+    border: none;
+    border-radius: 50%; /* Эгер тегерек болсо */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Жумшак өтүү */
+    box-shadow: 0 4px 10px var(--shadow);
+}
+
+/* Ховер эффекти - Темага жараша жумшак күйөт */
+#nextBtn:hover {
+    transform: scale(1.1); /* Бир аз чоңоёт */
+    background-color: var(--accent) !important;
+    filter: brightness(1.1); /* Түсүн бир аз ачык кылат */
+    box-shadow: 0 0 20px var(--accent-dim); /* Теманын түсүндө неондук жарык берет */
+}
+
+/* Басканда (Click) реакциясы */
+#nextBtn:active {
+    transform: scale(0.92); /* Басылганда бир аз кичирейет */
+    opacity: 0.8;
+}
+
+/* Ичиндеги SVG иконкасы үчүн */
+#nextBtn svg {
+    fill: #ffffff; /* Иконка ак түстө болот */
+    transition: transform 0.3s ease;
+}
+
+#nextBtn:hover svg {
+    transform: translateX(2px); /* Оңго бир аз жылып, "кийинки" дегенди билдирет */
 }
 #nextBtn svg {
     width: 20px !important;
