@@ -322,4 +322,4 @@ function renderUpcoming(data) {
 }
 
 document.addEventListener('DOMContentLoaded', loadAllContent);
-    
+            
