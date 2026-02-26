@@ -39,3 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('selected-app-theme') || 'dark';
     window.changeTheme(savedTheme);
 });
+// 4. Баракча жүктөлгөндө теманы калыбына келтирүү
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('selected-app-theme') || 'dark';
+    window.changeTheme(savedTheme);
+});
