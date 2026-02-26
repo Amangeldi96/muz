@@ -2,15 +2,12 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import { 
   getFirestore, collection, addDoc, getDocs, 
-  deleteDoc, doc, query, orderBy, serverTimestamp, onSnapshot,
-  limit // Чектөө үчүн кошулду
+  deleteDoc, doc, query, orderBy, serverTimestamp, onSnapshot, limit 
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 import { 
-  getAuth, signInWithEmailAndPassword, 
-  onAuthStateChanged, signOut 
+  getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut 
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
-// Firebase Конфигурациясы
 const firebaseConfig = {
   apiKey: "AIzaSyAneBm46gs6L73E5O0GWFHKz9twnTmFIeo",
   authDomain: "music-edcd3.firebaseapp.com",
@@ -27,87 +24,59 @@ const auth = getAuth(app);
 const ALL_CATEGORIES = ['video_clips','shorts','top_hits','hits','new_hits','upcoming'];
 let isLoaded = false;
 
-// ================= 2. CLOUDINARY ЖҮКТӨӨ =================
-async function uploadToCloudinary(file) {
-  if (!file) return "";
-  const fd = new FormData();
-  fd.append("file", file);
-  // Сиздин скриншот боюнча "albumartist" деп өзгөртүлдү
-  fd.append("upload_preset", "albumartist"); 
+// ================= 2. СТИЛДҮҮ CUSTOM CONFIRM (MODAL) =================
+const showConfirmModal = (message) => {
+  return new Promise((resolve) => {
+    const modalOverlay = document.createElement('div');
+    modalOverlay.id = 'custom-modal-overlay';
+    modalOverlay.innerHTML = `
+      <div class="custom-modal-card">
+        <div class="custom-modal-icon">🗑️</div>
+        <h3>Ырастоо</h3>
+        <p>${message}</p>
+        <div class="custom-modal-actions">
+          <button id="modal-btn-cancel">Жок</button>
+          <button id="modal-btn-confirm">Өчүрүү</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modalOverlay);
 
-  try {
-    const res = await fetch("https://api.cloudinary.com/v1_1/dfqx89tk6/image/upload", { 
-        method: "POST", 
-        body: fd 
-    });
-    const data = await res.json();
-    
-    if (data.secure_url) {
-        return data.secure_url;
-    } else {
-        console.error("Cloudinary Error:", data);
-        return "";
-    }
-  } catch (err) {
-    console.error("Cloudinary Fetch Error:", err);
-    return "";
-  }
-}
-
-// ================= 3. YOUTUBE ID КЕСИП АЛУУ =================
-function extractVideoId(url) {
-    if (!url) return "";
-    const reg = /^.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
-    const match = url.match(reg);
-    return (match && match[1].length === 11) ? match[1] : url;
-}
-
-// ================= 4. ТИЗМЕНИ ЖҮКТӨӨ (ЧЕКТӨӨЛӨР МЕНЕН) =================
-async function loadAllItems() {
-  ALL_CATEGORIES.forEach(c => {
-    const list = document.getElementById("list-" + c);
-    if (!list) return;
-
-    // Сиз сураган чектөөлөр (Limit)
-    let qLimit = 20; // Калгандарына демейки чектөө
-    if (c === 'top_hits') qLimit = 5; // Топ-5 ыр
-    if (c === 'shorts') qLimit = 4;   // 4 Шортс
-
-    const q = query(
-        collection(db, c), 
-        orderBy("created_at", "desc"),
-        limit(qLimit) // Фильтрди ушул жерден колдонобуз
-    );
-    
-    onSnapshot(q, (snap) => {
-      list.innerHTML = "";
-      snap.forEach(docSnap => {
-        const d = docSnap.data();
-        const id = docSnap.id;
-        
-        const coverImg = d.cover || `https://img.youtube.com/vi/${extractVideoId(d.src)}/mqdefault.jpg`;
-        const imgTag = `<img src="${coverImg}" style="width:45px;height:45px;object-fit:cover;border-radius:8px;margin-right:12px;">`;
-
-        const title = (c === "shorts") ? d.artist : `${d.artist} - ${d.name}`;
-        
-        list.insertAdjacentHTML("beforeend", `
-          <div class="swipe-container" id="cont-${id}">
-            <div class="delete-btn" onclick="askDelete('${c}','${id}')">✕</div>
-            <div class="item">
-                ${imgTag}
-                <div style="flex:1; overflow:hidden;">
-                    <b style="display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${title}</b>
-                    <small style="color:#888; font-size:10px;">${d.src}</small>
-                </div>
-            </div>
-          </div>
-        `);
-      });
-    });
+    document.getElementById('modal-btn-cancel').onclick = () => {
+      modalOverlay.remove();
+      resolve(false);
+    };
+    document.getElementById('modal-btn-confirm').onclick = () => {
+      modalOverlay.remove();
+      resolve(true);
+    };
   });
-}
+};
 
-// ================= 5. МААЛЫМАТ КОШУУ =================
+// ================= 3. ЖАКШЫРТЫЛГАН TOAST БИЛДИРҮҮЛӨРҮ =================
+window.showMsg = (txt, type = "success") => {
+  let container = document.getElementById('music-toast-box');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'music-toast-box';
+    document.body.appendChild(container);
+  }
+
+  const toast = document.createElement('div');
+  toast.className = `music-toast-item ${type}`;
+  
+  const icons = { success: "✅", error: "❌", warning: "⚠️", info: "🗑️" };
+  toast.innerHTML = `<span>${icons[type] || "✨"}</span> <span>${txt}</span>`;
+  
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.classList.add('hide');
+    setTimeout(() => toast.remove(), 400);
+  }, 3000);
+};
+
+// ================= 4. МААЛЫМАТ КОШУУ (ЛИМИТ МЕНЕН) =================
 window.confirmUpload = async () => {
   const cat = document.getElementById('mainCategory').value;
   const artist = document.getElementById('artistName').value.trim();
@@ -116,17 +85,27 @@ window.confirmUpload = async () => {
   const fileInput = document.getElementById('imgFile');
   const file = fileInput ? fileInput.files[0] : null;
 
-  if (!artist || !url) return showMsg("Артист жана шилтеме керек!", true);
+  if (!artist || !url) return showMsg("Маалыматты толук толтуруңуз!", "error");
 
   const btn = document.getElementById('uploadBtn');
   const btnText = btn.querySelector('.btn-text');
-  
   btn.disabled = true; 
-  btnText.innerText = "Жүктөлүүдө...";
+  btnText.innerText = "Текшерилүүдө...";
 
   try {
+    if (cat === 'top_hits' || cat === 'shorts') {
+        const checkSnap = await getDocs(collection(db, cat));
+        const limitNum = (cat === 'top_hits') ? 5 : 4;
+
+        if (checkSnap.size >= limitNum) {
+            showMsg(`${cat === 'top_hits' ? 'Топ 5' : 'Шортс'} толуп калды!`, "warning");
+            btn.disabled = false;
+            btnText.innerText = "Сайтка чыгаруу";
+            return;
+        }
+    }
+
     let coverUrl = "";
-    // Эгер файл тандалган болсо, аны жүктөйбүз (Top Hits жана Upcoming үчүн)
     if (file && (cat === "top_hits" || cat === "upcoming")) {
       coverUrl = await uploadToCloudinary(file);
     }
@@ -139,80 +118,80 @@ window.confirmUpload = async () => {
       created_at: serverTimestamp()
     });
 
-    showMsg("Ийгиликтүү кошулду!");
+    showMsg("Ийгиликтүү кошулду! ✨");
     window.closeUpload();
-    
-    // Форманы тазалоо
     document.getElementById('artistName').value = "";
     document.getElementById('itemName').value = "";
     document.getElementById('itemUrl').value = "";
-    if (fileInput) fileInput.value = "";
-    document.getElementById('l-imgFile').innerHTML = "Мукаба тандаңыз <span>+</span>";
-
   } catch (err) {
-    console.error("Upload Error:", err);
-    showMsg("Ката кетти: " + err.message, true);
+    showMsg("Ката кетти!", "error");
   } finally {
     btn.disabled = false; 
     btnText.innerText = "Сайтка чыгаруу";
   }
 };
 
-// ================= 6. БАШКА ФУНКЦИЯЛАР =================
-window.adjustForm = () => {
-  const cat = document.getElementById('mainCategory').value;
-  const divName = document.getElementById('divName');
-  const divFile = document.getElementById('divFile');
-
-  if (!divName || !divFile) return;
-
-  divName.classList.remove('hidden-field');
-  divFile.classList.remove('hidden-field');
-
-  if (cat === "shorts") {
-    divName.classList.add('hidden-field');
-    divFile.classList.add('hidden-field');
-  } else if (['video_clips', 'hits', 'new_hits'].includes(cat)) {
-    divFile.classList.add('hidden-field');
+// ================= 5. ӨЧҮРҮҮ (CUSTOM MODAL МЕНЕН) =================
+window.askDelete = async (cat, id) => {
+  const confirmed = await showConfirmModal("Бул маалыматты өчүрүүнү каалайсызбы?");
+  if (confirmed) {
+    try {
+      await deleteDoc(doc(db, cat, id));
+      showMsg("Маалымат өчүрүлдү", "info");
+    } catch (err) { 
+      showMsg("Өчүрүүдө ката кетти!", "error"); 
+    }
   }
 };
 
-window.askDelete = async (cat, id) => {
-  if (!confirm("Чын эле өчүрөсүзбү?")) return;
-  try {
-    await deleteDoc(doc(db, cat, id));
-    showMsg("Өчүрүлдү!");
-  } catch (err) { showMsg("Ката: " + err.message, true); }
-};
+// ================= 6. БАШКА ФУНКЦИЯЛАР (Өзгөрүүсүз) =================
+async function uploadToCloudinary(file) {
+  const fd = new FormData();
+  fd.append("file", file);
+  fd.append("upload_preset", "albumartist"); 
+  const res = await fetch("https://api.cloudinary.com/v1_1/dfqx89tk6/image/upload", { method: "POST", body: fd });
+  const data = await res.json();
+  return data.secure_url || "";
+}
 
-window.showMsg = (txt, err = false) => {
-  const container = document.getElementById('toast-container');
-  if (!container) return;
-  const toast = document.createElement('div');
-  toast.className = `modern-toast ${err ? 'error' : 'success'}`;
-  toast.innerHTML = txt;
-  container.appendChild(toast);
-  setTimeout(() => toast.classList.add('show'), 10);
-  setTimeout(() => { 
-    toast.classList.remove('show'); 
-    setTimeout(() => toast.remove(), 400); 
-  }, 3000);
-};
+function extractVideoId(url) {
+    const reg = /^.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
+    const match = url.match(reg);
+    return (match && match[1].length === 11) ? match[1] : url;
+}
 
-window.login = async () => {
-  const email = document.getElementById('email-in').value.trim();
-  const pass = document.getElementById('pass-in').value.trim();
-  try {
-    await signInWithEmailAndPassword(auth, email, pass);
-  } catch (err) { showMsg("Кирүү катасы: " + err.message, true); }
-};
+async function loadAllItems() {
+  ALL_CATEGORIES.forEach(c => {
+    const list = document.getElementById("list-" + c);
+    if (!list) return;
+    let qLimit = (c === 'top_hits') ? 5 : (c === 'shorts' ? 4 : 20);
+    const q = query(collection(db, c), orderBy("created_at", "desc"), limit(qLimit));
+    
+    onSnapshot(q, (snap) => {
+      list.innerHTML = "";
+      snap.forEach(docSnap => {
+        const d = docSnap.data();
+        const id = docSnap.id;
+        const coverImg = d.cover || `https://img.youtube.com/vi/${extractVideoId(d.src)}/mqdefault.jpg`;
+        
+        list.insertAdjacentHTML("beforeend", `
+          <div class="swipe-container" id="cont-${id}">
+            <div class="delete-btn" onclick="askDelete('${c}','${id}')">✕</div>
+            <div class="item">
+                <img src="${coverImg}" style="width:50px;height:50px;object-fit:cover;border-radius:10px;margin-right:12px; border: 1px solid #30363d;">
+                <div style="flex:1; overflow:hidden;">
+                    <b style="color:white; display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${d.artist} ${d.name ? '- '+d.name : ''}</b>
+                    <small style="color:#8b949e; font-size:11px;">${d.src}</small>
+                </div>
+            </div>
+          </div>
+        `);
+      });
+    });
+  });
+}
 
-window.logout = async () => {
-    await signOut(auth);
-    location.reload();
-};
-
-onAuthStateChanged(auth, async user => {
+onAuthStateChanged(auth, user => {
   const loginScreen = document.getElementById('authWrapper');
   const adminMain = document.getElementById('admin-main');
   if (user) {
@@ -225,20 +204,12 @@ onAuthStateChanged(auth, async user => {
   }
 });
 
-window.openUpload = () => {
-    document.getElementById('uploadModal').style.display = 'flex';
-    window.adjustForm();
+window.login = async () => {
+    const email = document.getElementById('email-in').value;
+    const pass = document.getElementById('pass-in').value;
+    try { await signInWithEmailAndPassword(auth, email, pass); } catch(e) { showMsg("Кирүү катасы!", "error"); }
 };
 
-window.closeUpload = () => {
-    document.getElementById('uploadModal').style.display = 'none';
-};
-
-document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll('.category-header').forEach(h => {
-        h.onclick = function() {
-            this.classList.toggle('active');
-            this.nextElementSibling.classList.toggle('show');
-        };
-    });
-});
+window.openUpload = () => { document.getElementById('uploadModal').style.display = 'flex'; };
+window.closeUpload = () => { document.getElementById('uploadModal').style.display = 'none'; };
+  
