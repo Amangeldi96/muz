@@ -134,7 +134,7 @@ body.menu-open .menu-btn span:nth-child(3) {
 
   /* --- PC (DESKTOP) VERSION STYLES --- */
 
-@media (min-width: 720px) {
+@media (min-width: 900px) {
 
     /* 1. Меню баскычын өчүрүү */
     .menu-btn {
