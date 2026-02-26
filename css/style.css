@@ -1,3 +1,9 @@
+*{
+    -webkit-user-select: none; 
+  -moz-user-select: none;    
+  -ms-user-select: none;     
+  user-select: none;         
+}
 :root {
     --gold: #b6944c;
     --bg-body: #0d0e12;
@@ -88,12 +94,9 @@ header {
     transition: all 0.4s ease;
 }
 
-/* Үч сызык */
 .menu-btn span:nth-child(1) { top: 0; }
 .menu-btn span:nth-child(2) { top: 9px; }
 .menu-btn span:nth-child(3) { bottom: 0; }
-
-/* ===== MENU OPEN → ЖЕБЕ ===== */
 
 body.menu-open .menu-btn span:nth-child(1) {
     top: 9px;
@@ -114,50 +117,15 @@ body.menu-open .menu-btn span:nth-child(3) {
 
 .logo-text { font-size: 22px; font-weight: 900; color: var(--gold); }
 
-/* --- THEME TOGGLE (Сиздин стилге туураланган) --- */
+/* --- THEME TOGGLE (Эски блок жашырылды) --- */
 .theme-toggle { position: relative; cursor: pointer; }
-.theme-options {
-    position: absolute; top: 45px; right: 0;
-    background: var(--bg-container);
-    border: 1px solid var(--gold);
-    border-radius: 12px; padding: 10px;
-    display: grid; grid-template-columns: repeat(3, 30px); gap: 10px;
-    visibility: hidden; opacity: 0; transform: translateY(-10px);
-    transition: 0.3s;
-}
-.theme-toggle.open .theme-options { visibility: visible; opacity: 1; transform: translateY(0); }
-.theme-option { width: 30px; height: 30px; border-radius: 50%; border: 2px solid rgba(0,0,0,0.1); }
-
-
-
-
+.theme-options { display: none !important; } /* Жаңы настройка үчүн эскисин өчүрдүк */
 
 /* --- PC (DESKTOP) VERSION STYLES --- */
-
 @media (min-width: 720px) {
-
-    /* 1. Меню баскычын өчүрүү */
-    .menu-btn {
-        display: none !important;
-    }
-
-    /* 2. Контейнер */
-    #main-container {
-        display: flex;
-        flex-direction: column;
-    }
-
-    header {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        width: 100%;
-        padding: 0 30px;
-        height: 80px;
-        position: relative;
-    }
-
-    /* 3. Менюну header ичине ортого жайгаштыруу */
+    .menu-btn { display: none !important; }
+    #main-container { display: flex; flex-direction: column; }
+    header { display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100%; padding: 0 30px; height: 80px; position: relative; }
     .side-menu {
         position: absolute !important;
         top: 0 !important;
@@ -172,20 +140,9 @@ body.menu-open .menu-btn span:nth-child(3) {
         border: none !important;
         z-index: 1000;
     }
-
-    /* 4. Горизонталдык меню */
-    .menu-items {
-        display: flex !important;
-        flex-direction: row !important;
-        gap: 30px;
-        padding: 0;
-        margin: 0;
-        list-style: none;
-    }
-
-    /* 5. Меню пункттары */
+    .menu-items { display: flex !important; flex-direction: row !important; gap: 30px; padding: 0; margin: 0; list-style: none; }
     .menu-items li {
-        position: relative; /* underline үчүн маанилүү */
+        position: relative;
         opacity: 1 !important;
         transform: none !important;
         font-size: 14px;
@@ -196,331 +153,220 @@ body.menu-open .menu-btn span:nth-child(3) {
         padding: 6px 0 !important;
         transition: color 0.3s ease;
     }
-
-    /* Hover текст */
-    .menu-items li:hover {
-        color: var(--accent);
-    }
-
-    /* Астыңкы сызык */
+    .menu-items li:hover { color: var(--gold); }
     .menu-items li::after {
         content: '';
         position: absolute;
-        left: 0;
-        bottom: -4px;
-        width: 0;
-        height: 2px;
-        background: var(--accent);
+        left: 0; bottom: -4px;
+        width: 0; height: 2px;
+        background: var(--gold);
         transition: width 0.3s ease;
         border-radius: 2px;
     }
-
-    /* Hover болгондо сызык жайылат */
-    .menu-items li:hover::after {
-        width: 100%;
-    }
-
-    /* ПК-да контент жылбайт */
-    body.menu-open #main-container {
-        transform: none !important;
-    }
-}    top: 0; left: 0;
-    width: 280px; height: 100vh;
-    background: var(--bg-body);
-    z-index: 1;
-    padding: 100px 40px;
-    border-right: 1px solid var(--border);
+    .menu-items li:hover::after { width: 100%; }
+    body.menu-open #main-container { transform: none !important; }
 }
 
-.menu-items { list-style: none; }
-.menu-items li {
-    padding: 15px 0;
-    font-size: 1.2rem;
+/* ============================================================
+   КОМПАКТТУУ НАСТРОЙКА МОДАЛЫ (ЖАҢЫЛАНДЫ)
+   ============================================================ */
+
+.settings-modal {
+    position: fixed; 
+    top: 75px; /* Бир аз өйдө жылдырылды */
+    right: 15px; 
+    width: 240px; /* Кенендиги кичирейтилди (280px эле) */
+    background: var(--bg-container);
+    border-radius: 16px; /* Радиусу кичирээк */
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4); 
+    padding: 15px; /* Ички боштуктар азайтылды */
+    z-index: 5000;
+    transform: translateY(-10px) scale(0.98); 
+    opacity: 0; 
+    pointer-events: none;
+    transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.settings-modal.active { 
+    transform: translateY(0) scale(1); 
+    opacity: 1; 
+    pointer-events: all; 
+}
+
+.modal-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 12px; 
+}
+
+.modal-header b { 
+    font-size: 14px; /* Текст кичирейди */
+    color: var(--gold); 
+    text-transform: uppercase; 
+    letter-spacing: 0.5px;
+}
+
+.close-x { 
+    cursor: pointer; 
+    color: var(--text-main); 
+    background: rgba(182,148,76,0.1); 
+    border-radius: 50%; 
+    width: 26px; /* Кнопка кичирейди */
+    height: 26px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 12px;
+}
+
+/* Тема тандоо бөлүмү */
+.theme-scroll { 
+    display: flex; 
+    overflow-x: auto; 
+    gap: 10px; 
+    padding: 5px 0; 
+    scrollbar-width: none; 
+}
+
+.t-circle { 
+    min-width: 36px; /* Тегерекчелер кичирейди (45px эле) */
+    height: 36px; 
+    border-radius: 50%; 
+    border: 2px solid var(--border); 
+    cursor: pointer; 
+    transition: 0.2s; 
+}
+
+.t-circle:hover { 
+    transform: scale(1.1); 
+    border-color: var(--gold); 
+}
+
+/* Күйгүзүүчү (Switch) саптары */
+.switch-row { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-top: 12px; 
+    border-top: 1px solid var(--border); 
+    padding-top: 10px; 
+}
+
+.switch-row span {
+    font-size: 13px; /* Тексттин өлчөмү */
+    color: var(--text-main);
+}
+
+.switch { 
+    width: 40px; /* Switch өзү да кичирейди */
+    height: 20px; 
+    background: #333; 
+    border-radius: 20px; 
+    position: relative; 
+    cursor: pointer; 
+    transition: 0.3s;
+}
+
+.switch::after { 
+    content: ''; 
+    position: absolute; 
+    top: 2px; 
+    left: 2px; 
+    width: 16px; 
+    height: 16px; 
+    background: #fff; 
+    border-radius: 50%; 
+    transition: 0.3s; 
+}
+
+.switch.on { background: var(--gold); }
+.switch.on::after { left: 22px; }
+
+
+/* ============================================================
+   ПЛЕЙБАРДЫН СТИЛИ (ТЕМАЛАРГА ТОЛУК БАЙЛАНГАН ВЕРСИЯ)
+   ============================================================ */
+
+.player-bar {
+    position: fixed; 
+    bottom: 0; 
+    left: 0; 
+    width: 100%;
+    /* Тексттин жана фонунун түсү темага жараша өзгөрөт */
+    background: var(--bg-container) !important; 
+    border-top: 1px solid var(--border) !important;
+    padding: 15px 20px calc(15px + env(safe-area-inset-bottom));
+    backdrop-filter: blur(20px); 
+    z-index: 4000; 
+    display: none;
+}
+
+.p-wrapper { 
+    height: 4px; 
+    /* Сызыктын фону теманын чек ара түсүнө жараша өзгөрөт */
+    background: var(--border) !important; 
+    border-radius: 10px; 
+    margin-bottom: 15px; 
+    position: relative; 
+    cursor: pointer; 
+}
+
+/* Прогресс толтуруу - Темадагы негизги түскө (акцентке) боёлот */
+.p-fill { 
+    height: 100%; 
+    /* Түс автоматтык түрдө жашыл темада жашыл, алтында алтын болот */
+    background: var(--accent, var(--gold)) !important; 
+    border-radius: 10px; 
+    width: 0%; 
+}
+
+/* Прогресс кармагычы (шарик) */
+.p-handle { 
+    position: absolute; 
+    top: 50%; 
+    left: 0%; 
+    width: 14px; 
+    height: 14px; 
+    /* Шарик темадагы тексттин түсүндө (кара же ак) болот */
+    background: var(--text-main) !important; 
+    border: 2px solid var(--accent, var(--gold)) !important;
+    border-radius: 50%; 
+    transform: translate(-50%, -50%); 
+    box-shadow: 0 0 10px rgba(0,0,0,0.5); 
+}
+
+.p-content { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+/* Негизги Play/Pause кнопкасы */
+#mainPlayBtn { 
+    width: 48px; 
+    height: 48px; 
+    /* Кнопканын түсү темага жараша жашыл же алтынга өтөт */
+    background: var(--accent, var(--gold)) !important; 
+    border: none; 
+    border-radius: 50%; 
+    color: #ffffff !important; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    cursor: pointer; 
+    position: relative;
+}
+
+/* Плейбар ичиндеги тексттердин түсү */
+#pTitle { 
+    color: var(--text-main) !important; 
     font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-    border-bottom: 1px solid var(--border);
-    opacity: 0;
-    transform: translateX(-20px);
+}
+#pArtist { 
+    color: var(--text-main) !important; 
+    opacity: 0.7; 
 }
 
-body.menu-open .menu-items li {
-    opacity: 1;
-    transform: translateX(0);
-    transition-delay: calc(0.1s * var(--i));
-}
-
-.menu-items li:hover { color: var(--gold); padding-left: 10px; }
-
-/* --- MAIN CONTAINER --- */
-#main-container {
-    position: relative;
-    background: var(--bg-container);
-    min-height: 100vh;
-    z-index: 10;
-    transition: 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
-    box-shadow: 0 0 50px rgba(0,0,0,0.3);
-}
-
-body.menu-open #main-container {
-    transform: translateX(280px);
-}
-
-/* --- HEADER & MENU BUTTON --- */
-header {
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 30px;
-}
-
-.menu-btn {
-    width: 30px;
-    height: 22px;
-    position: relative;
-    cursor: pointer;
-}
-
-.menu-btn span {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: #00f2ff;
-    border-radius: 3px;
-    transition: all 0.4s ease;
-}
-
-/* Үч сызык */
-.menu-btn span:nth-child(1) { top: 0; }
-.menu-btn span:nth-child(2) { top: 9px; }
-.menu-btn span:nth-child(3) { bottom: 0; }
-
-/* ===== MENU OPEN → ЖЕБЕ ===== */
-
-body.menu-open .menu-btn span:nth-child(1) {
-    top: 9px;
-    transform: rotate(-45deg);
-    width: 70%;
-}
-
-body.menu-open .menu-btn span:nth-child(2) {
-    opacity: 0;
-    transform: translateX(10px);
-}
-
-body.menu-open .menu-btn span:nth-child(3) {
-    bottom: 10px;
-    transform: rotate(45deg);
-    width: 70%;
-}
-
-.logo-text { font-size: 22px; font-weight: 900; color: var(--gold); }
-
-/* --- THEME TOGGLE (Сиздин стилге туураланган) --- */
-.theme-toggle { position: relative; cursor: pointer; }
-.theme-options {
-    position: absolute; top: 45px; right: 0;
-    background: var(--bg-container);
-    border: 1px solid var(--gold);
-    border-radius: 12px; padding: 10px;
-    display: grid; grid-template-columns: repeat(3, 30px); gap: 10px;
-    visibility: hidden; opacity: 0; transform: translateY(-10px);
-    transition: 0.3s;
-}
-.theme-toggle.open .theme-options { visibility: visible; opacity: 1; transform: translateY(0); }
-.theme-option { width: 30px; height: 30px; border-radius: 50%; border: 2px solid rgba(0,0,0,0.1); }
-
-
-
-
-
-  /* --- PC (DESKTOP) VERSION STYLES --- */
-
-@media (min-width: 900px) {
-
-    /* 1. Меню баскычын өчүрүү */
-    .menu-btn {
-        display: none !important;
-    }
-
-    /* 2. Контейнер */
-    #main-container {
-        display: flex;
-        flex-direction: column;
-    }
-
-    header {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        width: 100%;
-        padding: 0 30px;
-        height: 80px;
-        position: relative;
-    }
-
-    /* 3. Менюну header ичине ортого жайгаштыруу */
-    .side-menu {
-        position: absolute !important;
-        top: 0 !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        height: 80px !important;
-        width: auto !important;
-        background: transparent !important;
-        display: flex !important;
-        align-items: center !important;
-        padding: 0 !important;
-        border: none !important;
-        z-index: 1000;
-    }
-
-    /* 4. Горизонталдык меню */
-    .menu-items {
-        display: flex !important;
-        flex-direction: row !important;
-        gap: 30px;
-        padding: 0;
-        margin: 0;
-        list-style: none;
-    }
-
-    /* 5. Меню пункттары */
-    .menu-items li {
-        position: relative; /* underline үчүн маанилүү */
-        opacity: 1 !important;
-        transform: none !important;
-        font-size: 14px;
-        color: var(--text-main);
-        white-space: nowrap;
-        cursor: pointer;
-        border: none !important;
-        padding: 6px 0 !important;
-        transition: color 0.3s ease;
-    }
-
-    /* Hover текст */
-    .menu-items li:hover {
-        color: var(--accent);
-    }
-
-    /* Астыңкы сызык */
-    .menu-items li::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: -4px;
-        width: 0;
-        height: 2px;
-        background: var(--accent);
-        transition: width 0.3s ease;
-        border-radius: 2px;
-    }
-
-    /* Hover болгондо сызык жайылат */
-    .menu-items li:hover::after {
-        width: 100%;
-    }
-
-    /* ПК-да контент жылбайт */
-    body.menu-open #main-container {
-        transform: none !important;
-    transition: 0.3s;
-    border-bottom: 1px solid var(--border);
-    opacity: 0;
-    transform: translateX(-20px);
-}
-
-body.menu-open .menu-items li {
-    opacity: 1;
-    transform: translateX(0);
-    transition-delay: calc(0.1s * var(--i));
-}
-
-.menu-items li:hover { color: var(--gold); padding-left: 10px; }
-
-/* --- MAIN CONTAINER --- */
-#main-container {
-    position: relative;
-    background: var(--bg-container);
-    min-height: 100vh;
-    z-index: 10;
-    transition: 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
-    box-shadow: 0 0 50px rgba(0,0,0,0.3);
-}
-
-body.menu-open #main-container {
-    transform: translateX(280px);
-}
-
-/* --- HEADER & MENU BUTTON --- */
-header {
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 30px;
-}
-
-.menu-btn {
-    width: 30px;
-    height: 22px;
-    position: relative;
-    cursor: pointer;
-}
-
-.menu-btn span {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: #00f2ff;
-    border-radius: 3px;
-    transition: all 0.4s ease;
-}
-
-/* Үч сызык */
-.menu-btn span:nth-child(1) { top: 0; }
-.menu-btn span:nth-child(2) { top: 9px; }
-.menu-btn span:nth-child(3) { bottom: 0; }
-
-/* ===== MENU OPEN → ЖЕБЕ ===== */
-
-body.menu-open .menu-btn span:nth-child(1) {
-    top: 9px;
-    transform: rotate(-45deg);
-    width: 70%;
-}
-
-body.menu-open .menu-btn span:nth-child(2) {
-    opacity: 0;
-    transform: translateX(10px);
-}
-
-body.menu-open .menu-btn span:nth-child(3) {
-    bottom: 10px;
-    transform: rotate(45deg);
-    width: 70%;
-}
-
-.logo-text { font-size: 22px; font-weight: 900; color: var(--gold); }
-
-/* --- THEME TOGGLE (Сиздин стилге туураланган) --- */
-.theme-toggle { position: relative; cursor: pointer; }
-.theme-options {
-    position: absolute; top: 45px; right: 0;
-    background: var(--bg-container);
-    border: 1px solid var(--gold);
-    border-radius: 12px; padding: 10px;
-    display: grid; grid-template-columns: repeat(3, 30px); gap: 10px;
-    visibility: hidden; opacity: 0; transform: translateY(-10px);
-    transition: 0.3s;
-}
-.theme-toggle.open .theme-options { visibility: visible; opacity: 1; transform: translateY(0); }
-.theme-option { width: 30px; height: 30px; border-radius: 50%; border: 2px solid rgba(0,0,0,0.1); }
-
-
-
-/*===========THEMES========*/
+        
