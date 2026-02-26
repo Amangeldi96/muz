@@ -1,16 +1,10 @@
   body {
     width: 100%;
-    max-width: 1350px; /* Сайттын эң чоң кенендиги */
+    max-width: 1250px; /* Сайттын эң чоң кенендиги */
     margin: 0 auto;    /* Баарын ортого жыйнайт */
     display: flex;
     flex-direction: column;
-
-  -webkit-user-select: none; /* Safari, Chrome, Opera, Edge */
-  -moz-user-select: none;    /* Firefox */
-  -ms-user-select: none;     /* Internet Explorer/Edge */
-  user-select: none;         /* Стандартное свойство */
 }
-
 
 
 /* CONTENT STYLES (Сиздин стилдер өзгөрүүсүз) */
@@ -362,18 +356,39 @@ svg{
 }
 
 .star {
-    font-size: 18px; /* Жылдыздын өлчөмү чоңойду */
+    font-size: 18px; 
     color: var(--text-sub);
     opacity: 0.2;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
+/* 1. Учурдагы активдүү (басылган) жылдыз */
 .star.active {
     color: var(--accent) !important;
     opacity: 1;
     transform: scale(1.1);
-    text-shadow: 0 0 10px var(--accent-dim); /* Жаркыроо эффекти */
+    text-shadow: 0 0 10px var(--accent-dim);
+}
+
+/* 2. HOVER ЭФФЕКТИ (Оңдолду) */
+/* Чычканды үстүнө алып барганда өзү жана ага чейинкилердин баары жанат */
+.stars:hover .star {
+    opacity: 0.5; /* Башкалары бир аз көрүнүп турат */
+    color: var(--accent);
+}
+
+.star:hover,
+.star:hover ~ .star {
+    /* Бул жерде логика: hover болгондо кийинкилерин өчүрүү үчүн тескери иштейт, 
+       ошондуктан биз көбүнчө JS же жөнөкөй hover колдонобуз */
+}
+
+/* Эң жөнөкөй жана ишенимдүү hover: */
+.star:hover {
+    opacity: 1 !important;
+    transform: scale(1.2);
+    color: var(--accent) !important;
 }
 
 /* Рейтингдин саны */
@@ -385,9 +400,4 @@ svg{
     padding: 3px 8px;
     border-radius: 8px;
     border: 1px solid var(--border);
-}
-
-
-
-
-            
+          }
