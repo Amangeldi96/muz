@@ -6,6 +6,20 @@
     --border: rgba(182, 148, 76, 0.2);
 }
 
+/* Бүткүл сайтта текстти, сүрөттү жана видеону белгилөөнү өчүрүү */
+body {
+    -webkit-user-select: none;  /* Safari үчүн */
+    -moz-user-select: none;     /* Firefox үчүн */
+    -ms-user-select: none;      /* Internet Explorer/Edge үчүн */
+    user-select: none;          /* Стандарттык (Chrome, Opera ж.б.) */
+}
+
+/* Сүрөттөрдү жана видеолорду сүйрөп кетүүнү (drag and drop) өчүрүү */
+img, video {
+    -webkit-user-drag: none;
+    user-drag: none;
+}
+
 /* Темалар */
 body.light { --bg-body: #f5f7fa; --bg-container: #ffffff; --text-main: #232323; --border: #e5e7eb; }
 body.dark { --bg-body: #0d0e12; --bg-container: #14171f; --text-main: #f5f5f5; }
