@@ -174,21 +174,22 @@
 
     /* 2. Сол жак — Плеер (10px отступ менен) */
     .player-card {
-        width: 100%;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        background: transparent;
-        /* Төмөндөгү padding сол жагынан 10px боштук берет */
-        padding: 10px 0 10px 10px; 
-        box-sizing: border-box;
-    }
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    padding: 10px; /* Бардык тарабынан тегиз боштук */
+    box-sizing: border-box;
+    align-items: center; /* Видеону туурасынан ортологонго жардам берет */
+}
 
     .v-container {
-        width: 100%;
+        width: 90%;
+        max-width: 1200px;
         aspect-ratio: 16 / 9;
         background: #000;
-        border-radius: 12px; /* Четтери жумшак */
+        border-radius: 12px; 
         overflow: hidden;
     }
 
@@ -200,6 +201,7 @@
 
     /* Видео астындагы маалымат панели */
     .v-controls {
+        width: 100%;
         flex: 1;
         margin-top: 10px;
         padding: 20px 30px;
@@ -257,5 +259,4 @@
     .scroll-box::-webkit-scrollbar {
         width: 0px;
     }
-    }
-    
+             }
