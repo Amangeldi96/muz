@@ -34,27 +34,20 @@
     const searchInput = document.getElementById('searchInput');
     const handle = document.querySelector('.p-handle');
 
-    // Спинер жана Жумшак жылдыруу стилдери ОПТИМИЗАЦИЯЛАНДЫ
     const style = document.createElement('style');
     style.innerHTML = `
-        @keyframes spin { 
-            from { transform: rotate(0deg); } 
-            to { transform: rotate(360deg); } 
-        }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .is-loading-circle {
             width: 24px; height: 24px;
             border: 3px solid rgba(255,255,255,0.2);
             border-top: 3px solid #fff;
             border-radius: 50%;
-            /* ПЛАВНОСТЬ: linear колдонуш керек жана GPU иштетиш керек */
             animation: spin 0.8s linear infinite;
             will-change: transform;
             transform: translateZ(0);
         }
         #pFill, .p-handle { transition: width 0.2s linear; }
         #pCont:active #pFill, #pCont:active .p-handle { transition: none !important; }
-        
-        /* Спинерди алдын ала даярдап, бирок жашырып коюу ыкмасы */
         .play-icon-circle, #mainPlayBtn { position: relative; }
         .loading-overlay {
             position: absolute;
@@ -66,21 +59,28 @@
     `;
     document.head.appendChild(style);
 
-    // ================= ИКОНКАЛАР (Спинер ичине салынды) =================
     const getPlayIcon = () => `<svg width="24" height="24" viewBox="-0.5 0 25 25" fill="none"><path d="M7.98047 3.51001C5.43047 4.39001 4.98047 9.09992 4.98047 12.4099C4.98047 15.7199 5.41047 20.4099 7.98047 21.3199C10.6905 22.2499 18.9805 16.1599 18.9805 12.4099C18.9805 8.65991 10.6905 2.58001 7.98047 3.51001Z" fill="#ffffff"></path></svg><div class="loading-overlay"><div class="is-loading-circle"></div></div>`;
     const getPauseIcon = () => `<svg width="24" height="24" viewBox="-0.5 0 25 25" fill="none"><path d="M10 6.42004C10 4.76319 8.65685 3.42004 7 3.42004C5.34315 3.42004 4 4.76319 4 6.42004V18.42C4 20.0769 5.34315 21.42 7 21.42C8.65685 21.42 10 20.0769 10 18.42V6.42004ZM20 6.42004C20 4.76319 18.6569 3.42004 17 3.42004C15.3431 3.42004 14 4.76319 14 6.42004V18.42C14 20.0769 15.3431 21.42 17 21.42C18.6569 21.42 20 20.0769 20 18.42V6.42004Z" fill="#ffffff"></path></svg><div class="loading-overlay"><div class="is-loading-circle"></div></div>`;
     const getNextIcon = () => `<svg width="24" height="24" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.98047 3.51001C1.43047 4.39001 0.980469 9.09992 0.980469 12.4099C0.980469 15.7199 1.41047 20.4099 3.98047 21.3199C6.69047 22.2499 14.9805 16.1599 14.9805 12.4099C14.9805 8.65991 6.69047 2.58001 3.98047 3.51001Z" fill="white"/><path d="M23 5.92004C23 4.53933 21.8807 3.42004 20.5 3.42004C19.1193 3.42004 18 4.53933 18 5.92004V18.92C18 20.3008 19.1193 21.42 20.5 21.42C21.8807 21.42 23 20.3008 23 18.92V5.92004Z" fill="white"/></svg>`;
     
-    // ================= 3. FIREBASE МААЛЫМАТТАРЫ (Өзгөртүүсүз) =================
+    // ================= 3. FIREBASE МААЛЫМАТТАРЫ (ЖАҢЫЛАНДЫ) =================
     function fetchSongsFromFirebase() {
         const { collection, query, orderBy, onSnapshot } = firebaseFirestore;
+        // Эки коллекцияны тең убакыт боюнча сорттоп алабыз
         const qNew = query(collection(db, "new_hits"), orderBy("created_at", "desc"));
         const qHits = query(collection(db, "hits"), orderBy("created_at", "desc"));
 
         let newHitsArr = [], hitsArr = [];
 
         const combine = () => {
-            currentSongsList = [...newHitsArr, ...hitsArr].map(item => ({
+            // Баарын бириктирип, кайрадан датасы боюнча сорттойбуз (эң жаңысы биринчи)
+            const allSongs = [...newHitsArr, ...hitsArr].sort((a, b) => {
+                const dateA = a.created_at?.seconds || 0;
+                const dateB = b.created_at?.seconds || 0;
+                return dateB - dateA; // Descending order
+            });
+
+            currentSongsList = allSongs.map(item => ({
                 artist: item.artist || "Белгисиз",
                 title: item.name || "Аталышы жок",
                 src: item.src
@@ -139,7 +139,6 @@
         }
     }
 
-    // ================= ПЕРЕМОТКА (YOUTUBE СТИЛИНДЕ) =================
     if(pCont){
         const getPercent = (e) => {
             const rect = pCont.getBoundingClientRect();
@@ -236,7 +235,6 @@
         window.togglePlay(allBtns[currentIndex], next.src, next.title, next.artist);
     };
 
-    // ================= 5. РЕНДЕР ЖАНА ИЗДӨӨ =================
     window.renderSongs = function(songsToDisplay){
         if(!listDiv) return;
         listDiv.innerHTML = "";
@@ -266,7 +264,6 @@
         });
     }
 
-    // ================= 6. БАШТОО ЖАНА БАСКЫЧТАР =================
     if(mainPlayBtn) {
         mainPlayBtn.innerHTML = getPlayIcon();
         mainPlayBtn.onclick = (e) => { e.preventDefault(); window.toggleMainPlay(); };
@@ -278,6 +275,5 @@
 
     initPlayer();
     fetchSongsFromFirebase();
-
 })();
     
