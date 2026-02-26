@@ -1,0 +1,262 @@
+/* ===================== БИРИКТИРИЛГЕН ЖАНА ОҢДОЛГОН СТИЛДЕР ===================== */
+:root { 
+    --ui-bg: var(--bg-card); 
+    --text-color: var(--text-main); 
+}
+
+/* Негизги корпус */
+.app-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Экрандын толук бийиктиги */
+    max-width: 850px;
+    margin: 0 auto;
+    background: var(--bg-main);
+    overflow: hidden; /* Сыртка чыккан нерселерди жашырат */
+}
+
+/* ПЛЕЙЕР КАРТАСЫ (Өйдө жакта катып турат) */
+.player-card {
+    flex-shrink: 0; /* Плеер кичирейип кетпеши керек */
+    width: 100%; 
+    background: #000; 
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* ВИДЕО КОНТЕЙНЕРИ */
+.v-container {
+    width: 100%; 
+    background: #000; 
+    position: relative;
+    aspect-ratio: 16 / 9;
+    cursor: pointer;
+}
+
+#ytPlayer {
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Интерфейс иштеши үчүн */
+}
+
+/* БАШКАРУУ ПАНЕЛИ */
+.v-controls {
+    padding: 12px 15px; 
+    background: var(--bg-card); 
+    transition: all 0.4s ease;
+}
+
+.controls-row { display: flex; align-items: center; gap: 15px; }
+
+/* Прогресс бар */
+.prog-area { flex-grow: 1; height: 25px; display: flex; align-items: center; cursor: pointer; }
+.prog-track { width: 100%; height: 6px; background: var(--progress-bg); border-radius: 10px; position: relative; }
+.prog-bar { height: 100%; width: 0%; background: var(--accent); border-radius: 10px; }
+
+/* Кнопкалар */
+.action-btn { background: none; border: none; cursor: pointer; display: flex; color: var(--text-main); }
+.action-btn svg { width: 30px; height: 30px; fill: currentColor; }
+
+/* СКРОЛЛ БОЛУУЧУ БӨЛҮК (Плейлист) */
+.scroll-box {
+    flex-grow: 1; /* Калган бош орундун баарын ээлейт */
+    overflow-y: auto; /* Түгөлөнбөс скролду иштетет */
+    padding: 15px;
+    -webkit-overflow-scrolling: touch; /* Мобилдикте жумшак скрол */
+}
+
+.video-playlist { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 12px; 
+    padding-bottom: 180px; /* Навигацияга тийбеш үчүн */
+}
+
+/* Плейлист элементтери */
+.playlist-item {
+    display: flex; 
+    align-items: center; 
+    background: var(--bg-card);
+    border: 1px solid var(--border); 
+    border-radius: 14px; 
+    padding: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.playlist-item.active { border-color: var(--accent); background: var(--accent-dim); }
+
+.pl-thumb {
+    width: 110px; height: 62px; border-radius: 10px; flex-shrink: 0; 
+    background-size: cover; background-position: center; position: relative;
+    overflow: hidden;
+}
+
+.pl-info { margin-left: 12px; overflow: hidden; }
+.pl-info b { font-size: 14px; color: var(--text-main); display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pl-info p { font-size: 12px; color: var(--text-sub); margin-top: 4px; }
+
+/* Фуллскрин режими */
+.player-card:fullscreen {
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center; /* Видеону тигинен ортого коёт */
+    align-items: center;     /* Видеону туурасынан ортого коёт */
+}
+
+.player-card:fullscreen .v-controls {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,0.7);
+}
+
+.ui-hidden .v-controls { opacity: 0; transform: translateY(10px); pointer-events: none; }
+.section-title {
+    display: flex;
+    align-items: center;
+    padding: 20px 15px 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--text-main);
+    text-transform: uppercase;
+}
+
+.section-title::before {
+    content: "";
+    display: inline-block;
+    width: 4px;
+    height: 20px;
+    background-color: var(--accent);
+    margin-right: 10px;
+    border-radius: 2px;
+}
+   .action-btn svg {
+        width: 26px;
+       height: 26px;
+   }
+
+        .full-btn svg {
+        width: 22px;
+            height: 22px;
+        }
+
+
+/* ===================== 
+   PC VERSION (DESKTOP)
+   ===================== */
+
+@media (min-width: 900px) {
+    /* 1. Экранды толук ээлөө жана ашыкча сызыктарды өчүрүү */
+    body, html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        overflow: hidden;
+        background: var(--bg-body);
+    }
+
+    #main-container, .app-layout {
+        max-width: 100% !important;
+        width: 100vw !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: grid !important;
+        /* Плейлисттин туурасын 410px кылдык (400px + 10px отступ үчүн) */
+        grid-template-columns: 1fr 410px; 
+        height: 100vh;
+        gap: 0 !important;
+        border: none !important;
+    }
+
+    /* 2. Сол жак — Плеер (10px отступ менен) */
+    .player-card {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    padding: 10px; /* Бардык тарабынан тегиз боштук */
+    box-sizing: border-box;
+    align-items: center; /* Видеону туурасынан ортологонго жардам берет */
+}
+
+    .v-container {
+        width: 90%;
+        max-width: 1200px;
+        aspect-ratio: 16 / 9;
+        background: #000;
+        border-radius: 12px; 
+        overflow: hidden;
+    }
+
+    #ytPlayer {
+        width: 100%;
+        height: 100%;
+        border: none !important;
+    }
+
+    /* Видео астындагы маалымат панели */
+    .v-controls {
+        width: 100%;
+        flex: 1;
+        margin-top: 10px;
+        padding: 20px 30px;
+        background: var(--bg-container);
+        border-radius: 12px;
+        overflow-y: auto;
+    }
+
+    /* 3. Оң жак — Плейлист (10px отступ менен) */
+    .scroll-box {
+        height: 100vh;
+        width: 400px; /* Плейлисттин таза туурасы */
+        overflow-y: auto;
+        background: var(--bg-container);
+        /* Плейлисттин оң жагынан 10px, калган жактарынан тиешелүү боштуктар */
+        margin: 10px 10px 10px 10px; 
+        border-radius: 12px;
+        padding: 15px;
+    }
+
+    .video-playlist {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    /* Плейлист элементтери */
+    .playlist-item {
+        display: grid;
+        grid-template-columns: 140px 1fr;
+        gap: 15px;
+        padding: 8px;
+        border-radius: 10px;
+        transition: 0.2s;
+    }
+
+    .playlist-item:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .pl-thumb {
+        width: 140px !important;
+        height: 80px !important;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    /* 4. Тазалоо (Сызыктарды өчүрүү) */
+    .player-card, .v-container, .v-controls, .scroll-box, .playlist-item {
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    /* Скроллбарды жашыруу */
+    .scroll-box::-webkit-scrollbar {
+        width: 0px;
+    }
+             }
