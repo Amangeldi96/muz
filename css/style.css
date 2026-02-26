@@ -175,7 +175,7 @@ body.menu-open .menu-btn span:nth-child(3) {
     position: fixed; 
     top: 75px; /* Бир аз өйдө жылдырылды */
     right: 15px; 
-    width: 240px; /* Кенендиги кичирейтилди (280px эле) */
+    width: 220px; /* Кенендиги кичирейтилди (280px эле) */
     background: var(--bg-container);
     border-radius: 16px; /* Радиусу кичирээк */
     border: 1px solid var(--border);
