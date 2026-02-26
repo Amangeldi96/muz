@@ -166,6 +166,8 @@ body.menu-open .menu-btn span:nth-child(3) {
     .menu-items li:hover::after { width: 100%; }
     body.menu-open #main-container { transform: none !important; }
 }
+
+
 /* ============================================================
    ОПТИМАЛДАШТЫРЫЛГАН НАСТРОЙКА (ПК ЖАНА ТЕЛЕФОН)
    ============================================================ */
@@ -174,7 +176,7 @@ body.menu-open .menu-btn span:nth-child(3) {
     position: fixed; 
     top: 75px; 
     right: 15px; 
-    width: 210px; /* Телефондо бир аз кенендик кошулду */
+    width: 210px; /* Телефондогу туурасы */
     background: var(--bg-container);
     border-radius: 16px; 
     border: 1px solid var(--border);
@@ -195,16 +197,44 @@ body.menu-open .menu-btn span:nth-child(3) {
     pointer-events: all; 
 }
 
-/* ПК үчүн атайын жөндөө */
+/* --- ТЕМАЛАР: ТЕЛЕФОНДО СКРОЛЛ БОЛОТ --- */
+.theme-scroll { 
+    display: flex; 
+    flex-wrap: nowrap; /* Бир катарда кармоо */
+    overflow-x: auto;  /* Телефондо скролл иштесин */
+    gap: 10px; 
+    padding: 8px 0; 
+    scrollbar-width: none; /* Firefox скроллду жашыруу */
+}
+
+.theme-scroll::-webkit-scrollbar {
+    display: none; /* Chrome/Safari скроллду жашыруу */
+}
+
+/* --- ПК ВЕРСИЯ ҮЧҮН (СКРОЛЛСУЗ) --- */
 @media (min-width: 1024px) {
     .settings-modal {
-        width: 250px; /* ПК версияда кенендик чоңойду, баары батат */
+        width: auto; /* ПКда ичиндеги элементтерге жараша кенендик алат */
+        min-width: 250px; 
+        max-width: 300px;
         right: 30px;
         padding: 18px;
     }
+
+    .theme-scroll { 
+        overflow: visible; /* ПКда скроллду такыр өчүрүү */
+        flex-wrap: nowrap; /* Катарды бузбоо */
+        justify-content: space-between; /* Элементтерди тегиз жайгаштыруу */
+    }
+
+    .t-circle {
+        width: 32px; /* ПКда баары батышы үчүн бир аз кичирейтилди */
+        height: 32px;
+        min-width: 32px;
+    }
 }
 
-/* --- Башкы бөлүк --- */
+/* --- КАЛГАН ЭЛЕМЕНТТЕР --- */
 .modal-header { 
     display: flex; 
     justify-content: space-between; 
@@ -232,32 +262,21 @@ body.menu-open .menu-btn span:nth-child(3) {
     font-size: 12px;
 }
 
-/* --- ТЕМАЛАРДЫ ТУУРА ЖАЙГАШТЫРУУ --- */
-.theme-scroll { 
-    display: flex; 
-    flex-wrap: wrap; /* Эгер батпай калса, кийинки сапка түшөт */
-    gap: 10px; /* Тегерекчелердин ортосундагы аралык */
-    padding: 5px 0; 
-    justify-content: flex-start; /* Сол жактан тизилет */
-}
-
 .t-circle { 
     width: 34px; 
     height: 34px; 
-    min-width: 34px; /* Өлчөмү өзгөрбөшү үчүн */
+    min-width: 34px; 
     border-radius: 50%; 
     border: 2px solid var(--border); 
     cursor: pointer; 
     transition: 0.2s; 
-    flex-shrink: 0; /* Кысылып кетүүдөн сактайт */
+    flex-shrink: 0; 
 }
 
 .t-circle:hover { 
     border-color: var(--gold);
-    transform: translateY(-2px); /* Жеңил көтөрүлүү */
 }
 
-/* --- Switch Саптары --- */
 .switch-row { 
     display: flex; 
     justify-content: space-between; 
@@ -270,10 +289,8 @@ body.menu-open .menu-btn span:nth-child(3) {
 .switch-row span {
     font-size: 13px;
     color: var(--text-main);
-    font-weight: 500;
 }
 
-/* --- Switch --- */
 .switch { 
     width: 40px; 
     height: 20px; 
@@ -298,7 +315,6 @@ body.menu-open .menu-btn span:nth-child(3) {
 
 .switch.on { background: var(--gold); }
 .switch.on::after { left: 22px; }
-
 
 /* ============================================================
    ПЛЕЙБАРДЫН СТИЛИ (ТЕМАЛАРГА ТОЛУК БАЙЛАНГАН ВЕРСИЯ)
