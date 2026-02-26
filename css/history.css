@@ -26,27 +26,47 @@
     transform: scale(0.92);
 }
 
-/* Тегерек алкак - Темага жараша өзгөрөт */
+/* 1. Стори тегереги - бул жерден анимацияны алып салабыз */
 .story-circle {
     width: 68px;
     height: 68px;
     border-radius: 50%;
     padding: 2.5px;
-    /* Теманын акцент түсү колдонулат */
-    background: linear-gradient(45deg, var(--accent), #fff, var(--accent));
+    /* Анимацияны бул жерге эмес, өзүнчө катмарга беребиз */
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 8px;
-    box-shadow: 0 4px 10px var(--shadow);
+    overflow: hidden; /* Четке чыккан градиентти кесип салат */
+    z-index: 1;
 }
 
+/* 2. Анимация үчүн атайын фон түзөбүз */
+.story-circle::before {
+    content: '';
+    position: absolute;
+    width: 150%; /* Тегеректен чоңураак кылабыз, ошондо сызык чыкпайт */
+    height: 150%;
+    background: conic-gradient(from 0deg, var(--accent), #fff, var(--accent));
+    animation: rotateGradient 4s linear infinite;
+    z-index: -1;
+}
+
+/* 3. Сүрөт эми айланбайт, ал жөн эле үстүндө турат */
 .story-circle img {
     width: 100%;
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid var(--bg-body); /* Фонго жараша бөлүнүп турат */
+    border: 2px solid var(--bg-body);
+    display: block;
+}
+
+/* 4. Анимация бир эле жолу жазылат */
+@keyframes rotateGradient {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 .story-item p {
@@ -64,15 +84,6 @@
 
 
 
-/* 1. Анимациянын кыймылын аныктайбыз */
-@keyframes rotateGradient {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
 
 /* 2. Сиздин .story-circle классыңызга анимацияны кошобуз */
 .story-circle {
