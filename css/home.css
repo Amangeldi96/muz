@@ -295,6 +295,35 @@ svg{
     transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
+/* Жылдызчага чычканды алып баргандагы эффект */
+.star:hover {
+    color: var(--accent) !important; /* Темаңыздын негизги түсү */
+    opacity: 0.9;
+    transform: scale(1.25); /* Бир аз чоңоюп, алдыга чыгат */
+    text-shadow: 0 0 12px var(--accent-dim); /* Жумшак неон жарыгы */
+    cursor: pointer;
+}
+
+/* Эгер бир эле учурда ошол жылдызга чейинкилердин баары күйүшүн кааласаңыз: */
+.stars:hover .star {
+    color: var(--accent);
+    opacity: 0.6;
+}
+
+.star:hover ~ .star {
+    color: var(--text-sub) !important; /* Чычкандан кийинкилерин өчүрүү */
+    opacity: 0.2 !important;
+    transform: scale(1);
+}
+
+/* Өтүүнү плавно (жумшак) кылуу үчүн баштапкы .star классын жаңыртыңыз */
+.star {
+    transition: 
+        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+        color 0.4s ease, 
+        text-shadow 0.4s ease, 
+        opacity 0.4s ease;
+}
 
 
 /* Артисттин аты */
