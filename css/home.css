@@ -51,7 +51,7 @@
 
         .block {
     flex: 0 0 clamp(160px, 18vw, 200px);
-    height: clamp(220px, 30vw, 260px);
+    height: clamp(240px, 30vw, 280px);
     background: #fff;
     border-radius: 12px;
     color: #333;
