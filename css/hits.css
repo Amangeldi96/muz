@@ -158,6 +158,60 @@
     fill: #fff !important;
 }
 
+/* 1. НЕГИЗГИ PLAY БАСКЫЧ (#mainPlayBtn) */
+#mainPlayBtn:hover {
+    transform: scale(1.08) translateY(-2px); /* Бир аз өйдө жана чоңоюп көтөрүлөт */
+    filter: brightness(1.1);
+    box-shadow: 0 8px 25px var(--accent-dim); /* Темага жараша күчтүүрөөк жаркыроо */
+}
+
+#mainPlayBtn:active {
+    transform: scale(0.95); /* Басканда кичирейет */
+}
+
+/* 2. ТИЗМЕДЕГИ PLAY БАСКЫЧТАР (.play-icon-circle) */
+.play-icon-circle {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.play-icon-circle:hover {
+    transform: scale(1.1);
+    background-color: var(--accent) !important;
+    box-shadow: 0 0 15px var(--accent-dim);
+}
+
+.play-icon-circle:hover svg {
+    transform: scale(1.1); /* Ичиндеги иконка да бир аз чоңоёт */
+}
+
+/* 3. КИЧИНЕКЕЙ БАШКАРУУ БАСКЫЧТАРЫ (.control-btn) */
+.control-btn {
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.control-btn:hover {
+    background: rgba(128, 128, 128, 0.2) !important; /* Фоно жумшак агарат */
+    transform: translateY(-1px);
+}
+
+.control-btn:hover svg {
+    fill: var(--accent) !important; /* Иконканын түсү темага жараша өзгөрөт */
+}
+
+/* 4. PROGRESS BAR HANDLE (Сыдырманын тегереги) */
+.p-handle {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.p-progress-container:hover .p-handle {
+    transform: translate(-50%, -50%) scale(1.4); /* Чычканды тилкеге алып барганда чоңоёт */
+    box-shadow: 0 0 10px var(--accent-dim);
+}
+
+
+
 /* КИЙИНКИ БАСКЫЧ */
 .control-btn {
     width: 44px !important;
