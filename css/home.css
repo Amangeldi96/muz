@@ -5,6 +5,13 @@
     display: flex;
     flex-direction: column;
 }
+.unselectable {
+  -webkit-user-select: none; /* Safari, Chrome, Opera, Edge */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* Internet Explorer/Edge */
+  user-select: none;         /* Стандартное свойство */
+}
+
 
 
 /* CONTENT STYLES (Сиздин стилдер өзгөрүүсүз) */
