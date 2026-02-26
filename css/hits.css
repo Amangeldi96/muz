@@ -117,6 +117,16 @@
     fill: #fff !important;
 }
 
+#nextBtn {
+    cursor: pointer;
+    background: var(--accent);
+}
+#nextBtn svg {
+    width: 28px !important;
+    height: 28px !important;
+    fill: #fff !important;
+}
+
 /* КИЙИНКИ БАСКЫЧ */
 .control-btn {
     width: 44px !important;
