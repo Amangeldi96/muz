@@ -168,27 +168,30 @@ body.menu-open .menu-btn span:nth-child(3) {
 }
 
 /* ============================================================
-   КОМПАКТТУУ НАСТРОЙКА МОДАЛЫ (ЖАҢЫЛАНДЫ)
+   ЖАҢЫЛАНГАН ЖАНА ТАЗАЛАНГАН КОМПАКТТУУ МОДАЛ (ПК + МОБИЛ)
    ============================================================ */
 
 .settings-modal {
     position: fixed; 
-    top: 80px; 
+    top: 85px; 
     right: 20px; 
-    width: 240px; /* ПК үчүн бир аз кенендик кошулду */
+    width: 230px; 
     background: var(--bg-container);
-    border-radius: 16px; 
+    border-radius: 20px; /* Дагы жумшак бурчтар */
     border: 1px solid var(--border);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.5); /* Көлөкөсү тереңирээк */
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4); 
     padding: 18px; 
     z-index: 5000;
-    backdrop-filter: blur(10px); /* ПКда айнек эффекти кооз көрүнөт */
     
-    /* Анимация эффектиси */
-    transform: translateY(-20px) scale(0.95); 
+    /* ПК үчүн заманбап "Айнек" эффекти */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    
+    /* Пайда болуу анимациясы */
+    transform: translateY(-15px) scale(0.95); 
     opacity: 0; 
     pointer-events: none;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); /* "Bouncy" эффекти */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .settings-modal.active { 
@@ -197,127 +200,106 @@ body.menu-open .menu-btn span:nth-child(3) {
     pointer-events: all; 
 }
 
-/* --- ПК версия үчүн атайын жөндөөлөр (Чоң экрандарга) --- */
+/* --- ПК ВЕРСИЯ ҮЧҮН (Чоң экрандарга) --- */
 @media (min-width: 1024px) {
     .settings-modal {
-        right: 40px; /* Оң жактан көбүрөөк боштук */
-        width: 260px; /* Модал бир аз чоңоёт */
-        border: 1px solid rgba(182, 148, 76, 0.3); /* Алтын түстүү чектин четтери */
+        right: 50px; /* Четтен көбүрөөк боштук */
+        width: 260px;
+        padding: 22px;
+        border-color: rgba(182, 148, 76, 0.2); /* Назик алтын жээк */
     }
 
-    .t-circle:hover { 
-        transform: scale(1.15) rotate(5deg); /* Чычканды алып баргандагы эффект */
-        box-shadow: 0 0 10px var(--gold);
-    }
+    /* Модалдын ичиндеги элементтерди ПКда чоңойтуу */
+    .modal-header b { font-size: 15px; }
+    .switch-row span { font-size: 14px; }
 }
 
-/* --- Switch анимациясын жакшыртуу --- */
-.switch { 
-    width: 44px; 
-    height: 22px; 
-    background: #444; 
-    border-radius: 22px; 
-    position: relative; 
-    cursor: pointer; 
-    transition: background 0.3s ease;
-    flex-shrink: 0; /* Кысылып кетпеши үчүн */
-}
-
-.switch::after { 
-    content: ''; 
-    position: absolute; 
-    top: 2px; 
-    left: 2px; 
-    width: 18px; 
-    height: 18px; 
-    background: #fff; 
-    border-radius: 50%; 
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    transition: 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28); 
-}
-
-.switch.on { background: var(--gold); }
-.switch.on::after { left: 24px; }
-
-/* Тексттин окулушу ПКда жакшы болушу үчүн */
-.modal-header b {
-    font-size: 13px;
-    letter-spacing: 1px;
-}
-
+/* --- МОДАЛДЫН БАШКЫ БӨЛҮГҮ --- */
 .modal-header { 
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
-    margin-bottom: 12px; 
+    margin-bottom: 15px; 
 }
 
 .modal-header b { 
-    font-size: 14px; /* Текст кичирейди */
+    font-size: 13px;
     color: var(--gold); 
     text-transform: uppercase; 
-    letter-spacing: 0.5px;
+    letter-spacing: 1.2px;
+    font-weight: 700;
 }
 
 .close-x { 
     cursor: pointer; 
     color: var(--text-main); 
-    background: rgba(182,148,76,0.1); 
-    border-radius: 50%; 
-    width: 26px; /* Кнопка кичирейди */
-    height: 26px; 
+    background: rgba(255, 255, 255, 0.05); 
+    border-radius: 10px; /* Квадрат сымал тегерек бурчтар */
+    width: 28px; 
+    height: 28px; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
-    font-size: 12px;
+    transition: 0.2s;
 }
 
-/* Тема тандоо бөлүмү */
+.close-x:hover {
+    background: rgba(182, 148, 76, 0.2);
+    transform: rotate(90deg);
+}
+
+/* --- ТЕМА ТАНДОО (HORIZONTAL SCROLL) --- */
 .theme-scroll { 
     display: flex; 
     overflow-x: auto; 
-    gap: 10px; 
-    padding: 5px 0; 
-    scrollbar-width: none; 
+    gap: 12px; 
+    padding: 8px 2px; 
+    scrollbar-width: none; /* Firefox */
 }
 
+.theme-scroll::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+
 .t-circle { 
-    min-width: 36px; /* Тегерекчелер кичирейди (45px эле) */
-    height: 36px; 
-    border-radius: 50%; 
-    border: 2px solid var(--border); 
+    min-width: 38px; 
+    height: 38px; 
+    border-radius: 12px; /* Тегерек эмес, "Squircle" стили */
+    border: 2px solid transparent; 
+    background: var(--gold); /* Бул жерге теманын түсү келет */
     cursor: pointer; 
-    transition: 0.2s; 
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
 }
 
 .t-circle:hover { 
-    transform: scale(1.1); 
-    border-color: var(--gold); 
+    transform: scale(1.1) translateY(-3px);
+    border-color: var(--gold);
+    box-shadow: 0 5px 15px rgba(182, 148, 76, 0.3);
 }
 
-/* Күйгүзүүчү (Switch) саптары */
+/* --- SWITCH (КҮЙГҮЗГҮЧ) ДИЗАЙНЫ --- */
 .switch-row { 
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
-    margin-top: 12px; 
-    border-top: 1px solid var(--border); 
-    padding-top: 10px; 
+    margin-top: 15px; 
+    padding-top: 12px; 
+    border-top: 1px solid rgba(255, 255, 255, 0.05); 
 }
 
 .switch-row span {
-    font-size: 13px; /* Тексттин өлчөмү */
+    font-size: 13px;
     color: var(--text-main);
+    font-weight: 500;
 }
 
 .switch { 
-    width: 40px; /* Switch өзү да кичирейди */
-    height: 20px; 
-    background: #333; 
+    width: 42px; 
+    height: 22px; 
+    background: #2a2a2a; 
     border-radius: 20px; 
     position: relative; 
     cursor: pointer; 
-    transition: 0.3s;
+    transition: 0.3s all ease;
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
 .switch::after { 
@@ -327,13 +309,21 @@ body.menu-open .menu-btn span:nth-child(3) {
     left: 2px; 
     width: 16px; 
     height: 16px; 
-    background: #fff; 
+    background: #eeeeee; 
     border-radius: 50%; 
-    transition: 0.3s; 
+    transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Пружина эффекти */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
-.switch.on { background: var(--gold); }
-.switch.on::after { left: 22px; }
+.switch.on { 
+    background: linear-gradient(45deg, var(--gold), #f3cf8a); 
+    border-color: transparent;
+}
+
+.switch.on::after { 
+    left: 22px; 
+    background: #fff;
+}
 
 
 /* ============================================================
