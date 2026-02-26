@@ -44,40 +44,33 @@ document.addEventListener('DOMContentLoaded', () => {
 // ==========================================
 
 document.addEventListener("DOMContentLoaded", () => {
-
     const toggle = document.querySelector(".theme-toggle");
     if (!toggle) return;
 
     const svg = toggle.querySelector(".palette-icon");
+    if (!svg) return;
+
+    // Hover flag
+    let isAnimating = false;
 
     toggle.addEventListener("mouseenter", () => {
+        if (isAnimating) return;
+        isAnimating = true;
 
-        // 1️⃣ Иконка fade болуп жоголот
-        svg.style.opacity = "0";
+        // SVG өлчөмүнө тийбестен класс кошуу
+        toggle.classList.add("drawing");
+        toggle.classList.remove("animate");
+        void toggle.offsetWidth; // reflow гана, layout бузбайт
+        toggle.classList.add("animate");
 
+        // Анимация бүткөндө flag өчүрүү
         setTimeout(() => {
-
-            // 2️⃣ Drawing режимге өтөт
-            toggle.classList.add("drawing");
-
-            // Анимацияны кайра баштоо
-            toggle.classList.remove("animate");
-            void toggle.offsetWidth;
-
-            toggle.classList.add("animate");
-
-            svg.style.opacity = "1";
-
-        }, 300);
-
+            isAnimating = false;
+        }, 1300);
     });
 
     toggle.addEventListener("mouseleave", () => {
-
-        // Баштапкы абалга кайтуу
         toggle.classList.remove("drawing", "animate");
-        svg.style.opacity = "1";
-
+        isAnimating = false;
     });
-
 });

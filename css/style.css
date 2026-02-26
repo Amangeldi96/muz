@@ -344,13 +344,21 @@ body.menu-open .menu-btn span:nth-child(3) {
 }
 
 /* Drawing режим башталганда */
-.theme-toggle.drawing .draw-item {
-    fill: none !important;
-    stroke: currentColor;
-    stroke-width: 1.6;
+.palette-icon {
+    width: 30px;
+    height: 30px;
+    display: block;       /* inline эмес, block кылып layout стабилдештирүү */
+    fill: var(--text-main);
+    stroke: var(--text-main);
+    stroke-width: 0.6;
+    transition: opacity 0.25s ease;
+}
 
-    stroke-dasharray: 400;
-    stroke-dashoffset: 400;
+.theme-toggle {
+    display: inline-flex; /* header layout бузулбайт */
+    align-items: center;
+    justify-content: center;
+    position: relative;   /* dropdown үчүн */
 }
 
 /* Негизги форма */
