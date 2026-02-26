@@ -1,6 +1,6 @@
   body {
     width: 100%;
-    max-width: 1350px; /* Сайттын эң чоң кенендиги */
+    max-width: 1250px; /* Сайттын эң чоң кенендиги */
     margin: 0 auto;    /* Баарын ортого жыйнайт */
     display: flex;
     flex-direction: column;
@@ -37,7 +37,18 @@
             padding: 10px 10px 0px 10px;
         }
         .block-con::-webkit-scrollbar { display: none; }
-        .content { display: flex; gap: 20px; padding-bottom: 10px; }
+        .content { 
+          display: flex;
+          gap: 20px; 
+          padding-bottom: 10px;
+          padding-left: 3px;
+        }
+.content::after {
+    content: "";
+    flex: 0 0 0.1px; 
+    visibility: hidden;
+}
+
         .block {
     flex: 0 0 clamp(160px, 18vw, 200px);
     height: clamp(220px, 30vw, 260px);
@@ -270,7 +281,7 @@ svg{
     display: flex;
     flex-direction: row;
     gap: 14px;
-    padding: 15px;
+    padding: 15px 10px 15px 10px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
@@ -295,35 +306,6 @@ svg{
     transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
-/* Жылдызчага чычканды алып баргандагы эффект */
-.star:hover {
-    color: var(--accent) !important; /* Темаңыздын негизги түсү */
-    opacity: 0.9;
-    transform: scale(1.25); /* Бир аз чоңоюп, алдыга чыгат */
-    text-shadow: 0 0 12px var(--accent-dim); /* Жумшак неон жарыгы */
-    cursor: pointer;
-}
-
-/* Эгер бир эле учурда ошол жылдызга чейинкилердин баары күйүшүн кааласаңыз: */
-.stars:hover .star {
-    color: var(--accent);
-    opacity: 0.6;
-}
-
-.star:hover ~ .star {
-    color: var(--text-sub) !important; /* Чычкандан кийинкилерин өчүрүү */
-    opacity: 0.2 !important;
-    transform: scale(1);
-}
-
-/* Өтүүнү плавно (жумшак) кылуу үчүн баштапкы .star классын жаңыртыңыз */
-.star {
-    transition: 
-        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-        color 0.4s ease, 
-        text-shadow 0.4s ease, 
-        opacity 0.4s ease;
-}
 
 
 /* Артисттин аты */
