@@ -1,4 +1,4 @@
-// 1. FIREBASE ЖАНА КИТЕПКАНАЛАР (Өзгөртүүсүз калат)
+// 1. FIREBASE ЖАНА КИТЕПКАНАЛАР
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import { 
     getFirestore, collection, getDocs, query, orderBy 
@@ -22,16 +22,16 @@ let storyYtPlayer = null;
 let currentBtn = null; 
 let progressInterval;
 let storyProgressInterval;
-let wakeLock = null;
+let isDragging = false; 
+let blockAutoUpdate = false; 
 
 const iconHTML = `<svg width="20" height="20" viewBox="0 0 25 25" fill="none"><g transform="translate(1, 0)"><path d="M7.98047 3.51001C5.43047 4.39001 4.98047 9.09992 4.98047 12.4099C4.98047 15.7199 5.41047 20.4099 7.98047 21.3199C10.6905 22.2499 18.9805 16.1599 18.9805 12.4099C18.9805 8.65991 10.6905 2.58001 7.98047 3.51001Z" fill="#ffffff"></path></g></svg>`;
-const pauseIconHTML = `<svg width="20" height="20" viewBox="0 0 25 25" fill="none"><g transform="translate(1.5, 1) scale(0.9)"><path d="M10 6.42004C10 4.76319 8.65685 3.42004 7 3.42004C5.34315 3.42004 4 4.76319 4 6.42004V18.42C4 20.0769 5.34315 21.42 7 21.42C8.65685 21.42 10 20.0769 10 18.42V6.42004Z" fill="#ffffff"></path><path d="M20 6.42004C20 4.76319 18.6569 3.42004 17 3.42004C15.3431 3.42004 14 4.76319 14 6.42004V18.42C14 20.0769 15.3431 21.42 17 21.42C18.6569 21.42 20 20.0769 20 18.42V6.42004Z" fill="#ffffff"></path></g></svg>`;
+const pauseIconHTML = `<svg width="20" height="20" viewBox="0 0 25 25" fill="none"><g transform="translate(1.5, 1) scale(0.9)"><path d="M10 6.42004C10 4.76319 8.65685 3.42004 7 3.42004C5.34315 3.42004 4 4.76319 4 6.42004V18.42C4 20.0769 5.34315 21.42 7 21.42C8.65685 21.42 10 20.0769 10 18.42V6.42004ZM20 6.42004C20 4.76319 18.6569 3.42004 17 3.42004C15.3431 3.42004 14 4.76319 14 6.42004V18.42C14 20.0769 15.3431 21.42 17 21.42C18.6569 21.42 20 20.0769 20 18.42V6.42004Z" fill="#ffffff"></path></g></svg>`;
 const loadingHTML = `<div class="is-loading-circle"></div>`; 
 
 const storyModal = document.getElementById('storyFullscreen');
 const storyStatusBar = document.getElementById('statusBar');
 
-// ================= 2.1 ПЛЕЙБАР ЭЛЕМЕНТТЕРИ =================
 const mainPlayBtn = document.getElementById('mainPlayBtn');
 const pFill = document.getElementById('pFill');
 const pHandle = document.getElementById('pHandle');
@@ -39,7 +39,6 @@ const pCont = document.getElementById('pCont');
 const pTitle = document.getElementById('pTitle');
 const pArtist = document.getElementById('pArtist');
 
-// Иконка баракча ачылары менен дароо чыгышы үчүн:
 if (mainPlayBtn) mainPlayBtn.innerHTML = iconHTML + loadingHTML;
 
 // ================= 3. YOUTUBE API ЖАНА ЛОГИКА =================
@@ -53,17 +52,11 @@ if (!window.YT) {
 window.onYouTubeIframeAPIReady = function() {
     ytPlayer = new YT.Player('ytPlayer', {
         height: '0', width: '0',
-        playerVars: { 
-            'playsinline': 1, 'controls': 0, 'enablejsapi': 1, 'autoplay': 0,
-            'origin': window.location.origin
-        },
+        playerVars: { 'playsinline': 1, 'controls': 0, 'enablejsapi': 1, 'autoplay': 0 },
         events: { 
             'onStateChange': onPlayerStateChange,
             'onError': onPlayerError,
-            'onReady': (e) => { 
-                e.target.unMute();
-                if (mainPlayBtn && !currentBtn) mainPlayBtn.innerHTML = iconHTML + loadingHTML;
-            } 
+            'onReady': (e) => { e.target.unMute(); } 
         }
     });
 
@@ -74,7 +67,56 @@ window.onYouTubeIframeAPIReady = function() {
     });
 };
 
-// ================= 4. ГЛОБАЛДЫК ФУНКЦИЯЛАР =================
+// ================= 4. ПЕРЕМОТКА (PROGRESS BAR DRAG) =================
+if (pCont) {
+    const getPercent = (e) => {
+        const rect = pCont.getBoundingClientRect();
+        const clientX = (e.touches && e.touches[0]) ? e.touches[0].clientX : 
+                      (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : e.clientX;
+        return Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    };
+
+    const handleStart = (e) => {
+        if (!ytPlayer || !currentBtn) return;
+        isDragging = true;
+        blockAutoUpdate = true;
+        const pct = getPercent(e) * 100;
+        updateUIProgress(pct);
+    };
+
+    const handleMove = (e) => {
+        if (!isDragging) return;
+        if (e.cancelable) e.preventDefault(); 
+        requestAnimationFrame(() => {
+            if (isDragging) updateUIProgress(getPercent(e) * 100);
+        });
+    };
+
+    const handleEnd = (e) => {
+        if (!isDragging) return;
+        const percent = getPercent(e);
+        if (ytPlayer && ytPlayer.getDuration) {
+            ytPlayer.seekTo(percent * ytPlayer.getDuration(), true);
+            ytPlayer.playVideo();
+        }
+        isDragging = false;
+        setTimeout(() => { blockAutoUpdate = false; }, 250);
+    };
+
+    pCont.addEventListener('mousedown', handleStart);
+    pCont.addEventListener('touchstart', handleStart, {passive: false});
+    window.addEventListener('mousemove', handleMove, {passive: false});
+    window.addEventListener('touchmove', handleMove, {passive: false});
+    window.addEventListener('mouseup', handleEnd);
+    window.addEventListener('touchend', handleEnd);
+}
+
+function updateUIProgress(percent) {
+    if (pFill) pFill.style.width = percent + "%";
+    if (pHandle) pHandle.style.left = percent + "%";
+}
+
+// ================= 5. ПЛЕЕР ФУНКЦИЯЛАРЫ =================
 window.extractVideoId = function(url) {
     if(!url) return "";
     const regExp = /^.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
@@ -110,30 +152,34 @@ window.togglePlay = function(btn, src) {
     const parent = btn.closest('.upcoming-card, .block, .song-item');
     if (parent && pTitle && pArtist) {
         pTitle.innerText = parent.querySelector('b').innerText;
-        pArtist.innerText = parent.querySelector('p, span').innerText;
+        pArtist.innerText = parent.querySelector('p, span') ? parent.querySelector('p, span').innerText : "";
     }
 
     ytPlayer.loadVideoById(vid);
     ytPlayer.playVideo();
 };
 
+window.toggleMainPlay = function() {
+    if (!ytPlayer || !ytPlayer.getPlayerState) return;
+    const state = ytPlayer.getPlayerState();
+    state === YT.PlayerState.PLAYING ? ytPlayer.pauseVideo() : ytPlayer.playVideo();
+};
+
+if (mainPlayBtn) mainPlayBtn.onclick = () => window.toggleMainPlay();
+
 function onPlayerStateChange(event) {
     const isPlaying = event.data === YT.PlayerState.PLAYING;
     const isBuffering = event.data === YT.PlayerState.BUFFERING;
     const targetHTML = isPlaying ? (pauseIconHTML + loadingHTML) : (iconHTML + loadingHTML);
 
-    if (mainPlayBtn) {
-        mainPlayBtn.classList.toggle('is-loading', isBuffering);
-        mainPlayBtn.innerHTML = targetHTML;
-    }
-
-    if (currentBtn) {
-        currentBtn.classList.toggle('is-loading', isBuffering);
-        currentBtn.innerHTML = targetHTML;
-    }
+    [mainPlayBtn, currentBtn].forEach(b => {
+        if(b) {
+            b.classList.toggle('is-loading', isBuffering);
+            b.innerHTML = targetHTML;
+        }
+    });
 
     if (isPlaying) startProgressTracking();
-    if (event.data === YT.PlayerState.ENDED && currentBtn) resetProgressBar(currentBtn);
 }
 
 function onPlayerError() {
@@ -145,18 +191,17 @@ function onPlayerError() {
 function startProgressTracking() {
     clearInterval(progressInterval);
     progressInterval = setInterval(() => {
-        if (ytPlayer && ytPlayer.getCurrentTime) {
+        if (ytPlayer && ytPlayer.getCurrentTime && !isDragging && !blockAutoUpdate) {
             const curr = ytPlayer.getCurrentTime();
             const dur = ytPlayer.getDuration();
             if (dur > 0) {
                 const percent = (curr / dur) * 100;
+                updateUIProgress(percent);
                 if (currentBtn) {
                     const parent = currentBtn.closest('.upcoming-card, .block, .song-item');
                     const bar = parent ? parent.querySelector('.progress-bg') : null;
                     if (bar) bar.style.width = percent + '%';
                 }
-                if (pFill) pFill.style.width = percent + '%';
-                if (pHandle) pHandle.style.left = percent + '%';
             }
         }
     }, 500);
@@ -166,12 +211,10 @@ function resetProgressBar(btn) {
     const parent = btn.closest('.upcoming-card, .block, .song-item');
     const bar = parent ? parent.querySelector('.progress-bg') : null;
     if (bar) bar.style.width = '0%';
-    if (pFill) pFill.style.width = '0%';
-    if (pHandle) pHandle.style.left = '0%';
+    updateUIProgress(0);
 }
 
-
-// ================= 6. СТОРИЗ =================
+// ================= 6. СТОРИЗ ЖАНА FIREBASE =================
 window.viewStory = function(videoId) {
     if (!storyModal || !storyYtPlayer) return;
     if (ytPlayer) ytPlayer.pauseVideo();
@@ -196,21 +239,11 @@ function onStoryPlayerStateChange(e) {
     } else if (e.data === YT.PlayerState.ENDED) window.closeStory();
 }
 
-// ================= 7. FIREBASE ЖҮКТӨӨ =================
 async function loadAllContent() {
-    const savedTheme = localStorage.getItem('selected-app-theme');
-    if (savedTheme) document.body.className = savedTheme;
-
     loadCollection("top_hits", renderTopHits);
     loadCollection("hits", renderHits);
     loadCollection("shorts", renderShorts);
     loadCollection("upcoming", renderUpcoming);
-
-    const isVisible = localStorage.getItem('player-bar-visible') === 'true';
-    const bar = document.getElementById('playerBar');
-    const sw = document.getElementById('barSwitch');
-    if (bar) bar.style.display = isVisible ? 'block' : 'none';
-    if (sw) sw.classList.toggle('on', isVisible);
 }
 
 async function loadCollection(name, callback) {
@@ -218,10 +251,7 @@ async function loadCollection(name, callback) {
         const q = query(collection(db, name), orderBy("created_at", "desc"));
         const snap = await getDocs(q);
         callback(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-    } catch (e) {
-        const snap = await getDocs(collection(db, name));
-        callback(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-    }
+    } catch (e) { console.error(e); }
 }
 
 function renderTopHits(data) {
@@ -280,4 +310,4 @@ function renderUpcoming(data) {
 }
 
 document.addEventListener('DOMContentLoaded', loadAllContent);
-            
+    
