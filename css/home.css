@@ -1,6 +1,6 @@
   body {
     width: 100%;
-    max-width: 1300px; /* Сайттын эң чоң кенендиги */
+    max-width: 1350px; /* Сайттын эң чоң кенендиги */
     margin: 0 auto;    /* Баарын ортого жыйнайт */
     display: flex;
     flex-direction: column;
