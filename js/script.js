@@ -1,4 +1,4 @@
-// 1. FIREBASE ЖАНА КИТЕПКАНАЛАР
+// 1. FIREBASE ЖАНА КИТЕПКАНАЛАР (Өзгөртүүсүз калат)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import { 
     getFirestore, collection, getDocs, query, orderBy 
@@ -27,7 +27,8 @@ let wakeLock = null;
 
 const iconHTML = `<svg width="20" height="20" viewBox="0 0 25 25" fill="none"><g transform="translate(1, 0)"><path d="M7.98047 3.51001C5.43047 4.39001 4.98047 9.09992 4.98047 12.4099C4.98047 15.7199 5.41047 20.4099 7.98047 21.3199C10.6905 22.2499 18.9805 16.1599 18.9805 12.4099C18.9805 8.65991 10.6905 2.58001 7.98047 3.51001Z" fill="#ffffff"></path></g></svg>`;
 const pauseIconHTML = `<svg width="20" height="20" viewBox="0 0 25 25" fill="none"><g transform="translate(1.5, 1) scale(0.9)"><path d="M10 6.42004C10 4.76319 8.65685 3.42004 7 3.42004C5.34315 3.42004 4 4.76319 4 6.42004V18.42C4 20.0769 5.34315 21.42 7 21.42C8.65685 21.42 10 20.0769 10 18.42V6.42004Z" fill="#ffffff"></path><path d="M20 6.42004C20 4.76319 18.6569 3.42004 17 3.42004C15.3431 3.42004 14 4.76319 14 6.42004V18.42C14 20.0769 15.3431 21.42 17 21.42C18.6569 21.42 20 20.0769 20 18.42V6.42004Z" fill="#ffffff"></path></g></svg>`;
-const loadingHTML = `<div class="is-loading-circle"></div>`; // Сиздин CSS'теги спинер
+// Спинерди HTML'де даяр кармайбыз
+const loadingHTML = `<div class="is-loading-circle"></div>`; 
 
 const storyModal = document.getElementById('storyFullscreen');
 const storyStatusBar = document.getElementById('statusBar');
@@ -59,7 +60,7 @@ window.onYouTubeIframeAPIReady = function() {
         },
         events: { 
             'onStateChange': onPlayerStateChange,
-            'onError': onPlayerError, // Ката болгондо спинерди өчүрүү үчүн
+            'onError': onPlayerError,
             'onReady': (e) => { e.target.unMute(); } 
         }
     });
@@ -80,7 +81,6 @@ document.addEventListener("visibilitychange", function() {
     }
 });
 
-// Media Session
 function updateMediaSession(btn) {
     if ('mediaSession' in navigator) {
         const parent = btn.closest('.upcoming-card, .block, .song-item');
@@ -133,19 +133,20 @@ window.togglePlay = function(btn, src) {
         if (state === YT.PlayerState.PLAYING) {
             ytPlayer.pauseVideo();
         } else {
-            btn.innerHTML = loadingHTML; // Кайра ойнотууда спинерди көрсөтүү
+            btn.classList.add('is-loading'); // Спинерди күйгүзүү
             ytPlayer.playVideo();
         }
         return;
     }
 
     if (currentBtn) { 
-        currentBtn.innerHTML = iconHTML; 
+        currentBtn.classList.remove('is-loading');
+        currentBtn.innerHTML = iconHTML + loadingHTML; // Кайра баштапкы абалга
         resetProgressBar(currentBtn); 
     }
     
     currentBtn = btn;
-    btn.innerHTML = loadingHTML; // Спинерди күйгүзүү
+    btn.classList.add('is-loading'); // Жаңы спинерди күйгүзүү
     
     updateMediaSession(btn);
     ytPlayer.loadVideoById(vid);
@@ -157,25 +158,29 @@ function onPlayerStateChange(event) {
     if (!currentBtn) return;
 
     if (event.data === YT.PlayerState.PLAYING) {
-        currentBtn.innerHTML = pauseIconHTML; // Ойноп баштаганда спинер өчөт, пауза чыгат
+        currentBtn.classList.remove('is-loading'); // Жүктөлдү, спинерди өчүрөбүз
+        currentBtn.innerHTML = pauseIconHTML + loadingHTML; 
         startProgressTracking();
     } 
     else if (event.data === YT.PlayerState.BUFFERING) {
-        currentBtn.innerHTML = loadingHTML; // Интернет начар болсо же жүктөлүп жатса спинер чыгат
+        currentBtn.classList.add('is-loading'); // Интернет начар болсо кайра күйөт
     } 
     else if (event.data === YT.PlayerState.PAUSED) {
-        currentBtn.innerHTML = iconHTML; // Паузада плей иконкасы
+        currentBtn.classList.remove('is-loading');
+        currentBtn.innerHTML = iconHTML + loadingHTML;
     } 
     else if (event.data === YT.PlayerState.ENDED) {
-        currentBtn.innerHTML = iconHTML;
+        currentBtn.classList.remove('is-loading');
+        currentBtn.innerHTML = iconHTML + loadingHTML;
         resetProgressBar(currentBtn);
     }
 }
 
 function onPlayerError() {
     if (currentBtn) {
-        currentBtn.innerHTML = iconHTML; // Ката болсо спинерди алып салуу
-        alert("Видеону жүктөөдө ката кетти же YouTube блоктоп койду.");
+        currentBtn.classList.remove('is-loading');
+        currentBtn.innerHTML = iconHTML + loadingHTML;
+        alert("Видеону жүктөөдө ката кетти.");
     }
 }
 
@@ -201,7 +206,7 @@ function resetProgressBar(btn) {
     if (bar) bar.style.width = '0%';
 }
 
-// ================= 5. СТОРИЗ ПЕРЕМОТКА =================
+// ================= 5. СТОРИЗ ПЕРЕМОТКА (Өзгөртүүсүз калат) =================
 window.viewStory = function(videoId) {
     if (!storyModal || !storyYtPlayer) return;
     if (ytPlayer) ytPlayer.pauseVideo();
@@ -273,7 +278,7 @@ window.toggleStoryPlay = function() {
     state === YT.PlayerState.PLAYING ? storyYtPlayer.pauseVideo() : storyYtPlayer.playVideo();
 };
 
-// ================= 6. FIREBASE ЖҮКТӨӨ =================
+// ================= 6. FIREBASE ЖҮКТӨӨ (Рендерди оптималдаштыруу) =================
 async function loadAllContent() {
     loadCollection("top_hits", renderTopHits);
     loadCollection("hits", renderHits);
@@ -292,6 +297,7 @@ async function loadCollection(name, callback) {
     }
 }
 
+// Ар бир рендерде иконка + спинерди алдын ала кошуп коёбуз
 function renderTopHits(data) {
     const container = document.getElementById('albumList');
     if (!container) return;
@@ -302,7 +308,7 @@ function renderTopHits(data) {
             <div class="progress-container"><div class="progress-bg"></div></div>
             <div class="song-image" style="background-image: url('${window.getValidCover(song.cover, url)}');"></div>
             <div class="block-text"><b>${song.artist || "Артист"}</b><p>${song.name || "Аталышы жок"}</p></div>
-            <div class="mini-play" onclick="togglePlay(this, '${url}')">${iconHTML}</div>
+            <div class="mini-play" onclick="togglePlay(this, '${url}')">${iconHTML}${loadingHTML}</div>
         </div>`;
     }).join("");
 }
@@ -313,7 +319,7 @@ function renderHits(data) {
     container.innerHTML = data.map(song => `
         <div class="song-item">
             <div class="progress-container" style="position:absolute; bottom:0; width:100%; height:2px;"><div class="progress-bg"></div></div>
-            <div class="play-icon-circle" onclick="togglePlay(this, '${song.src || song.url}')">${iconHTML}</div>
+            <div class="play-icon-circle" onclick="togglePlay(this, '${song.src || song.url}')">${iconHTML}${loadingHTML}</div>
             <div class="song-name"><b>${song.name || "Аталышы жок"}</b><span>${song.artist || "Артист"}</span></div>
         </div>`).join("");
 }
@@ -342,9 +348,10 @@ function renderUpcoming(data) {
                 <div class="upcoming-badge">Жакында</div>
                 <div class="cover" style="background-image:url('${window.getValidCover(song.cover, url)}')"></div>
                 <div class="card-content"><b>${song.artist || "Артист"}</b><p>${song.name || "Аталышы жок"}</p></div>
-                <div class="upcoming-play" onclick="togglePlay(this, '${url}')">${iconHTML}</div>
+                <div class="upcoming-play" onclick="togglePlay(this, '${url}')">${iconHTML}${loadingHTML}</div>
             </div>`;
     }).join("");
 }
 
 document.addEventListener('DOMContentLoaded', loadAllContent);
+    
