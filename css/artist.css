@@ -121,3 +121,59 @@ body {
     font-size: 13px;
     color: var(--text-sub);
 }
+
+/* === НЕГИЗГИ СТИЛДЕРДИ ПК ВЕРСИЯГА ЫЛАЙЫКТОО (1024px+) === */
+@media (min-width: 1024px) {
+
+    /* 1. ИЗДӨӨ ТАЛААСЫНЫН СЫРТКЫ КОНТЕЙНЕРИ (Wrapper) */
+    .search-wrapper {
+        width: 100% !important;
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+        padding: 20px !important;
+    }
+
+    /* 2. АРТИСТТЕРДИН ТИЗМЕСИ (Artist List) */
+    /* Эгер артисттер тизмек (list) түрүндө болсо, аларды ортолойбуз */
+    .artist-item {
+        width: 100% !important;
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+        padding: 15px 25px !important;
+        border-radius: 12px !important;
+        border-bottom: 1px solid var(--border) !important;
+        transition: background-color 0.2s ease !important;
+    }
+
+    /* ПК-да артисттин үстүнө барганда түсү өзгөрөт */
+    .artist-item:hover {
+        background-color: var(--bg-card) !important;
+        border-color: var(--accent) !important;
+    }
+
+    /* Артисттин тегерек сүрөтүнүн көлөмүн бир аз чоңойтуу */
+    .artist-image-circle {
+        width: 55px !important;
+        height: 55px !important;
+        font-size: 22px !important;
+    }
+
+    .artist-name {
+        font-size: 18px !important; /* Текстти бир аз чоңойтуу */
+    }
+
+    /* 3. ТЕМАЛАР (Transitions) */
+    /* ПК-да тема алмашканда баары жумшак болушу үчүн */
+    body {
+        transition: background-color 0.4s ease, color 0.4s ease !important;
+    }
+
+    /* 4. СЕКЦИЯЛАРДЫН БАШ КАТЫ (Section Title) */
+    .section-title {
+        width: 100% !important;
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+        padding: 40px 20px 20px 20px !important;
+        font-size: 24px !important;
+    }
+}
