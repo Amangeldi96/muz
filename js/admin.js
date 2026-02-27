@@ -53,7 +53,7 @@ const showConfirmModal = (message) => {
   });
 };
 
-// ================= 3. ЖАКШЫРТЫЛГАН TOAST БИЛДИРҮҮЛӨРҮ =================
+// ================= 3. TOAST БИЛДИРҮҮЛӨРҮ =================
 window.showMsg = (txt, type = "success") => {
   let container = document.getElementById('music-toast-box');
   if (!container) {
@@ -61,22 +61,18 @@ window.showMsg = (txt, type = "success") => {
     container.id = 'music-toast-box';
     document.body.appendChild(container);
   }
-
   const toast = document.createElement('div');
   toast.className = `music-toast-item ${type}`;
-  
   const icons = { success: "✅", error: "❌", warning: "⚠️", info: "🗑️" };
   toast.innerHTML = `<span>${icons[type] || "✨"}</span> <span>${txt}</span>`;
-  
   container.appendChild(toast);
-
   setTimeout(() => {
     toast.classList.add('hide');
     setTimeout(() => toast.remove(), 400);
   }, 3000);
 };
 
-// ================= 4. МААЛЫМАТ КОШУУ (ЛИМИТ МЕНЕН) =================
+// ================= 4. МААЛЫМАТ КОШУУ ЖАНА АВТО-ЖЫЛДЫРУУ =================
 window.confirmUpload = async () => {
   const cat = document.getElementById('mainCategory').value;
   const artist = document.getElementById('artistName').value.trim();
@@ -90,26 +86,55 @@ window.confirmUpload = async () => {
   const btn = document.getElementById('uploadBtn');
   const btnText = btn.querySelector('.btn-text');
   btn.disabled = true; 
-  btnText.innerText = "Текшерилүүдө...";
+  btnText.innerText = "Жүктөлүүдө...";
 
   try {
-    if (cat === 'top_hits' || cat === 'shorts') {
-        const checkSnap = await getDocs(collection(db, cat));
-        const limitNum = (cat === 'top_hits') ? 5 : 4;
+    // --- 1. Top Hits логикасы (5 ыр лимит) ---
+    if (cat === 'top_hits') {
+      const topSnap = await getDocs(query(collection(db, 'top_hits'), orderBy("created_at", "asc")));
+      if (topSnap.size >= 5) {
+        const oldestTopDoc = topSnap.docs[0];
+        const oldestTopData = oldestTopDoc.data();
 
-        if (checkSnap.size >= limitNum) {
-            showMsg(`${cat === 'top_hits' ? 'Топ 5' : 'Шортс'} толуп калды!`, "warning");
-            btn.disabled = false;
-            btnText.innerText = "Сайтка чыгаруу";
-            return;
+        // hits-ке көчүрүү
+        await addDoc(collection(db, 'hits'), {
+          ...oldestTopData,
+          created_at: serverTimestamp()
+        });
+        // top_hits-тен өчүрүү
+        await deleteDoc(doc(db, 'top_hits', oldestTopDoc.id));
+
+        // --- 2. Hits логикасы (20 ыр лимит) ---
+        const hitsSnap = await getDocs(query(collection(db, 'hits'), orderBy("created_at", "asc")));
+        if (hitsSnap.size > 20) {
+          const oldestHitDoc = hitsSnap.docs[0];
+          await addDoc(collection(db, 'new_hits'), {
+            ...oldestHitDoc.data(),
+            created_at: serverTimestamp()
+          });
+          await deleteDoc(doc(db, 'hits', oldestHitDoc.id));
         }
+      }
     }
 
+    // --- 3. Shorts лимити ---
+    if (cat === 'shorts') {
+      const shortsSnap = await getDocs(collection(db, 'shorts'));
+      if (shortsSnap.size >= 4) {
+        showMsg("Шортс бөлүмү толуп калды!", "warning");
+        btn.disabled = false;
+        btnText.innerText = "Сайтка чыгаруу";
+        return;
+      }
+    }
+
+    // Сүрөт жүктөлдүбү?
     let coverUrl = "";
     if (file && (cat === "top_hits" || cat === "upcoming")) {
       coverUrl = await uploadToCloudinary(file);
     }
 
+    // Негизги ырды базага кошуу
     await addDoc(collection(db, cat), {
       artist: artist,
       name: (cat === "shorts" ? "" : name),
@@ -123,7 +148,10 @@ window.confirmUpload = async () => {
     document.getElementById('artistName').value = "";
     document.getElementById('itemName').value = "";
     document.getElementById('itemUrl').value = "";
+    if (fileInput) fileInput.value = "";
+
   } catch (err) {
+    console.error(err);
     showMsg("Ката кетти!", "error");
   } finally {
     btn.disabled = false; 
@@ -131,7 +159,7 @@ window.confirmUpload = async () => {
   }
 };
 
-// ================= 5. ӨЧҮРҮҮ (CUSTOM MODAL МЕНЕН) =================
+// ================= 5. ӨЧҮРҮҮ ЖАНА ЖҮКТӨӨ (Башка функциялар) =================
 window.askDelete = async (cat, id) => {
   const confirmed = await showConfirmModal("Бул маалыматты өчүрүүнү каалайсызбы?");
   if (confirmed) {
@@ -144,7 +172,6 @@ window.askDelete = async (cat, id) => {
   }
 };
 
-// ================= 6. БАШКА ФУНКЦИЯЛАР (Өзгөрүүсүз) =================
 async function uploadToCloudinary(file) {
   const fd = new FormData();
   fd.append("file", file);
@@ -164,7 +191,7 @@ async function loadAllItems() {
   ALL_CATEGORIES.forEach(c => {
     const list = document.getElementById("list-" + c);
     if (!list) return;
-    let qLimit = (c === 'top_hits') ? 5 : (c === 'shorts' ? 4 : 20);
+    let qLimit = (c === 'top_hits') ? 5 : (c === 'shorts' ? 4 : 30); // Листинг үчүн лимит
     const q = query(collection(db, c), orderBy("created_at", "desc"), limit(qLimit));
     
     onSnapshot(q, (snap) => {
