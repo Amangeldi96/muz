@@ -482,92 +482,86 @@ svg{
 
 
 
-          /* === ПК ВЕРСИЯ ҮЧҮН ТОЛУКТАЛГАН ЖАНА ОҢДОЛГОН CSS (1024px+) === */
+          /* === ПК ВЕРСИЯ ҮЧҮН ТҮЗӨТҮЛГӨН CSS (1024px+) === */
 @media (min-width: 1024px) {
     
-    /* 1. ЖАЛПЫ КОНТЕЙНЕРЛЕРДИ ОРТОГО ЖЫЙНОО */
-    /* Баардык секциялар бир түз сызыкта (1200px ичинде) турушу үчүн */
+    /* 1. НЕГИЗГИ КОНТЕЙНЕРЛЕР - БААРЫН БИР СЫЗЫККА ТҮЗДӨӨ */
     .section-title, 
     .block-con, 
     .song-list, 
     .upcoming-list, 
     #artistDetailContainer {
-        width: 100%;
-        max-width: 1200px;
+        width: 100% !important;
+        max-width: 1200px !important;
         margin-left: auto !important;
         margin-right: auto !important;
-        padding-left: 20px; /* Четтеринен бир аз боштук */
-        padding-right: 20px;
-        box-sizing: border-box;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+        box-sizing: border-box !important;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; /* Ичиндегилердин баарын солго түздөйт, чоюлууну токтотот */
     }
 
-    /* 2. ЖАКЫНДА ЧЫГУУЧУ БЛОК (UPCOMING) - ЭҢ НЕГИЗГИ ОҢДОО */
+    /* 2. ЖАКЫНДА ЧЫГУУЧУ БЛОК (UPCOMING) - ЧОЮЛУУНУ ТОКТОТУУ */
     .upcoming-list {
-        display: flex;
-        flex-direction: column; /* Карталарды биринин астына бирин тизет */
-        align-items: flex-start; /* Картанын туурасы экранга жайылбашы (stretch) үчүн */
-        gap: 15px;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important; /* Бул эң маанилүүсү: ичиндеги карталарды созбойт */
+        gap: 20px !important;
     }
 
     .upcoming-card {
-        flex: 0 0 auto;        /* Чоюлууга такыр жол бербейт */
-        width: 480px;          /* Картанын ПК-дагы туруктуу өлчөмү */
-        max-width: 100%;       /* Эгер экран кичирейсе батыш үчүн */
-        margin: 0;             /* Ашыкча маржиндерди тазалайбыз */
-        display: flex !important;
+        /* clamp() касиетин өчүрүп, туруктуу өлчөм беребиз */
+        width: 480px !important; 
+        min-width: 480px !important;
+        flex: 0 0 auto !important; /* Чоюлууга такыр жол бербейт */
+        margin-left: 0 !important;
+        margin-right: 0 !important;
     }
 
-    /* 3. ХИТ ЫРЛАР (SONG LIST) */
+    /* 3. ХИТ ЫРЛАР (SONG LIST) - СОЛГО ТҮЗДӨӨ */
     .song-list {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
+        align-items: flex-start !important;
     }
 
     .song-item {
-        width: 100%;
-        max-width: 700px;      /* Тизме өтө эле оңго качып кетпеши үчүн */
-        justify-content: flex-start;
-        border-bottom: 1px solid rgba(255,255,255,0.05);
+        width: 100% !important;
+        max-width: 700px !important; /* Өтө узун болуп кетпеши үчүн */
+        margin-left: 0 !important;
     }
 
-    /* 4. ТОП 5 ЖАҢЫ ЫРЛАР (BLOCK CARDS) */
-    .block-con {
-        overflow: visible;     /* Скроллду алып салабыз */
-    }
-
+    /* 4. ТОП 5 ЖАҢЫ ЫРЛАР (CONTENT) */
     .content {
-        display: flex;
-        flex-wrap: wrap;       /* Карталар батпай калса кийинки сапка түшөт */
-        justify-content: flex-start;
-        gap: 25px;
+        display: flex !important;
+        flex-wrap: wrap !important; /* Карталар батпаса ылдый түшөт */
+        justify-content: flex-start !important;
+        gap: 25px !important;
+        padding-left: 0 !important;
     }
 
     .block {
-        flex: 0 0 185px;       /* Картанын туурасы өзгөрбөйт */
-        height: 280px;
+        flex: 0 0 190px !important; /* Карталар бирдей өлчөмдө калат */
+        margin: 0 !important;
     }
 
     /* 5. АРТИСТТЕРДИН КАРТОЧКАЛАРЫ */
     #artistDetailContainer {
-        display: grid;
-        /* Экрандын кенендигине жараша автоматтык түрдө мамычаларды түзөт */
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        gap: 20px;
-        overflow-x: visible;
-        padding-bottom: 30px;
+        display: grid !important; /* ПК-да скроллду өчүрүп, торчо кылабыз */
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important;
+        gap: 20px !important;
+        overflow-x: visible !important;
     }
 
     .artist-card {
-        width: 100%;           /* Гриддин ичинде өзүнө берилген орунду толтурат */
-        min-height: 120px;
+        width: 100% !important; /* Гриддин ичинде туура өлчөмдө болот */
+        flex: none !important;
     }
 
-    /* 6. СЕКЦИЯЛАРДЫН АТАЛЫШЫ (TITLES) */
+    /* 6. АТАЛЫШТАР (TITLES) */
     .section-title {
-        font-size: 24px;
-        padding-top: 40px;
-        padding-bottom: 20px;
-        justify-content: flex-start; /* Текст так сол жакта контейнердин башында турат */
+        font-size: 26px !important;
+        justify-content: flex-start !important;
+        padding-left: 0 !important; /* Контейнердин padding'и жетиштүү */
     }
 }
