@@ -490,7 +490,7 @@ svg{
     .song-list, 
     .upcoming-list, 
     #artistDetailContainer {
-        width: 100% !important;
+        width: 99% !important;
         max-width: 1200px !important;
         margin-left: auto !important;
         margin-right: auto !important;
@@ -533,7 +533,7 @@ svg{
     /* Артист картасынын өлчөмүн туруктуу кылуу */
     .artist-card {
         flex: 0 0 280px !important;     /* Сүрөттөгүдөй кенендикте сакталат */
-        width: 260px !important;
+        width: 280px !important;
         box-sizing: border-box !important;
     }
 
