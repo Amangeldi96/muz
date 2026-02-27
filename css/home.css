@@ -481,86 +481,56 @@ svg{
 
 
 
-          /* === PC VERSION OPTIMIZATION (1024px +) === */
+          /* === ПК ВЕРСИЯ ҮЧҮН (Сүрөттөгүдөй ортого чыгаруу) === */
 @media (min-width: 1024px) {
-    /* 1. Башкы мазмунду ортого түздөө */
-    .content {
-        justify-content: center;
-        flex-wrap: wrap; /* Карталар батпай калса кийинки сапка түшөт */
-        gap: 30px;
-    }
-
-    /* 2. Артист карталарын (Artist Cards) торчо кылып тизүү */
-    #artistDetailContainer {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 25px;
-        justify-content: center;
-        max-width: 1200px;
-        margin: 0 auto;
-        overflow: visible; /* Скроллду өчүрүп, баарын ачык көрсөтөт */
-    }
-
-    .artist-card {
-        flex: none; 
-        width: auto;
-        transition: transform 0.3s ease;
-    }
-
-    .artist-card:hover {
-        transform: translateY(-10px); /* Чычканды барганда өйдө көтөрүлөт */
-    }
-
-    /* 3. Күтүлүп жаткан ырлар (Upcoming List) - 2 мамычага бөлүү */
-    .upcoming-list {
-        display: grid;
-        grid-template-columns: 1fr 1fr; /* Эки катар кылат */
-        gap: 20px;
-        max-width: 1100px;
-        margin: 0 auto;
-    }
-
-    .upcoming-card {
-        transition: background 0.3s ease;
-    }
-    
-    .upcoming-card:hover {
-        background: linear-gradient(135deg, #1b2532, #2e3b4e);
-    }
-
-    /* 4. Секциялардын аттарын (Section Titles) ортого алуу (кааласаңыз) */
+    /* 1. Секциянын аталыштарын ортого түздөө */
     .section-title {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 40px 15px 20px;
-        font-size: 26px;
-    }
-
-    /* 5. Кадимки ыр блоктору (Block) */
-    .block-con {
-        display: flex;
-        justify-content: center;
-        overflow: visible;
-    }
-
-    .block {
-        flex: 0 0 200px;
-        height: 310px;
-    }
-
-    .song-image {
-        height: 190px;
-    }
-}
-
-/* Эгер экран өтө эле чоң болсо (Ultra Wide), мазмун өтө жайылып кетпеши үчүн */
-@media (min-width: 1400px) {
-    body {
         max-width: 1350px;
         margin: 0 auto;
-        border-left: 1px solid var(--border);
-        border-right: 1px solid var(--border);
-        box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        padding-left: 20px; /* Сүрөттөгүдөй бир аз четинен жылдыруу */
+    }
+
+    /* 2. Скроллду өчүрүп, элементтерди ортого тизүү */
+    .block-con {
+        overflow-x: visible; /* Скроллду токтотобуз */
+        display: flex;
+        justify-content: center; /* Элементтерди так ортого коёт */
+        padding: 20px 0;
+    }
+
+    /* 3. Контентти иретөө */
+    .content {
+        display: flex;
+        flex-wrap: wrap; /* Эгер батпай калса, кийинки сапка түшөт */
+        justify-content: center; /* Ичиндеги карталарды ортого түздөйт */
+        gap: 25px; /* Карталардын ортосундагы аралык */
+        width: 100%;
+        max-width: 1350px;
+    }
+
+    /* 4. Карталардын өлчөмүн турукташтыруу */
+    .block {
+        flex: 0 0 190px; /* Картанын туурасы */
+        height: 280px;
+        margin: 0; /* Ашыкча маржиндерди алып салуу */
+    }
+
+    /* 5. Артисттин маалыматтарын да ортого алуу */
+    #artistDetailContainer {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        overflow: visible;
+        gap: 20px;
+    }
+
+    /* 6. Upcoming list (Күтүлүүдөгү ырлар) ортого алуу */
+    .upcoming-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* Экиден катар кылып тизет */
+        justify-content: center;
+        max-width: 1100px;
+        margin: 0 auto;
+        gap: 20px;
     }
 }
-
