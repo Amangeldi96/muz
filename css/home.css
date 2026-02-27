@@ -7,6 +7,11 @@
 }
 
 
+
+
+
+
+
 /* CONTENT STYLES */
 .section-title {
     display: flex;
@@ -189,38 +194,27 @@
 .upcoming-card {
     display: flex;
     align-items: center;
-    gap: clamp(10px, 2vw, 20px);
-    padding: clamp(10px, 2vw, 18px);
-    background: linear-gradient(135deg, #0d1117, #1b2532);
+    gap: 15px;
+    padding: 15px;
+    background: #1b2532; 
     border-radius: 16px;
     border: 1px solid #2e3b4e;
     position: relative;
+    /* overflow: hidden;  <-- МУНУ ӨЧҮРҮҢҮЗ же алып салыңыз */
+    z-index: 1;
+    margin-top: 15px; /* Үстүндөгү жазуу батып кетиши үчүн боштук */
 }
 
-.upcoming-card .cover {
-    width: clamp(70px, 10vw, 110px);
-    height: clamp(70px, 10vw, 110px);
-    border-radius: 14px;
-    background-size: cover;
-    background-position: center;
-}
-
-.upcoming-play {
-    width: clamp(32px, 5vw, 44px);
-    height: clamp(32px, 5vw, 44px);
-}
-
-
-/* Жаңы прогресс-контейнер (картанын бурчтарын кесип турат) */
+/* Жаңы прогресс-контейнер */
 .progress-container {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 14px; /* Картанын радиусу менен бирдей */
-    overflow: hidden;    /* Прогресс-барды ушул кесет */
-    z-index: -1;         /* Тексттин артында */
+    border-radius: 16px; 
+    overflow: hidden;
+    z-index: 0; /* Фондон өйдө, бирок маалыматтан төмөн */
     pointer-events: none;
 }
 
@@ -230,26 +224,21 @@
     left: 0;
     height: 100%;
     width: 0%;
-    background: rgba(51, 54, 61, 0.30);
-    transition: width 0.1s linear;
+    background: rgba(0, 255, 127, 0.2); 
+    /* Төмөнкү эки сапты кошуңуз: */
+    transition: width 0.5s linear; /* 0.5 секунд сайын жумшак жылат */
+    will-change: width;
 }
 
+
+/* Текст, сүрөт жана баскычтар прогресстин үстүндө болушу керек */
+.upcoming-card .cover, 
+.card-content, 
+.upcoming-play, 
 .upcoming-badge {
-    position: absolute;
-    top: -10px; /* Эми сыртка чыгат */
-    left: 45px;
-    transform: translateX(-50%);
-    background-color: rgba(0,255,127,0.15);;
-    color: #fff;
-    font-size: 10px;
-    font-weight: bold;
-    padding: 3px 8px;
-    border-radius: 8px;
-    z-index: 10;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    position: relative;
+    z-index: 2; /* Прогресстен (0) өйдө чыгарат */
 }
-
-
 
 .upcoming-card .cover {
     flex-shrink: 0;
@@ -265,9 +254,39 @@
     flex-direction: column;
     justify-content: center;
     flex: 1;
-    min-width: 0; /* текстти батпай калбоо */
+    min-width: 0;
     gap: 4px;
 }
+
+.upcoming-badge {
+    position: absolute;    /* Картага карата эркин жайгаштыруу */
+    top: -10px;           /* Картанын үстүнкү четинен 10px өйдө (сыртка) чыгарат */
+    left: 45px;           /* Сол тараптан 45px аралыкта */
+    transform: translateX(-50%); /* Так ортолоо үчүн */
+    background-color: rgba(0, 255, 127, 0.8); /* Жашыл тунук түс */
+    color: #fff;          /* Тексттин түсү (ак) */
+    font-size: 10px;      /* Тексттин өлчөмү */
+    font-weight: bold;    /* Текстти калың кылат */
+    padding: 3px 8px;     /* Ички боштуктар */
+    border-radius: 8px;   /* Бурчтарын тегеректөө */
+    z-index: 10;          /* Баардык элементтердин, атүгүл прогресс-бардын да үстүндө турат */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); /* Кичинекей көлөкө */
+}
+
+
+.upcoming-play {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: rgba(0, 255, 127, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-left: 12px;
+}
+
 
 .card-content b {
     font-size: clamp(14px, 1.5vw, 18px);
@@ -599,4 +618,4 @@ svg{
         left: 50% !important;
         transform: translateX(-50%);
     }
-}
+      }
