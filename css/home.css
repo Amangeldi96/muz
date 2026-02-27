@@ -481,83 +481,79 @@ svg{
 
 
 
-          /* === PC ВЕРСИЯ ҮЧҮН ОҢДОЛГОН CSS === */
+          /* === ПК ВЕРСИЯ ҮЧҮН ТОЛУК ОҢДОО (1024px+) === */
 @media (min-width: 1024px) {
     
-    /* 1. Жалпы сайттын мазмунун чектөө жана ортого коюу */
-    /* Бул контейнерлердин баарын бирдей тууралыкта ортодо кармап турат */
+    /* 1. Жалпы чектөө - Контейнерлерди ортого жыйнайт, бирок ичин солго түздөйт */
+    .section-title, 
     .block-con, 
+    .song-list, 
     .upcoming-list, 
-    #artistDetailContainer,
-    .section-title {
-        max-width: 1200px; /* Сайттын ички тууралыгы */
-        margin-left: auto;
-        margin-right: auto;
+    #artistDetailContainer {
+        width: 100%;
+        max-width: 1200px; /* Сайттын ички мазмунунун кенендиги */
+        margin-left: auto !important;
+        margin-right: auto !important;
+        padding-left: 15px;
+        padding-right: 15px;
+        box-sizing: border-box;
+    }
+
+    /* 2. "Хит ырлар" (Song List) - четте калбашы үчүн */
+    .song-list {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; /* Элементтерди блоктун башына тизет */
+    }
+
+    .song-item {
+        width: 100%; /* Сүрөттөгүдөй сызык толук болушу үчүн */
+        max-width: 800px; /* Өтө жайылып кетпеши үчүн чектөө */
+    }
+
+    /* 3. "Жакында чыгуучу ырлар" (Upcoming Card) - Чоюлбашы үчүн */
+    .upcoming-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(450px, 1fr)); /* Экиден же үчтөн кооз тизилет */
+        gap: 20px;
+        justify-content: start;
+    }
+
+    .upcoming-card {
+        max-width: 500px; /* Картанын өзүнүн максималдуу кенендиги */
         width: 100%;
     }
 
-    /* 2. Секциянын аталыштарын солго түздөө */
-    .section-title {
-        display: flex;
-        justify-content: flex-start; /* Текст сол жакта калат */
-        padding: 40px 10px 20px 10px; /* Солдон бир аз боштук */
-        text-align: left;
-    }
-
-    /* 3. Ырлардын блоктору (Block Container) */
-    .block-con {
-        overflow: visible; /* Скроллду алып салабыз */
-        padding: 10px;
-    }
-
-    .content {
-        display: grid;
-        /* Экрандын кенендигине карап автоматтык түрдө тизилет */
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
-        gap: 20px;
-        justify-content: start; /* Карталар солдон оңго тизилет */
-        padding-left: 0;
-    }
-
-    /* 4. Артисттердин маалыматы (Artist Cards) */
+    /* 4. Артисттердин блогу */
     #artistDetailContainer {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
         gap: 20px;
-        overflow: visible;
-        padding: 10px;
+        overflow-x: visible; /* Скроллду өчүрөбүз */
     }
 
     .artist-card {
         flex: none;
-        width: 100%; /* Гридке баш ийет */
+        width: auto;
     }
 
-    /* 5. Жакында чыга турган ырлар (Upcoming List) */
-    .upcoming-list {
+    /* 5. "Топ 5 жаңы ырлар" - Карталарды бир катарда кооз тизүү */
+    .content {
         display: grid;
-        grid-template-columns: 1fr 1fr; /* ПК-да эки катар кылып тизүү иреттүү көрүнөт */
-        gap: 20px;
-        padding: 10px;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 25px;
+        justify-content: start;
     }
 
-    .upcoming-card {
-        max-width: 100%;
-    }
-
-    /* 6. Карталардын ичиндеги тексттерди солго түздөө */
-    .block-text b, 
-    .block-text p,
-    .card-content b,
-    .card-content p {
-        text-align: left;
-        align-self: flex-start;
+    .block {
+        flex: none;
+        width: 100%;
     }
 }
 
-/* Эгер экран өтө кенен болсо, контейнердин четин бир аз көбүрөөк ичкери алуу */
+/* Экран өтө чоң болсо (Ultra Wide) */
 @media (min-width: 1400px) {
-    .block-con, .upcoming-list, #artistDetailContainer, .section-title {
+    .section-title, .block-con, .song-list, .upcoming-list, #artistDetailContainer {
         max-width: 1300px;
     }
 }
