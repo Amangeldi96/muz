@@ -561,4 +561,42 @@ svg{
     .content, .song-list {
         align-items: flex-start !important;
     }
+    /* === ШОРТСТОРДУ ПК ВЕРСИЯДА ОРТОЛОО (1024px+) === */
+
+    /* 1. Сториз контейнерин ортолоо */
+    .stories-container {
+        width: 100% !important;
+        max-width: 1200px !important; /* Башка блоктор менен бирдей кенендик */
+        margin-left: auto !important;
+        margin-right: auto !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+        box-sizing: border-box !important;
+        justify-content: flex-start !important; /* Сториздерди солдон оңго тизет */
+    }
+
+    /* 2. Толук экрандагы сториз (fullscreen) ПК-да өтө чоң болбошу үчүн */
+    #storyFullscreen {
+        display: none;
+        justify-content: center;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.9) !important; /* Фонду караңгылатуу */
+    }
+
+    /* Сториздин мазмуну ПК-да телефондун экранындай тик бурчтук болуп көрүнүшү керек */
+    #storyFullscreen video, 
+    #storyFullscreen img {
+        max-width: 450px !important; /* ПК-да өтө жайылып кетпеши үчүн */
+        height: 90vh !important;
+        margin: auto;
+        border-radius: 15px;
+        box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    }
+
+    /* Прогресс-бар жана Х баскычы ПК-да видеонун үстүндө гана турушу үчүн */
+    .status-bar-container, .close-btn {
+        max-width: 450px !important;
+        left: 50% !important;
+        transform: translateX(-50%);
+    }
 }
