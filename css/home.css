@@ -481,79 +481,65 @@ svg{
 
 
 
-          /* === ПК ВЕРСИЯ ҮЧҮН ТОЛУК ОҢДОО (1024px+) === */
+          /* === ПК ВЕРСИЯ ҮЧҮН ОҢДОЛГОН CSS (1024px+) === */
 @media (min-width: 1024px) {
     
-    /* 1. Жалпы чектөө - Контейнерлерди ортого жыйнайт, бирок ичин солго түздөйт */
+    /* 1. Блоктордун баарын бирдей кенендикте ортого жыйнайбыз */
     .section-title, 
     .block-con, 
     .song-list, 
     .upcoming-list, 
     #artistDetailContainer {
-        width: 100%;
-        max-width: 1200px; /* Сайттын ички мазмунунун кенендиги */
+        width: 95%;            /* Экрандын четине өтө жабышпаш үчүн */
+        max-width: 1200px;     /* Сайттын негизги мазмуну ушул өлчөмдөн ашпайт */
         margin-left: auto !important;
         margin-right: auto !important;
-        padding-left: 15px;
-        padding-right: 15px;
-        box-sizing: border-box;
+        padding-left: 0;
+        padding-right: 0;
     }
 
-    /* 2. "Хит ырлар" (Song List) - четте калбашы үчүн */
-    .song-list {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start; /* Элементтерди блоктун башына тизет */
-    }
-
-    .song-item {
-        width: 100%; /* Сүрөттөгүдөй сызык толук болушу үчүн */
-        max-width: 800px; /* Өтө жайылып кетпеши үчүн чектөө */
-    }
-
-    /* 3. "Жакында чыгуучу ырлар" (Upcoming Card) - Чоюлбашы үчүн */
+    /* 2. "Жакында чыгуучу блок" - ЧОЮЛБАЙ ТУРГАН КЫЛУУ */
     .upcoming-list {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(450px, 1fr)); /* Экиден же үчтөн кооз тизилет */
-        gap: 20px;
-        justify-content: start;
+        display: flex;
+        justify-content: flex-start; /* Ичин солго түздөйт */
     }
 
     .upcoming-card {
-        max-width: 500px; /* Картанын өзүнүн максималдуу кенендиги */
-        width: 100%;
+        width: 450px;          /* Блоктун туруктуу кенендиги (чоюлбайт) */
+        flex-shrink: 0;        /* Кичирейип кетпеши үчүн */
+        margin: 10px 0;
     }
 
-    /* 4. Артисттердин блогу */
+    /* 3. "Хит ырлар" - Тизмени солго түздөө */
+    .song-list {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .song-item {
+        width: 100%;
+        max-width: 600px;      /* Тизме өтө узун болуп кетпеши үчүн */
+        justify-content: flex-start;
+    }
+
+    /* 4. Артисттердин карточкалары - Скроллду өчүрүп, тизүү */
     #artistDetailContainer {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
         gap: 20px;
-        overflow-x: visible; /* Скроллду өчүрөбүз */
+        overflow-x: visible;
     }
 
-    .artist-card {
-        flex: none;
-        width: auto;
-    }
-
-    /* 5. "Топ 5 жаңы ырлар" - Карталарды бир катарда кооз тизүү */
+    /* 5. Топ 5 жаңы ырлар - Карталар чоюлбайт */
     .content {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        gap: 25px;
-        justify-content: start;
+        display: flex;
+        flex-wrap: wrap;       /* Батпаса кийинки сапка түшөт */
+        justify-content: flex-start;
+        gap: 20px;
     }
 
     .block {
-        flex: none;
-        width: 100%;
-    }
-}
-
-/* Экран өтө чоң болсо (Ultra Wide) */
-@media (min-width: 1400px) {
-    .section-title, .block-con, .song-list, .upcoming-list, #artistDetailContainer {
-        max-width: 1300px;
+        flex: 0 0 180px;       /* Картанын туурасы өзгөрбөйт */
     }
 }
