@@ -532,8 +532,8 @@ svg{
 
     /* Артист картасынын өлчөмүн туруктуу кылуу */
     .artist-card {
-        flex: 0 0 290px !important;     /* Сүрөттөгүдөй кенендикте сакталат */
-        width: 270px !important;
+        flex: 0 0 280px !important;     /* Сүрөттөгүдөй кенендикте сакталат */
+        width: 260px !important;
         box-sizing: border-box !important;
     }
 
