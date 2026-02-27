@@ -321,3 +321,73 @@
     border-radius: 2px;
 }
 
+/* === ПК ВЕРСИЯ ҮЧҮН ТОЛУК ЖАНА АКЫРКЫ ОҢДОО (1024px+) === */
+@media (min-width: 1024px) {
+    /* === ПЛЕЕР ЖАНА ИЗДӨӨ ПАНЕЛИН ПК ВЕРСИЯДА ОРТОЛОО (1024px+) === */
+
+    /* 1. ПЛЕЕР БАР (Төмөнкү панель) */
+    .player-bar {
+        left: 50% !important;
+        transform: translateX(-50%) !important; /* Экрандын ортосуна коёт */
+        width: 100% !important;
+        max-width: 1200px !important; /* Башка блоктор менен бирдей кенендик */
+        border-radius: 20px 20px 0 0 !important; /* Бурчтарын кооздоо */
+        margin: 0 auto !important;
+        padding: 15px 30px !important;
+        bottom: -180px; /* Жашыруу үчүн */
+    }
+
+    .player-bar.active {
+        bottom: 0 !important;
+    }
+
+    /* Плеердин ичиндеги мазмунду жайгаштыруу */
+    .p-content {
+        gap: 40px !important;
+    }
+
+    /* 2. ИЗДӨӨ ПАНЕЛИ (Search Box) */
+    .search-container {
+        width: 100% !important;
+        max-width: 1200px !important;
+        margin: 25px auto !important; /* Ортолоо */
+        padding: 0 20px !important;
+    }
+
+    #searchInput {
+        height: 55px !important; /* ПК-да бир аз чоңураак */
+        font-size: 16px !important;
+    }
+
+    /* 3. СЕКЦИЯЛАРДЫН АТАЛЫШТАРЫ (Titles) */
+    .section-title {
+        width: 100% !important;
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+        padding: 30px 20px 15px 20px !important;
+        font-size: 22px !important; /* ПК-да чоңураак текст */
+    }
+
+    /* 4. ПЛЕЕРДЕГИ PROGRESS BAR (Ховер эффекти) */
+    .p-progress-container {
+        height: 5px !important;
+        transition: height 0.3s ease !important;
+    }
+
+    .p-progress-container:hover {
+        height: 8px !important; /* Чычканды барганда жооноруу */
+    }
+
+    /* 5. СОНГ ЛИСТ (Тизмедеги ырларды кооздоо) */
+    .song-item {
+        width: 100% !important;
+        max-width: 1200px !important;
+        margin: 5px auto !important;
+        padding: 12px 20px !important;
+        cursor: pointer;
+    }
+
+    .song-item:hover {
+        background: rgba(128, 128, 128, 0.08) !important;
+    }
+}
