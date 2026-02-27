@@ -390,4 +390,21 @@
     .song-item:hover {
         background: rgba(128, 128, 128, 0.08) !important;
     }
+    /* Иконканы так ортосуна жайгаштыруу */
+    .search-icon {
+        position: absolute !important;
+        left: 20px !important; /* Контейнердин ичинен сол жакта */
+        top: 50% !important;
+        transform: translateY(-50%) !important; /* Вертикалдуу ортолоо */
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        pointer-events: none !important; /* Иконка жазууга тоскоол болбойт */
+    }
+
+    .search-icon svg {
+        width: 20px !important;
+        height: 20px !important;
+        fill: var(--text-sub) !important; /* Иконканын түсү */
+    }
 }
