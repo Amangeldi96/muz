@@ -35,25 +35,34 @@
 }
 
 .p-progress-fill {
-    position: absolute;
-    height: 100%;
-    background: var(--accent);
-    border-radius: 10px;
-    z-index: 2;
-    /* Плеер жылмакай жылышы үчүн */
-    transition: width 0.1s linear; 
+    height: 100%; 
+    background: var(--accent, var(--gold)) !important; 
+    border-radius: 10px; 
+    width: 0%; 
+    /* Кадимки убакта жумшак жылат */
+    transition: width 0.1s linear;
+    position: relative;
+}
+
+.p-progress-container.active-drag .p-progress-fill,
+.p-progress-container.active-drag .p-handle {
+    transition: none !important;
 }
 
 .p-handle {
     position: absolute;
     top: 50%;
-    width: 14px;
-    height: 14px;
+    /* Шариктин сол тарабын 0 кылып, JS аркылуу башкарабыз */
+    left: 0%; 
+    width: 14px; 
+    height: 14px; 
     background: #fff;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    border-radius: 50%; 
+    transform: translate(-50%, -50%); 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3); 
     z-index: 3;
+    /* Бул дагы жумшак жылышы керек */
+    transition: left 0.1s linear;
 }
 
 /* ===================== PLAYER CONTENT (МААЛЫМАТ ЖАНА БАШКАРУУ) ===================== */
@@ -407,4 +416,4 @@
         height: 20px !important;
         fill: var(--text-sub) !important; /* Иконканын түсү */
     }
-}
+    }
