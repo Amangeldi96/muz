@@ -481,18 +481,17 @@ svg{
 
 
 
-
- /* === ПК ВЕРСИЯ ҮЧҮН БАРДЫК БЛОКТОРДУ ОРТОЛОО ЖАНА UPCOMING БЛОГУН УЗАРТУУ === */
+/* === ПК ВЕРСИЯ: АРТИСТТЕР БЛОГУН ГАНА ОҢДОО (БАШКАЛАРЫ ТИЙБЕЙТ) === */
 @media (min-width: 1024px) {
 
-    /* 1. БАРДЫК БЛОКТОРДУ ОРТОГО ЖЫЙНОО (Четке жабышпайт) */
+    /* 1. БАРДЫК БЛОКТОРДУ ОРТОГО ЖЫЙНОО (Өзгөртүүсүз калды) */
     .section-title, 
     .block-con, 
     .song-list, 
     .upcoming-list, 
     #artistDetailContainer {
         width: 100% !important;
-        max-width: 1200px !important; /* Контейнердин кенендиги */
+        max-width: 1200px !important;
         margin-left: auto !important;
         margin-right: auto !important;
         padding-left: 20px !important;
@@ -500,35 +499,47 @@ svg{
         box-sizing: border-box !important;
     }
 
-    /* 2. "ЖАКЫНДА ЧЫГУУЧУ" БЛОГУН ГАНА ТОЛУК УЗАРТУУ */
+    /* 2. "ЖАКЫНДА ЧЫГУУЧУ" БЛОК (Өзгөртүүсүз калды) */
     .upcoming-list {
         display: flex !important;
         flex-direction: column !important;
-        align-items: stretch !important; /* Ичиндеги картаны контейнердин туурасына созот */
+        align-items: stretch !important;
     }
-
     .upcoming-card {
-        width: 100% !important;      /* Карта кичинекей болбой, 1200px-ди толук ээлейт */
-        max-width: 100% !important;  /* Чектөөнү алып салабыз */
+        width: 100% !important;
         display: flex !important;
-        justify-content: flex-start !important;
         align-items: center !important;
-        padding: 15px 25px !important; /* Ички боштуктарды иреттейбиз */
+        padding: 15px 25px !important;
+    }
+    .card-content { flex: 1 !important; padding-left: 20px !important; }
+    .upcoming-play { margin-left: auto !important; }
+
+    /* 3. АРТИСТТЕР БЛОГУН ГАНА ОҢДОО (СКРОЛЛ ЖАНА ТИЗҮҮ) */
+    #artistDetailContainer {
+        display: flex !important;      /* Карталарды бир сапка тизебиз */
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;   /* Карталар ылдый түшпөйт */
+        overflow-x: auto !important;    /* Батпаганы скролл болот */
+        gap: 15px !important;           /* Карталардын ортосундагы боштук */
+        padding-bottom: 15px !important;
+        scrollbar-width: none !important; /* Скроллдун сызыгын жашыруу */
     }
 
-    /* Тексттин бөлүгү бош орунду ээлеп, Play баскычын оңго түртөт */
-    .card-content {
-        flex: 1 !important;
-        padding-left: 20px !important;
+    /* Chrome, Safari үчүн скролл сызыгын жашыруу */
+    #artistDetailContainer::-webkit-scrollbar {
+        display: none !important;
     }
 
-    /* Play баскычы оң жакта турат */
-    .upcoming-play {
-        margin-left: auto !important;
+    /* Артист картасынын өлчөмүн туруктуу кылуу */
+    .artist-card {
+        flex: 0 0 280px !important;     /* Сүрөттөгүдөй кенендикте сакталат */
+        width: 280px !important;
+        box-sizing: border-box !important;
     }
 
-    /* 3. БАШКА БЛОКТОРДУН ИЧИНДЕГИ КАРТАЛАР ЧОЮЛБОЙТ (Ортодо өз өлчөмүндө калат) */
-    .content, .song-list, #artistDetailContainer {
-        align-items: flex-start !important; /* Бул башка карталарды созбойт */
+    /* Калган блок-контейнерлердин ичиндегилердин туруктуулугу */
+    .content {
+        display: flex !important;
+        align-items: flex-start !important;
     }
 }
