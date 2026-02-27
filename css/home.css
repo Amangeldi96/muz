@@ -481,17 +481,17 @@ svg{
 
 
 
-/* === ПК ВЕРСИЯ: АРТИСТТЕР БЛОГУН ГАНА ОҢДОО (БАШКАЛАРЫ ТИЙБЕЙТ) === */
+/* === ПК ВЕРСИЯ ҮЧҮН ТОЛУК ЖАНА АКЫРКЫ ОҢДОО (1024px+) === */
 @media (min-width: 1024px) {
 
-    /* 1. БАРДЫК БЛОКТОРДУ ОРТОГО ЖЫЙНОО (Өзгөртүүсүз калды) */
+    /* 1. БАРДЫК СЕКЦИЯЛАРДЫ ОРТОГО ЖЫЙНОО (Четке жабышпайт) */
     .section-title, 
     .block-con, 
     .song-list, 
     .upcoming-list, 
     #artistDetailContainer {
-        width: 99% !important;
-        max-width: 1200px !important;
+        width: 100% !important;
+        max-width: 1200px !important; /* Сайттын ортодогу жалпы кенендиги */
         margin-left: auto !important;
         margin-right: auto !important;
         padding-left: 20px !important;
@@ -499,47 +499,66 @@ svg{
         box-sizing: border-box !important;
     }
 
-    /* 2. "ЖАКЫНДА ЧЫГУУЧУ" БЛОК (Өзгөртүүсүз калды) */
+    /* 2. "ЖАКЫНДА ЧЫГУУЧУ" БЛОК - СОЗУЛУП УЗАРЫШЫ ҮЧҮН */
     .upcoming-list {
         display: flex !important;
         flex-direction: column !important;
-        align-items: stretch !important;
+        align-items: stretch !important; /* Картаны контейнердин аягына чейин созот */
     }
+
     .upcoming-card {
-        width: 100% !important;
+        width: 100% !important;        /* Карта кичинекей болбой, толук узарат */
+        max-width: 100% !important;
         display: flex !important;
         align-items: center !important;
         padding: 15px 25px !important;
-    }
-    .card-content { flex: 1 !important; padding-left: 20px !important; }
-    .upcoming-play { margin-left: auto !important; }
-
-    /* 3. АРТИСТТЕР БЛОГУН ГАНА ОҢДОО (СКРОЛЛ ЖАНА ТИЗҮҮ) */
-    #artistDetailContainer {
-        display: flex !important;      /* Карталарды бир сапка тизебиз */
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;   /* Карталар ылдый түшпөйт */
-        overflow-x: auto !important;    /* Батпаганы скролл болот */
-        gap: 15px !important;           /* Карталардын ортосундагы боштук */
-        padding-bottom: 15px !important;
-        scrollbar-width: none !important; /* Скроллдун сызыгын жашыруу */
+        border-radius: 20px !important;
     }
 
-    /* Chrome, Safari үчүн скролл сызыгын жашыруу */
-    #artistDetailContainer::-webkit-scrollbar {
-        display: none !important;
+    .card-content {
+        flex: 1 !important;             /* Текст боштукту ээлеп, баскычты оңго түртөт */
+        padding-left: 20px !important;
     }
 
-    /* Артист картасынын өлчөмүн туруктуу кылуу */
-    .artist-card {
-        flex: 0 0 280px !important;     /* Сүрөттөгүдөй кенендикте сакталат */
-        width: 280px !important;
-        box-sizing: border-box !important;
+    .upcoming-play {
+        margin-left: auto !important;   /* Play баскычын эң оң бурчка коёт */
     }
 
-    /* Калган блок-контейнерлердин ичиндегилердин туруктуулугу */
-    .content {
+    /* 3. АРТИСТТЕР ЖАНА ТОП 5 БЛОКТОРУН СКРОЛЛ КЫЛУУ */
+    #artistDetailContainer, .block-con {
         display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;   /* Карталарды ылдый түшүрбөйт */
+        overflow-x: auto !important;    /* Батпаганы скролл болот */
+        gap: 20px !important;
+        padding-bottom: 20px !important;
+        scrollbar-width: thin !important; /* Firefox үчүн ичке скролл */
+    }
+
+    /* Chrome, Safari үчүн скроллдун көрүнүшүн кооздоо */
+    #artistDetailContainer::-webkit-scrollbar, 
+    .block-con::-webkit-scrollbar {
+        height: 6px !important;
+    }
+    #artistDetailContainer::-webkit-scrollbar-thumb, 
+    .block-con::-webkit-scrollbar-thumb {
+        background: rgba(0,0,0,0.1) !important;
+        border-radius: 10px !important;
+    }
+
+    /* Карталардын өлчөмдөрүн туруктуу сактоо (кысылып калбашы үчүн) */
+    .artist-card {
+        flex: 0 0 300px !important;     /* Артисттер картасынын өлчөмү */
+        width: 300px !important;
+    }
+
+    .block {
+        flex: 0 0 200px !important;     /* Топ 5 карталарынын өлчөмү */
+        width: 200px !important;
+    }
+
+    /* 4. БАШКА БЛОКТОР ӨЗ ОРДУНДА (ЧОЮЛБОЙТ) */
+    .content, .song-list {
         align-items: flex-start !important;
     }
 }
