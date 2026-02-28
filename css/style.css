@@ -1,3 +1,19 @@
+button, 
+input[type="button"], 
+input[type="submit"], 
+input[type="reset"] {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+button:focus {
+    outline: none;
+}
+
 *{
     -webkit-user-select: none; 
   -moz-user-select: none;    
