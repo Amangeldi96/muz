@@ -160,7 +160,25 @@ body.menu-open .menu-btn span:nth-child(3) {
     width: 70%;
 }
 
-.logo-text { font-size: 22px; font-weight: 900; color: var(--gold); }
+/* ----------------- LOGO TEXT ----------------- */
+
+.logo-text {
+    font-size: 22px; 
+    font-weight: 900; 
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-dim), var(--accent));
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 6s linear infinite;
+}
+
+/* Градиенттин оңдон солго жылышы */
+@keyframes shimmer {
+    0% { background-position: 200% 0; }   /* Башында оңдон */
+    100% { background-position: -200% 0; } /* Акырында солго */
+}
 
 .theme-toggle { 
   -webkit-tap-highlight-color: transparent; 
