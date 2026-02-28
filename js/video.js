@@ -178,10 +178,13 @@ function setupControls() {
 }
 
 // ==========================================
-// 6. ПЛАВНЫЙ ТАЙМЛАЙН ПЕРЕМОТКА (ЖАҢЫЛАНДЫ)
+// 6. ПЛАВНЫЙ ТАЙМЛАЙН (АВТО-PLAY МЕНЕН)
 // ==========================================
 function setupDragging() {
     if (!pArea) return;
+
+    // Сүйрөө башталгандагы видеонун абалын сактоо үчүн
+    let wasPlaying = false;
 
     const getPercent = (clientX) => {
         const rect = pArea.getBoundingClientRect();
@@ -189,26 +192,28 @@ function setupDragging() {
         return Math.max(0, Math.min(1, pct));
     };
 
-    // Сүйрөп жатканда тилке плавный жылышы үчүн
     const handleMove = (x) => {
         if (!isDragging) return;
         const pct = getPercent(x);
         
-        // CSS transition'ду убактылуу өчүрөбүз (колго илешиш үчүн)
-        pFill.style.transition = "none";
+        pFill.style.transition = "none"; 
         pFill.style.width = (pct * 100) + "%";
         
         const dur = player.getDuration();
         pendingSeekTime = pct * dur;
 
-        // YouTube'дун өзүнүн ички плавный перемоткасын колдонуу
-        // allowSeekAhead: true — бул видеону плавный жылдырат
-        player.seekTo(pendingSeekTime, true);
+        // Сүйрөп жатканда кадрды гана жылдырабыз (пауза болбошу үчүн false)
+        player.seekTo(pendingSeekTime, false);
     };
 
     const start = (x) => {
         isDragging = true;
         blockAutoUpdate = true;
+        
+        // Видео ойноп жаткан болсо, эстеп калабыз
+        const state = player.getPlayerState();
+        wasPlaying = (state === YT.PlayerState.PLAYING);
+        
         handleMove(x);
     };
 
@@ -216,19 +221,30 @@ function setupDragging() {
         if (!isDragging) return;
         isDragging = false;
         
-        // Сүйрөп бүткөндөн кийин автоматтык жаңыртууну бир аз кечиктирип күйгүзөбүз
-        setTimeout(() => { 
+        // 1. Видеону тандалган убакытка так өткөрөбүз
+        player.seekTo(pendingSeekTime, true);
+
+        // 2. ЭҢ МААНИЛҮҮ: Эгер видео ойноп жаткан болсо, кайра иштетебиз
+        // Бир аз кечигүү менен (100мс) берсек, YouTube API так кабыл алат
+        setTimeout(() => {
+            if (wasPlaying) {
+                player.playVideo();
+            }
             blockAutoUpdate = false; 
-            pFill.style.transition = "width 0.2s linear"; // Кайра плавный кылабыз
+            pFill.style.transition = "width 0.2s linear";
         }, 100);
         
         showUI();
     };
 
+    // Чычкан окуялары
     pArea.addEventListener("mousedown", (e) => start(e.clientX));
-    window.addEventListener("mousemove", (e) => handleMove(e.clientX));
+    window.addEventListener("mousemove", (e) => {
+        if (isDragging) handleMove(e.clientX);
+    });
     window.addEventListener("mouseup", end);
 
+    // Сенсордук (Телефон) окуялары
     pArea.addEventListener("touchstart", (e) => {
         start(e.touches[0].clientX);
     }, { passive: false });
@@ -236,7 +252,7 @@ function setupDragging() {
     window.addEventListener("touchmove", (e) => {
         if (isDragging) {
             handleMove(e.touches[0].clientX);
-            if (e.cancelable) e.preventDefault(); // Экранды кошо жылдырбаш үчүн
+            if (e.cancelable) e.preventDefault(); 
         }
     }, { passive: false });
     
