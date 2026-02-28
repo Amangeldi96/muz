@@ -174,7 +174,7 @@ function setupControls() {
                 pFill.style.width = ((curr / dur) * 100) + "%";
             }
         }
-    }, 100);
+    }, 500);
 }
 
 // ==========================================
