@@ -15,7 +15,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    
     overflow: hidden;
 }
 
@@ -101,21 +101,36 @@ h1 { color: #1a1a1a; font-size: 36px; font-weight: 600; margin-bottom: 30px; }
    ADMIN PANEL + HEADER
 ========================================= */
 #admin-main {
-    background: #f4f7fb; min-height: 100vh; width: 100%; display: none; overflow-y: auto;
+    background: #f4f7fb; 
+    min-height: 100vh; 
+    width: 100%; 
+    display: none; 
+    overflow-y: auto;
 }
 
 .admin-header {
-    background: white; padding: 15px 30px; display: flex;
-    justify-content: space-between; align-items: center;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06); position: sticky; top: 0; z-index: 1000;
+    background: white; 
+    padding: 15px 30px; 
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06); 
+    position: sticky; 
+    top: 0; z-index: 1000;
 }
 
 .admin-header h2 { font-size: 22px; font-weight: 800; color: #1e293b; letter-spacing: -0.5px; }
 
 .logout-btn {
-    background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3;
-    padding: 10px 20px; border-radius: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px;
-    transition: 0.3s;
+    background: #f8f9ff;
+    border: 1px solid #dee2e6; 
+    padding: 6px 15px; 
+    border-radius: 50px;
+    color: #4b2ea3; 
+    cursor: pointer; 
+    width: fit-content;
+    transition: 0.3s; 
+    font-size: 14px;
 }
 .logout-btn:hover { background: #e11d48; color: white; transform: translateY(-2px); }
 
@@ -297,4 +312,5 @@ h1 { color: #1a1a1a; font-size: 36px; font-weight: 600; margin-bottom: 30px; }
 
 @keyframes fadeInModal { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideUpToast { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
    
