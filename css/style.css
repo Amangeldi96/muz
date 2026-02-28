@@ -31,10 +31,15 @@ button {
     outline: none !important;
 }
 
-.social-icon:focus, 
 .social-icon:active {
     outline: none !important;
-    background-color: inherit;
+    opacity: 0.7 !important;
+    background-color: var(--accent) !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+.social-icon {
+    user-select: none !important;
+    -webkit-user-select: none !important;
 }
 
 
