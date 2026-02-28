@@ -18,6 +18,26 @@ button:focus-visible {
     outline: none !important;
     box-shadow: none !important;
 }
+.social-icon, 
+.social-links a {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.social-icon:focus, 
+.social-icon:active, 
+.social-icon:hover {
+    outline: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+}
 
 
 *{
