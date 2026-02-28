@@ -618,4 +618,18 @@ svg{
         left: 50% !important;
         transform: translateX(-50%);
     }
-      }
+}
+/* "Топ 5 ыр" блокторундагы прогресс-контейнерди толук жашыруу */
+.block .progress-container, 
+.block .progress-bg {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+/* Прогресс-бар ГАНА "Жакында чыгуучу" (upcoming) карталарында гана көрүнүшү керек */
+.upcoming-card .progress-container {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+                    }
