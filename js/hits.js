@@ -195,7 +195,7 @@
                 const dur = ytPlayer.getDuration();
                 if (dur > 0) updateProgressBar((curr / dur) * 100);
             }
-        }, 500);
+        }, 100);
     }
 
     window.toggleMainPlay = function() {
