@@ -240,3 +240,13 @@ window.login = async () => {
 window.openUpload = () => { document.getElementById('uploadModal').style.display = 'flex'; };
 window.closeUpload = () => { document.getElementById('uploadModal').style.display = 'none'; };
   
+// ================= 7. ЧЫГУУ ЖАНА БАШКЫ БЕТКЕ ӨТҮҮ =================
+window.logout = async () => {
+    try {
+        await signOut(auth);
+        window.location.href = "index.html"; 
+    } catch (err) {
+        console.error("Чыгууда ката кетти:", err);
+        showMsg("Ката кетти!", "error");
+    }
+};
