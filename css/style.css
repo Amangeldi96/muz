@@ -19,12 +19,24 @@ button:focus-visible {
     box-shadow: none !important;
 }
 .social-icon, 
-.social-links a {
+.social-links a,
+button {
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
     -webkit-user-select: none !important;
+    -khtml-user-select: none !important;
     -moz-user-select: none !important;
     -ms-user-select: none !important;
-    text-decoration: none;
+    user-select: none !important;
+    outline: none !important;
 }
+
+.social-icon:focus, 
+.social-icon:active {
+    outline: none !important;
+    background-color: inherit;
+}
+
 
 *{
     -webkit-user-select: none; 
