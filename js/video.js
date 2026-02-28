@@ -178,7 +178,7 @@ function setupControls() {
 }
 
 // ==========================================
-// 6. ПЛАВНЫЙ ТАЙМЛАЙН ПЕРЕМОТКА (ОҢДОЛГОН)
+// 6. ПЛАВНЫЙ ТАЙМЛАЙН ПЕРЕМОТКА (ЖАҢЫЛАНДЫ)
 // ==========================================
 function setupDragging() {
     if (!pArea) return;
@@ -189,23 +189,21 @@ function setupDragging() {
         return Math.max(0, Math.min(1, pct));
     };
 
-    // Сүйрөп жатканда тилке гана жылат (Видео катып калбашы үчүн)
+    // Сүйрөп жатканда тилке плавный жылышы үчүн
     const handleMove = (x) => {
         if (!isDragging) return;
         const pct = getPercent(x);
         
-        // CSS transition'ду өчүрөбүз, колго илешип дароо жылыш үчүн
+        // CSS transition'ду убактылуу өчүрөбүз (колго илешиш үчүн)
         pFill.style.transition = "none";
         pFill.style.width = (pct * 100) + "%";
         
         const dur = player.getDuration();
         pendingSeekTime = pct * dur;
 
-        // Видеону кошо жылдыруу (Бирок өтө тез эмес, болжол менен 100мс сайын)
-        // Бул жерде 'false' коюу маанилүү - бул "жүктөөнү" аягына чыгара электе серверди кыйнабайт
-        if (player && typeof player.seekTo === 'function') {
-            player.seekTo(pendingSeekTime, false); 
-        }
+        // YouTube'дун өзүнүн ички плавный перемоткасын колдонуу
+        // allowSeekAhead: true — бул видеону плавный жылдырат
+        player.seekTo(pendingSeekTime, true);
     };
 
     const start = (x) => {
@@ -218,28 +216,19 @@ function setupDragging() {
         if (!isDragging) return;
         isDragging = false;
         
-        // Сөөмөйдү же чычканды коё бергенде гана видеону так ошол жерге секиртүү
-        if (player && typeof player.seekTo === 'function') {
-            player.seekTo(pendingSeekTime, true);
-        }
-
-        // Кайра автоматтык түрдө тилкени жылдырууну иштетүү
+        // Сүйрөп бүткөндөн кийин автоматтык жаңыртууну бир аз кечиктирип күйгүзөбүз
         setTimeout(() => { 
             blockAutoUpdate = false; 
-            pFill.style.transition = "width 0.2s linear"; 
-        }, 200);
+            pFill.style.transition = "width 0.2s linear"; // Кайра плавный кылабыз
+        }, 100);
         
         showUI();
     };
 
-    // Чычкан окуялары
     pArea.addEventListener("mousedown", (e) => start(e.clientX));
-    window.addEventListener("mousemove", (e) => {
-        if (isDragging) handleMove(e.clientX);
-    });
+    window.addEventListener("mousemove", (e) => handleMove(e.clientX));
     window.addEventListener("mouseup", end);
 
-    // Сенсордук (Телефон) окуялары
     pArea.addEventListener("touchstart", (e) => {
         start(e.touches[0].clientX);
     }, { passive: false });
@@ -247,13 +236,12 @@ function setupDragging() {
     window.addEventListener("touchmove", (e) => {
         if (isDragging) {
             handleMove(e.touches[0].clientX);
-            if (e.cancelable) e.preventDefault(); 
+            if (e.cancelable) e.preventDefault(); // Экранды кошо жылдырбаш үчүн
         }
     }, { passive: false });
     
     window.addEventListener("touchend", end);
-                }
-        
+}
 
 // ==========================================
 // 7. КАЛГАН ФУНКЦИЯЛАР (Ошол эле бойдон)
@@ -280,4 +268,4 @@ function extractVideoId(url) {
     const reg = /^.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
     const match = String(url).match(reg);
     return (match && match[1].length === 11) ? match[1] : (url.length === 11 ? url : "");
-}
+    }
