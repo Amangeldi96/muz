@@ -174,7 +174,7 @@ function setupControls() {
                 pFill.style.width = ((curr / dur) * 100) + "%";
             }
         }
-    }, 500);
+    }, 100);
 }
 
 // ==========================================
@@ -220,7 +220,7 @@ function setupDragging() {
         setTimeout(() => { 
             blockAutoUpdate = false; 
             pFill.style.transition = "width 0.2s linear"; // Кайра плавный кылабыз
-        }, 500);
+        }, 100);
         
         showUI();
     };
