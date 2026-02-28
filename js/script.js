@@ -204,7 +204,7 @@ function startProgressTracking() {
                 }
             }
         }
-    }, 500);
+    }, 100);
 }
 
 function resetProgressBar(btn) {
