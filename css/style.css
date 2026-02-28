@@ -166,7 +166,6 @@ body.menu-open .menu-btn span:nth-child(3) {
     font-size: 22px; 
     font-weight: 900; 
     text-transform: uppercase;
-    letter-spacing: 5px;
     background: linear-gradient(90deg, var(--accent), var(--accent-dim), var(--accent));
     background-size: 200% 100%;
     -webkit-background-clip: text;
