@@ -68,33 +68,55 @@
 /* ===================== PLAYER CONTENT (МААЛЫМАТ ЖАНА БАШКАРУУ) ===================== */
 .p-content {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    align-items: center; /* Бардык элементтерди (плей иконкасы, текст, кнопкалар) бир түз сызыкка ортолойт */
+    width: 100%;
+    gap: 10px; /* Элементтердин арасы өтө жабышпашы үчүн */
 }
 
+
+/* Маалыматтык блок (тексттер үчүн контейнер) */
 .p-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
     flex: 1;
     overflow: hidden;
-    margin-right: 15px;
+    margin-left: 8px !important; 
+    min-width: 0;
 }
 
+.song-item .p-info {
+    margin-left: 8px !important;
+}
+
+
+/* Ырдын аталышы (Жогорку катар) */
 .p-info b {
     display: block;
     font-size: 16px;
     font-weight: 700;
-    color: var(--text-main);
+    color: #404000;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Текст узун болсо үч чекит коёт */
+}
+
+/* Аткаруучунун аты (Төмөнкү катар) */
+.p-info span {
+    display: block;
+    font-size: 13px;
+    color: #8a8a6a;
+    margin-top: 2px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1.2;
 }
 
-.p-info span {
-    font-size: 13px;
-    color: var(--text-sub);
-    display: block;
-    margin-top: 2px;
-}
+
+
+
 
 .p-controls {
     display: flex;
@@ -416,4 +438,4 @@
         height: 20px !important;
         fill: var(--text-sub) !important; /* Иконканын түсү */
     }
-    }
+}
