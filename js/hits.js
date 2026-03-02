@@ -236,22 +236,24 @@
     };
 
     window.renderSongs = function(songsToDisplay){
-        if(!listDiv) return;
-        listDiv.innerHTML = "";
-        songsToDisplay.forEach((song, index)=>{
-            const div = document.createElement('div');
-            div.className = 'song-item';
-            div.innerHTML = `
-                <div class="play-icon-circle">${getPlayIcon()}</div>
-                <div class="song-info">
-                    <b>${song.title}</b>
-                    <span>${song.artist}</span>
-                </div>`;
-            const btn = div.querySelector('.play-icon-circle');
-            div.onclick = () => window.togglePlay(btn, song.src, song.title, song.artist);
-            listDiv.appendChild(div);
-        });
-    };
+    if(!listDiv) return;
+    listDiv.innerHTML = "";
+    songsToDisplay.forEach((song, index)=>{
+        const div = document.createElement('div');
+        div.className = 'song-item';
+        // БУЛ ЖЕРДЕ: song-info классын p-info деп өзгөрттүк
+        div.innerHTML = `
+            <div class="play-icon-circle">${getPlayIcon()}</div>
+            <div class="p-info"> 
+                <b>${song.title}</b>
+                <span>${song.artist}</span>
+            </div>`;
+        const btn = div.querySelector('.play-icon-circle');
+        div.onclick = () => window.togglePlay(btn, song.src, song.title, song.artist);
+        listDiv.appendChild(div);
+    });
+};
+
 
     if(searchInput) {
         searchInput.addEventListener('input', (e) => {
