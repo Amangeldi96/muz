@@ -77,14 +77,6 @@ body {
     background-color: #1a1a1a; /* Сүрөт жүктөлгүчө кара түс турат */
 }
 
-body::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Сүрөттү бир аз караңгылатуу */
-    z-index: -1;
-}
-
 /* --- SIDE MENU --- */
 .side-menu {
     position: fixed;
