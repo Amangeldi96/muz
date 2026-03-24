@@ -67,6 +67,23 @@ body.red { --bg-body: #2b0a0a; --bg-container: #fff2f2; --text-main: #990000; }
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Century Gothic', sans-serif; }
 
 body { background: var(--bg-body); color: var(--text-main); transition: 0.3s; overflow-x: hidden; }
+body {
+    /* Сүрөттүн дарегин 'url' ичине жазыңыз */
+    background-image: url('сиздин-сүрөттүн-шилтемеси.jpg'); 
+    background-size: cover; /* Сүрөт экранды толук каптайт */
+    background-position: center; /* Ортодон көрсөтөт */
+    background-attachment: fixed; /* Скролл кылганда сүрөт ордунда турат (абдан кооз көрүнөт) */
+    background-repeat: no-repeat;
+}
+
+/* Сүрөттүн үстүндөгү тексттер жакшы көрүнүшү үчүн кичине караңгылатуу (опционалдуу) */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* 0.4 - караңгылыктын деңгээли */
+    z-index: -1;
+}
 
 /* --- SIDE MENU --- */
 .side-menu {
@@ -225,9 +242,6 @@ body.menu-open .menu-btn span:nth-child(3) {
 
 /* --- PC (DESKTOP) VERSION STYLES --- */
 @media (min-width: 900px) {
-    .body{
-        background-color: #f1fff5;
-    }
     .menu-btn { display: none !important; }
     #main-container { display: flex; flex-direction: column; }
     header { display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100%; padding: 0 30px; height: 80px; position: relative; }
@@ -318,9 +332,6 @@ body.menu-open .menu-btn span:nth-child(3) {
 
 /* --- ПК ВЕРСИЯ ҮЧҮН (СКРОЛЛСУЗ) --- */
 @media (min-width: 1024px) {
-       .body{
-        background-color: #f1fff5;
-    }
     .settings-modal {
         width: auto; /* ПКда ичиндеги элементтерге жараша кенендик алат */
         min-width: 250px; 
