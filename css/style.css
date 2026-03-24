@@ -69,7 +69,7 @@ body.red { --bg-body: #2b0a0a; --bg-container: #fff2f2; --text-main: #990000; }
 body { background: var(--bg-body); color: var(--text-main); transition: 0.3s; overflow-x: hidden; }
 body {
     /* Сүрөттүн дарегин 'url' ичине жазыңыз */
-    background-image: url('сиздин-сүрөттүн-шилтемеси.jpg'); 
+    background-image: url('fon.jpg'); 
     background-size: cover; /* Сүрөт экранды толук каптайт */
     background-position: center; /* Ортодон көрсөтөт */
     background-attachment: fixed; /* Скролл кылганда сүрөт ордунда турат (абдан кооз көрүнөт) */
