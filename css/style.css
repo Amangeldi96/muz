@@ -318,6 +318,9 @@ body.menu-open .menu-btn span:nth-child(3) {
 
 /* --- ПК ВЕРСИЯ ҮЧҮН (СКРОЛЛСУЗ) --- */
 @media (min-width: 1024px) {
+       .body{
+        background-color: #f1fff5;
+    }
     .settings-modal {
         width: auto; /* ПКда ичиндеги элементтерге жараша кенендик алат */
         min-width: 250px; 
