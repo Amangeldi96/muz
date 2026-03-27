@@ -251,38 +251,50 @@ body.menu-open .menu-btn span:nth-child(3) {
 }
 
 /* --- PC (DESKTOP) VERSION STYLES --- */
+/* --- PC (DESKTOP) VERSION STYLES --- */
 @media (min-width: 900px) {
-    .menu-btn { display: none !important; }
-   .content {
-        flex-wrap: wrap !important; /* ПКда карточкалар кийинки катарга түшүшү керек */
-        overflow-x: visible !important;
-        justify-content: flex-start;
+    /* 1. Мобилдик меню элементтерин толугу менен өчүрүү */
+    .menu-btn { 
+        display: none !important; 
     }
 
+    /* 2. Контейнерди 100% жайып, ашыкча боштуктарды алып салуу */
     #main-container {
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 !important;
+        transform: none !important; /* Меню ачык болсо да жылбашы керек */
         display: block !important;
+        box-shadow: none !important;
     }
-    header { display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100%; padding: 0 30px; height: 80px; position: relative; }
+
+    /* 3. Каптал менюну ПК версияда горизонталдык менюга айлантуу */
     .side-menu {
-        position: absolute !important;
+        position: relative !important; /* Абсолюттук эмес, өз ордунда турат */
         top: 0 !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        height: 80px !important;
-        width: auto !important;
-        background: transparent !important;
-        display: flex !important;
-        align-items: center !important;
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        height: auto !important;
         padding: 0 !important;
+        background: transparent !important;
         border: none !important;
+        display: flex !important;
+        justify-content: center !important;
         z-index: 1000;
+        margin-top: -50px; /* Header менен бириктирүү үчүн */
     }
-    .menu-items { display: flex !important; flex-direction: row !important; gap: 30px; padding: 0; margin: 0; list-style: none; }
+
+    .menu-items { 
+        display: flex !important; 
+        flex-direction: row !important; 
+        gap: 30px; 
+        padding: 10px 0; 
+        margin: 0 auto; 
+        list-style: none; 
+    }
+
     .menu-items li {
-        position: relative;
         opacity: 1 !important;
         transform: none !important;
         font-size: 14px;
@@ -293,20 +305,26 @@ body.menu-open .menu-btn span:nth-child(3) {
         padding: 6px 0 !important;
         transition: color 0.3s ease;
     }
-    .menu-items li:hover { color: var(--gold); }
-    .menu-items li::after {
-        content: '';
-        position: absolute;
-        left: 0; bottom: -4px;
-        width: 0; height: 2px;
-        background: var(--gold);
-        transition: width 0.3s ease;
-        border-radius: 2px;
-    }
-    .menu-items li:hover::after { width: 100%; }
-    body.menu-open #main-container { transform: none !important; }
-}
 
+    /* 4. Мазмундук блокторду (Топ 5) тууралоо */
+    .content {
+        flex-wrap: wrap !important; 
+        overflow-x: visible !important;
+        justify-content: center !important; /* Карточкаларды ортого коюу */
+    }
+
+    .block-con {
+        width: 100% !important;
+        max-width: 1200px; /* Мазмун өтө жайылып кетпеши үчүн */
+        margin: 0 auto 30px auto !important;
+    }
+
+    /* 5. Фондук сүрөттү бүт экранга жаюу */
+    body {
+        background-attachment: fixed !important;
+        background-size: cover !important;
+    }
+}
 
 /* ============================================================
    ОПТИМАЛДАШТЫРЫЛГАН НАСТРОЙКА (ПК ЖАНА ТЕЛЕФОН)
