@@ -239,17 +239,12 @@ body.menu-open .menu-btn span:nth-child(3) {
     }
 
     /* 3. ЭҢ НЕГИЗГИ БӨЛҮК: Контейнерди 100% жаюу */
-    #main-container {
-        display: block !important;    /* Flex болсо алып таштайт */
-        width: 100vw !important;     /* Экрандын туурасы 100% */
-        min-width: 100vw !important; 
-        max-width: 100vw !important;
-        margin: 0 !important;        /* Ортодо калтырбай, четине созот */
-        left: 0 !important;
-        position: relative !important;
-        transform: none !important;  /* Капталга жылдырууларды өчүрөт */
-        border-radius: 0 !important; /* Четтери тоголок болсо түзөйт */
-        box-shadow: none !important;
+#main-container {
+        width: 100vw !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        float: none !important; /* Бул маанилүү! */
+        display: block !important;
     }
 
     /* 4. Ичиндеги мазмун өтө эле четке жабышып калбашы үчүн */
