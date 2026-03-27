@@ -67,15 +67,7 @@ body.red { --bg-body: #2b0a0a; --bg-container: #fff2f2; --text-main: #990000; }
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Century Gothic', sans-serif; }
 
 body { background: var(--bg-body); color: var(--text-main); transition: 0.3s; overflow-x: hidden; }
-body {
-    /* ../ бул 'css' папкасынан сыртка чыгып, башкы папкадан сүрөттү табат */
-    background-image: url('../fon.jpg') !important; 
-    background-size: cover !important;
-    background-position: center !important;
-    background-attachment: fixed !important;
-    background-repeat: no-repeat !important;
-    background-color: #1a1a1a; /* Сүрөт жүктөлгүчө кара түс турат */
-}
+
 
 /* --- SIDE MENU --- */
 .side-menu {
