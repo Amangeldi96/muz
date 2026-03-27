@@ -12,13 +12,6 @@ input[type="reset"] {
     -webkit-tap-highlight-color: transparent !important;
 }
 
-body, html {
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow-x: hidden; /* Оңго-солго сүрүлбөшү үчүн */
-    width: 100%;
-}
-
 button:focus, 
 button:active, 
 button:focus-visible {
@@ -241,13 +234,45 @@ body.menu-open .menu-btn span:nth-child(3) {
 
 /* --- PC (DESKTOP) VERSION STYLES --- */
 @media (min-width: 900px) {
-    .menu-btn { display: none !important; }
-#main-container {
-        display: block !important; /* flex'тин ордуна block колдонуп көрүңүз */
-        width: 100% !important;
-        position: relative !important;
+.menu-btn, .side-menu { 
+        display: none !important; 
     }
-    header { display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100%; padding: 0 30px; height: 80px; position: relative; }
+
+    /* 2. BODY жана HTML'ди толук экранга даярдоо */
+    html, body {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow-x: hidden !important;
+    }
+
+    /* 3. ЭҢ НЕГИЗГИ БӨЛҮК: Контейнерди 100% жаюу */
+    #main-container {
+        display: block !important;    /* Flex болсо алып таштайт */
+        width: 100vw !important;     /* Экрандын туурасы 100% */
+        min-width: 100vw !important; 
+        max-width: 100vw !important;
+        margin: 0 !important;        /* Ортодо калтырбай, четине созот */
+        left: 0 !important;
+        position: relative !important;
+        transform: none !important;  /* Капталга жылдырууларды өчүрөт */
+        border-radius: 0 !important; /* Четтери тоголок болсо түзөйт */
+        box-shadow: none !important;
+    }
+
+    /* 4. Ичиндеги мазмун өтө эле четке жабышып калбашы үчүн */
+    header, .content-section, #music-list, .hit-songs {
+        width: 100% !important;
+        max-width: 1400px;           /* Мазмун өтө жайылып кетпеши үчүн */
+        margin: 0 auto !important;   /* Мазмунду гана ортого коёт */
+        padding: 0 40px !important;  /* Эки жагынан боштук берет */
+    }
+
+    /* 5. Фондук сүрөттү бүт экранга жаюу */
+    body {
+        background-attachment: fixed !important;
+        background-size: cover !important;
+    }
     .side-menu {
         position: absolute !important;
         top: 0 !important;
