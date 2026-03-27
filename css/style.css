@@ -243,14 +243,10 @@ body.menu-open .menu-btn span:nth-child(3) {
 @media (min-width: 900px) {
     .menu-btn { display: none !important; }
 #main-container {
-    width: 100vw !important;  /* Экрандын көрүнгөн туурасы 100% */
-    min-width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;     /* Сырткы боштуктарды нөлгө түшүрөт */
-    left: 0 !important;
-    right: 0 !important;
-    transform: none !important; /* Эгер кандайдыр бир жылыш болсо өчүрөт */
-}
+        display: block !important; /* flex'тин ордуна block колдонуп көрүңүз */
+        width: 100% !important;
+        position: relative !important;
+    }
     header { display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100%; padding: 0 30px; height: 80px; position: relative; }
     .side-menu {
         position: absolute !important;
