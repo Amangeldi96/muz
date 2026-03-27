@@ -12,6 +12,13 @@ input[type="reset"] {
     -webkit-tap-highlight-color: transparent !important;
 }
 
+body, html {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden; /* Оңго-солго сүрүлбөшү үчүн */
+    width: 100%;
+}
+
 button:focus, 
 button:active, 
 button:focus-visible {
@@ -235,16 +242,15 @@ body.menu-open .menu-btn span:nth-child(3) {
 /* --- PC (DESKTOP) VERSION STYLES --- */
 @media (min-width: 900px) {
     .menu-btn { display: none !important; }
-#main-container { 
-        display: flex; 
-        flex-direction: column; 
-        
-        /* БУЛ ЖЕРДИ ӨЗГӨРТҮҢҮЗ: */
-        width: 100% !important;   /* Контейнерди толук жаят */
-        max-width: 100% !important; 
-        margin: 0 !important;      /* Ортодогу боштуктарды алат */
-        border-radius: 0 !important; /* Эгер четтери тоголок болсо, түз кылат */
-    }
+#main-container {
+    width: 100vw !important;  /* Экрандын көрүнгөн туурасы 100% */
+    min-width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;     /* Сырткы боштуктарды нөлгө түшүрөт */
+    left: 0 !important;
+    right: 0 !important;
+    transform: none !important; /* Эгер кандайдыр бир жылыш болсо өчүрөт */
+}
     header { display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100%; padding: 0 30px; height: 80px; position: relative; }
     .side-menu {
         position: absolute !important;
