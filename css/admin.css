@@ -314,107 +314,32 @@ h1 { color: #1a1a1a; font-size: 36px; font-weight: 600; margin-bottom: 30px; }
 @keyframes slideUpToast { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
    
-@media (min-width: 900px) {
-
-    body {
-        display: block;
-        padding: 0;
-        background: #eef2f7;
+@media (min-width: 1024px) {
+    .auth-wrapper {
+        max-width: 900px;
+        height: 550px;
+        flex-direction: row;
     }
 
-    /* MAIN WRAPPER */
-    #admin-main {
+    .welcome-side {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 30px 40px;
-    }
-
-    /* HEADER */
-    .admin-header {
-        width: 100%;
-        max-width: 1300px;
-        border-radius: 20px;
-        margin-bottom: 30px;
-        padding: 20px 30px;
-    }
-
-    .admin-header h2 {
-        font-size: 26px;
-    }
-
-    /* CONTAINER CENTER */
-    #lists-container {
-        width: 100%;
-        max-width: 1300px;
-
-        display: grid;
-        grid-template-columns: repeat(3, 1fr); /* 🔥 3 колонка */
-        gap: 25px;
-
-        padding: 10px;
-    }
-
-    /* CARD STYLE */
-    .category-item {
-        margin: 0;
-    }
-
-    .category-header {
-        height: 180px;
-        border-radius: 20px;
-        padding: 20px;
-
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-
-        font-size: 18px;
-
-        transition: 0.3s;
-    }
-
-    .category-header:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.08);
-    }
-
-    /* TITLE */
-    .category-header h3 {
-        font-size: 18px;
-        font-weight: 800;
-    }
-
-    /* PLUS BUTTON */
-    .category-header::after {
-        font-size: 26px;
-    }
-
-    /* OPEN LIST */
-    .list-group.show {
-        margin-top: 10px;
-        border-radius: 16px;
-    }
-
-    /* ITEM */
-    .list-item {
-        padding: 14px 16px;
-        font-size: 15px;
-    }
-
-    /* FLOAT BUTTON */
-    .add-btn {
-        right: 60px;
-        bottom: 60px;
-        width: 80px;
-        height: 80px;
-        font-size: 40px;
-        border-radius: 30px;
-    }
-
-    /* MODAL */
-    .modal-content {
-        max-width: 520px;
+        flex: 1;
+        background: linear-gradient(135deg, #4b2ea3 0%, #6a49f2 100%);
+        clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%);
+        color: white;
+        text-align: center;
         padding: 40px;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .form-container {
+        flex: 1.2;
+        padding: 60px;
+    }
+
+    .login-side, .forgot-side {
+        padding: 60px;
     }
 }
