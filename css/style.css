@@ -226,11 +226,12 @@ body.menu-open .menu-btn span:nth-child(3) {
 
 /* --- PC (DESKTOP) VERSION STYLES --- */
 @media (min-width: 900px) {
-.menu-btn, .side-menu { 
+/* 1. Меню кнопкасын жана каптал менюну ПКда толугу менен өчүрөбүз */
+    .menu-btn, .side-menu { 
         display: none !important; 
     }
 
-    /* 2. BODY жана HTML'ди толук экранга даярдоо */
+    /* 2. Body жана HTML толук экранга жайылышы керек */
     html, body {
         width: 100% !important;
         margin: 0 !important;
@@ -238,27 +239,46 @@ body.menu-open .menu-btn span:nth-child(3) {
         overflow-x: hidden !important;
     }
 
-    /* 3. ЭҢ НЕГИЗГИ БӨЛҮК: Контейнерди 100% жаюу */
-#main-container {
-        width: 100vw !important;
+    /* 3. КОНТЕЙНЕР: Эми ал эч нерсеге карабай 100% болот */
+    #main-container {
+        width: 100% !important;
         max-width: 100% !important;
         margin: 0 !important;
-        float: none !important; /* Бул маанилүү! */
+        transform: none !important; 
         display: block !important;
+        box-shadow: none !important;
+        border: none !important;
     }
 
-    /* 4. Ичиндеги мазмун өтө эле четке жабышып калбашы үчүн */
-    header, .content-section, #music-list, .hit-songs {
+    /* 4. HEADER: Логотип жана меню ПКда туура жайгашуусу үчүн */
+    header { 
+        display: flex !important; 
+        align-items: center !important; 
+        justify-content: space-between !important; 
+        width: 100% !important; 
+        max-width: 1400px; /* Мазмун өтө жайылып кетпеши үчүн */
+        margin: 0 auto !important; /* Header'ди ортого коёт */
+        padding: 0 30px !important; 
+        height: 80px; 
+    }
+
+    /* 5. Мазмундук бөлүктөр (сеткалар) четке жабышпашы үчүн */
+    .content-section, #music-list, .hit-songs {
         width: 100% !important;
-        max-width: 1400px;           /* Мазмун өтө жайылып кетпеши үчүн */
-        margin: 0 auto !important;   /* Мазмунду гана ортого коёт */
-        padding: 0 40px !important;  /* Эки жагынан боштук берет */
+        max-width: 1400px;
+        margin: 0 auto !important;
+        padding: 0 30px !important;
     }
 
-    /* 5. Фондук сүрөттү бүт экранга жаюу */
+    /* 6. Фонду толук жаюу */
     body {
         background-attachment: fixed !important;
         background-size: cover !important;
+    }
+    
+    /* Меню ачык калса да блокту жылдырбасын */
+    body.menu-open #main-container { 
+        transform: none !important; 
     }
     .side-menu {
         position: absolute !important;
