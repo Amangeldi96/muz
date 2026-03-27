@@ -235,10 +235,15 @@ body.menu-open .menu-btn span:nth-child(3) {
 /* --- PC (DESKTOP) VERSION STYLES --- */
 @media (min-width: 900px) {
     .menu-btn { display: none !important; }
-    #main-container { 
+#main-container { 
         display: flex; 
         flex-direction: column; 
-        width: 100%;
+        
+        /* БУЛ ЖЕРДИ ӨЗГӨРТҮҢҮЗ: */
+        width: 100% !important;   /* Контейнерди толук жаят */
+        max-width: 100% !important; 
+        margin: 0 !important;      /* Ортодогу боштуктарды алат */
+        border-radius: 0 !important; /* Эгер четтери тоголок болсо, түз кылат */
     }
     header { display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100%; padding: 0 30px; height: 80px; position: relative; }
     .side-menu {
