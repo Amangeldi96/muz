@@ -67,7 +67,15 @@ body.red { --bg-body: #2b0a0a; --bg-container: #fff2f2; --text-main: #990000; }
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Century Gothic', sans-serif; }
 
 body { background: var(--bg-body); color: var(--text-main); transition: 0.3s; overflow-x: hidden; }
-
+body {
+    /* ../ бул 'css' папкасынан сыртка чыгып, башкы папкадан сүрөттү табат */
+    background-image: url('../fon.jpg') !important; 
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
+    background-color: #1a1a1a; /* Сүрөт жүктөлгүчө кара түс турат */
+}
 
 /* --- SIDE MENU --- */
 .side-menu {
@@ -226,60 +234,20 @@ body.menu-open .menu-btn span:nth-child(3) {
 
 /* --- PC (DESKTOP) VERSION STYLES --- */
 @media (min-width: 900px) {
-/* 1. Меню кнопкасын жана каптал менюну ПКда толугу менен өчүрөбүз */
-    .menu-btn, .side-menu { 
-        display: none !important; 
+    .menu-btn { display: none !important; }
+   .content {
+        flex-wrap: wrap !important; /* ПКда карточкалар кийинки катарга түшүшү керек */
+        overflow-x: visible !important;
+        justify-content: flex-start;
     }
 
-    /* 2. Body жана HTML толук экранга жайылышы керек */
-    html, body {
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        overflow-x: hidden !important;
-    }
-
-    /* 3. КОНТЕЙНЕР: Эми ал эч нерсеге карабай 100% болот */
     #main-container {
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 !important;
-        transform: none !important; 
         display: block !important;
-        box-shadow: none !important;
-        border: none !important;
     }
-
-    /* 4. HEADER: Логотип жана меню ПКда туура жайгашуусу үчүн */
-    header { 
-        display: flex !important; 
-        align-items: center !important; 
-        justify-content: space-between !important; 
-        width: 100% !important; 
-        max-width: 1400px; /* Мазмун өтө жайылып кетпеши үчүн */
-        margin: 0 auto !important; /* Header'ди ортого коёт */
-        padding: 0 30px !important; 
-        height: 80px; 
-    }
-
-    /* 5. Мазмундук бөлүктөр (сеткалар) четке жабышпашы үчүн */
-    .content-section, #music-list, .hit-songs {
-        width: 100% !important;
-        max-width: 1400px;
-        margin: 0 auto !important;
-        padding: 0 30px !important;
-    }
-
-    /* 6. Фонду толук жаюу */
-    body {
-        background-attachment: fixed !important;
-        background-size: cover !important;
-    }
-    
-    /* Меню ачык калса да блокту жылдырбасын */
-    body.menu-open #main-container { 
-        transform: none !important; 
-    }
+    header { display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100%; padding: 0 30px; height: 80px; position: relative; }
     .side-menu {
         position: absolute !important;
         top: 0 !important;
