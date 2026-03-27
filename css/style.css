@@ -12,8 +12,6 @@ input[type="reset"] {
     -webkit-tap-highlight-color: transparent !important;
 }
 
-
-
 button:focus, 
 button:active, 
 button:focus-visible {
@@ -69,7 +67,15 @@ body.red { --bg-body: #2b0a0a; --bg-container: #fff2f2; --text-main: #990000; }
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Century Gothic', sans-serif; }
 
 body { background: var(--bg-body); color: var(--text-main); transition: 0.3s; overflow-x: hidden; }
-/* Главный бет үчүн */
+body {
+    /* ../ бул 'css' папкасынан сыртка чыгып, башкы папкадан сүрөттү табат */
+    background-image: url('../fon.jpg') !important; 
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
+    background-color: #1a1a1a; /* Сүрөт жүктөлгүчө кара түс турат */
+}
 
 /* --- SIDE MENU --- */
 .side-menu {
@@ -229,37 +235,8 @@ body.menu-open .menu-btn span:nth-child(3) {
 /* --- PC (DESKTOP) VERSION STYLES --- */
 @media (min-width: 900px) {
     .menu-btn { display: none !important; }
-    #main-container {
-        width: 100% !important;
-        max-width: 100% !important;
-        padding-left: 0 !important;
-        margin: 0 !important;
-    }
-
-    /* ❗ ГЛАВНЫЙ КОНТЕНТ */
-    .block-con {
-        width: 100% !important;
-        max-width: 100% !important;
-    }
-
-    .content {
-        width: 100% !important;
-    }
-
-    /* ❗ ЭҢ МААНИЛҮҮ */
-    header,
-    .block-con {
-        padding-left: 30px;
-        padding-right: 30px;
-    }
-    header { 
-        display: flex !important;
-        align-items: center !important; 
-        justify-content: space-between !important;
-         width: 100%; 
-         padding: 0 30px; 
-         height: 80px; 
-        position: relative; }
+    #main-container { display: flex; flex-direction: column; }
+    header { display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100%; padding: 0 30px; height: 80px; position: relative; }
     .side-menu {
         position: absolute !important;
         top: 0 !important;
