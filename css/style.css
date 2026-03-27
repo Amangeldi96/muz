@@ -237,57 +237,53 @@ body.menu-open .menu-btn span:nth-child(3) {
 
 /* --- PC (DESKTOP) VERSION STYLES --- */
 @media (min-width: 900px) {
-
     .menu-btn { display: none !important; }
-
-    /* Контент норм сетка */
-    body.home .content {
-        flex-wrap: wrap !important;
-        overflow-x: visible !important;
-        justify-content: flex-start;
-    }
-
-    /* Негизги контейнер */
     #main-container {
         width: 100% !important;
         max-width: 100% !important;
-        padding: 0 !important;
+        padding-left: 0 !important;
         margin: 0 !important;
     }
 
-    /* HEADER */
-    header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between; /* логотип сол, меню ортодо */
-        width: 100%;
-        padding: 0 30px;
-        height: 80px;
+    /* ❗ ГЛАВНЫЙ КОНТЕНТ */
+    .block-con {
+        width: 100% !important;
+        max-width: 100% !important;
     }
 
-    /* ❗ ЭН МААНИЛҮҮ FIX */
+    .content {
+        width: 100% !important;
+    }
+
+    /* ❗ ЭҢ МААНИЛҮҮ */
+    header,
+    .block-con {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+    header { 
+        display: flex !important;
+        align-items: center !important; 
+        justify-content: space-between !important;
+         width: 100%; 
+         padding: 0 30px; 
+         height: 80px; 
+        position: relative; }
     .side-menu {
-        position: static !important;   /* БОЛДУ absolute ЖОК */
-        transform: none !important;
-        height: 80px;
-        display: flex;
-        align-items: center;
-        background: transparent;
-        border: none;
-        padding: 0;
-        margin: 0 auto; /* ортого коюу */
+        position: absolute !important;
+        top: 0 !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        height: 80px !important;
+        width: auto !important;
+        background: transparent !important;
+        display: flex !important;
+        align-items: center !important;
+        padding: 0 !important;
+        border: none !important;
+        z-index: 1000;
     }
-
-    /* МЕНЮ */
-    .menu-items {
-        display: flex;
-        flex-direction: row;
-        gap: 30px;
-        padding: 0;
-        margin: 0;
-        list-style: none;
-    }
-
+    .menu-items { display: flex !important; flex-direction: row !important; gap: 30px; padding: 0; margin: 0; list-style: none; }
     .menu-items li {
         position: relative;
         opacity: 1 !important;
@@ -296,35 +292,22 @@ body.menu-open .menu-btn span:nth-child(3) {
         color: var(--text-main);
         white-space: nowrap;
         cursor: pointer;
-        border: none;
-        padding: 6px 0;
+        border: none !important;
+        padding: 6px 0 !important;
         transition: color 0.3s ease;
     }
-
-    .menu-items li:hover {
-        color: var(--gold);
-    }
-
+    .menu-items li:hover { color: var(--gold); }
     .menu-items li::after {
         content: '';
         position: absolute;
-        left: 0;
-        bottom: -4px;
-        width: 0;
-        height: 2px;
+        left: 0; bottom: -4px;
+        width: 0; height: 2px;
         background: var(--gold);
         transition: width 0.3s ease;
         border-radius: 2px;
     }
-
-    .menu-items li:hover::after {
-        width: 100%;
-    }
-
-    /* Меню жылдырууну толук өчүрөбүз */
-    body.menu-open #main-container {
-        transform: none !important;
-    }
+    .menu-items li:hover::after { width: 100%; }
+    body.menu-open #main-container { transform: none !important; }
 }
 
 
