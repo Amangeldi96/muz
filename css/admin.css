@@ -315,43 +315,113 @@ h1 { color: #1a1a1a; font-size: 36px; font-weight: 600; margin-bottom: 30px; }
 
    
 /* =========================================
-   DESKTOP FIX (PC VERSION)
+   💻 DESKTOP (PC VERSION)
 ========================================= */
-@media (min-width: 1024px) {
+@media (min-width: 900px) {
+
+    body {
+        align-items: flex-start;
+        padding: 40px;
+        overflow-y: auto;
+    }
+
+    /* AUTH WRAPPER */
+    .auth-wrapper {
+        max-width: 1100px;
+        height: 600px;
+        border-radius: 28px;
+    }
+
+    .login-side, .forgot-side {
+        padding: 80px;
+    }
+
+    h1 {
+        font-size: 42px;
+    }
+
+    /* ADMIN MAIN */
     #admin-main {
-        display: block; /* Же flex болсо, ичиндегилерди башкаруу үчүн */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
-    #lists-container {
-        display: grid !important;
-        /* Экранда 3 бирдей колонна түзөбүз */
-        grid-template-columns: repeat(3, 1fr); 
-        gap: 20px;
-        max-width: 1200px;
-        margin: 40px auto; /* Контейнерди ортого коёбуз */
-        padding: 0 20px;
-        align-items: start; /* Элементтер бийиктигине карап чоюлбайт */
-    }
-
-    .category-item {
+    /* HEADER */
+    .admin-header {
         width: 100%;
+        max-width: 1200px;
+        border-radius: 18px;
+        margin-bottom: 20px;
+    }
+
+    /* LIST CONTAINER */
+    #lists-container {
+        max-width: 1200px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 20px;
+    }
+
+    /* CATEGORY CARD */
+    .category-item {
         margin-bottom: 0;
     }
 
     .category-header {
-        /* ПК версияда тексттер өтө чоң болуп кетпеши үчүн */
         padding: 18px 22px;
+        font-size: 16px;
     }
 
-    /* Башкаруу (Header) бөлүгү */
-    .admin-header {
-        padding: 15px 10% !important;
+    .category-header h3 {
+        font-size: 16px;
     }
-}
 
-/* Орточо экрандар үчүн (Планшет же кичине ноутбук) */
-@media (min-width: 769px) and (max-width: 1023px) {
-    #lists-container {
-        grid-template-columns: repeat(2, 1fr); /* 2 колонна */
+    /* LIST GROUP */
+    .list-group {
+        max-height: 500px;
     }
+
+    .list-group.show {
+        padding: 15px;
+    }
+
+    /* ITEM */
+    .list-item {
+        padding: 14px 18px;
+        font-size: 15px;
+    }
+
+    /* FLOAT BUTTON */
+    .add-btn {
+        right: 50px;
+        bottom: 50px;
+        width: 75px;
+        height: 75px;
+        font-size: 36px;
+        border-radius: 26px;
+    }
+
+    /* MODAL */
+    .modal-content {
+        max-width: 500px;
+        padding: 40px;
+    }
+
+    /* TOAST */
+    #toast-container {
+        top: 40px;
+    }
+
+    .modern-toast {
+        min-width: 380px;
+        font-size: 15px;
+    }
+
+    /* MUSIC TOAST */
+    #music-toast-box {
+        bottom: 40px;
+    }
+
 }
