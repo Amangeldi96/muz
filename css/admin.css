@@ -314,3 +314,63 @@ h1 { color: #1a1a1a; font-size: 36px; font-weight: 600; margin-bottom: 30px; }
 @keyframes slideUpToast { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
    
+/* =========================================
+   DESKTOP OPTIMIZATION (PC VERSION)
+========================================= */
+@media (min-width: 1024px) {
+    /* Админ панелдин башкы контейнери */
+    #lists-container {
+        max-width: 1200px; /* Экранды кененирээк колдонуу */
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Категорияларды 2 колоннага бөлүү */
+        gap: 25px;
+        padding: 40px;
+    }
+
+    .category-item {
+        margin-bottom: 0;
+        align-self: start;
+    }
+
+    /* Хедердин стилин ПК үчүн бир аз өзгөртүү */
+    .admin-header {
+        padding: 20px 80px;
+    }
+
+    .admin-header h2 {
+        font-size: 28px;
+    }
+
+    /* Модалдык терезени ПКда орточо кылуу */
+    .modal-content {
+        max-width: 500px;
+        padding: 45px;
+    }
+
+    /* Аккордеон ачылганда бийиктигин чектөө (ПКда ыңгайлуу болуш үчүн) */
+    .list-group.show {
+        max-height: 500px;
+    }
+
+    /* Элементтердин ичиндеги тексттерди чоңойтуу */
+    .list-item b {
+        font-size: 16px;
+    }
+
+    /* Калкып чыкчу кошуу баскычын бир аз чоңойтуу */
+    .add-btn {
+        right: 50px;
+        bottom: 50px;
+        width: 75px;
+        height: 75px;
+        font-size: 38px;
+    }
+}
+
+/* Эгер экран өтө чоң болсо (Ultra Wide) 3 колонна кылса болот */
+@media (min-width: 1600px) {
+    #lists-container {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 1600px;
+    }
+}
