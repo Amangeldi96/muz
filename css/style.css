@@ -12,6 +12,24 @@ input[type="reset"] {
     -webkit-tap-highlight-color: transparent !important;
 }
 
+
+/* Башкы беттеги блокторду толук жаюу */
+.block-con {
+    width: 100% !important;
+    display: block !important;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.content {
+    display: flex !important;
+    flex-wrap: nowrap; /* Мобилдикте бир катарда скролл болушу үчүн */
+    overflow-x: auto;
+    gap: 15px;
+    width: 100% !important;
+    padding-bottom: 10px;
+}
+
 button:focus, 
 button:active, 
 button:focus-visible {
