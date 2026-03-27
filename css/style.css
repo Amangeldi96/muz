@@ -79,11 +79,6 @@ body.red { --bg-body: #2b0a0a; --bg-container: #fff2f2; --text-main: #990000; }
 
 body { background: var(--bg-body); color: var(--text-main); transition: 0.3s; overflow-x: hidden; }
 /* Главный бет үчүн */
-body.home .content {
-    flex-wrap: wrap !important;   /* КАТАРГА ТҮШСҮН */
-    overflow-x: visible !important;
-    justify-content: flex-start;
-}
 
 /* --- SIDE MENU --- */
 .side-menu {
@@ -243,11 +238,12 @@ body.menu-open .menu-btn span:nth-child(3) {
 /* --- PC (DESKTOP) VERSION STYLES --- */
 @media (min-width: 900px) {
     .menu-btn { display: none !important; }
-   .content {
-        flex-wrap: wrap !important; /* ПКда карточкалар кийинки катарга түшүшү керек */
-        overflow-x: visible !important;
-        justify-content: flex-start;
-    }
+body.home .content {
+    flex-wrap: wrap !important;   /* КАТАРГА ТҮШСҮН */
+    overflow-x: visible !important;
+    justify-content: flex-start;
+}
+
 
     #main-container {
         width: 100% !important;
